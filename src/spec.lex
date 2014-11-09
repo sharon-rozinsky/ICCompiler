@@ -13,13 +13,17 @@ import java_cup.runtime.*;
 
 %{
 
-  private Token token(String tag, object value) {
-    return new Token(yyline, yycolumn, tag, value);
+  private Token token(String tag, Object value) {
+    return new Token(yyline, yycolumn, tag, value.toString());
   }
   private Token token(Object value) {
-    return new Symbol(yyline, yycolumn, value, value);
+    return new Token(yyline, yycolumn, value.toString(), value.toString());
   }
 %}
+
+%eofval{
+  return token("EOF");
+%eofval}
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
@@ -34,47 +38,11 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 DocumentationComment = "/**" {CommentContent} "*"+ "/"
 CommentContent       = ( [^*] | \*+ [^/*] )*
 
-Identifier = [:jletter:] [:jletterdigit:]*
+ID = [:jletter:] [:jletterdigit:]*
 
 DecIntegerLiteral = 0 | [1-9][0-9]*
 %state STRING
 
 %%
  /* keywords */
-<YYINITIAL> "abstract"           { return symbol(sym.ABSTRACT); }
-<YYINITIAL> "boolean"            { return symbol(sym.BOOLEAN); }
-<YYINITIAL> "break"              { return symbol(sym.BREAK); }
- <YYINITIAL> {
-  /* identifiers */ 
-  {Identifier}                   { return symbol(sym.IDENTIFIER); }
- 
-  /* literals */
-  {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL); }
-  \"                             { string.setLength(0); yybegin(STRING); }
-
-  /* operators */
-  "="                            { return symbol(sym.EQ); }
-  "=="                           { return symbol(sym.EQEQ); }
-  "+"                            { return symbol(sym.PLUS); }
-
-  /* comments */
-  {Comment}                      { /* ignore */ }
- 
-  /* whitespace */
-  {WhiteSpace}                   { /* ignore */ }
-}
- <STRING> {
-  \"                             { yybegin(YYINITIAL); 
-                                   return symbol(sym.STRING_LITERAL, 
-                                   string.toString()); }
-  [^\n\r\"\\]+                   { string.append( yytext() ); }
-  \\t                            { string.append('\t'); }
-  \\n                            { string.append('\n'); }
-
-  \\r                            { string.append('\r'); }
-  \\\"                           { string.append('\"'); }
-  \\                             { string.append('\\'); }
-}
- /* error fallback */
-[^]                              { throw new Error("Illegal character <"+
-                                                    yytext()+">"); }
+<YYINITIAL> {ID}           { return token("ID", yytext()); }
