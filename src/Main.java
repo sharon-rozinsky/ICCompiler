@@ -14,10 +14,11 @@ public class Main {
 		try {
 			reader = new FileReader(new File("text.txt"));
 			Lexer lexer = new Lexer(reader);
-			
+			int c = 0;
 			while(true){
 				Token t = lexer.next_token();
-				System.out.println(t.toString());
+				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
+				System.out.println(c++);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

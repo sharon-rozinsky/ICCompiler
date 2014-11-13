@@ -32,17 +32,55 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 /* comments */
 Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
 
-TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+TraditionalComment   	= "/*" [^*] ~"*/" | "/*" "*"+ "/"
 // Comment can be the last line of the file, without line terminator.
-EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
-DocumentationComment = "/**" {CommentContent} "*"+ "/"
-CommentContent       = ( [^*] | \*+ [^/*] )*
+EndOfLineComment     	= "//" {InputCharacter}* {LineTerminator}?
+DocumentationComment 	= "/**" {CommentContent} "*"+ "/"
+CommentContent       	= ( [^*] | \*+ [^/*] )*
+CapitalLtter			= [A-Z][.*]
 
 ID = [:jletter:] [:jletterdigit:]*
 
-DecIntegerLiteral = 0 | [1-9][0-9]*
+DecIntegerLiteral = 0|[1-9][0-9]*
 %state STRING
 
 %%
  /* keywords */
-<YYINITIAL> {ID}           { return token("ID", yytext()); }
+ <YYINITIAL> "return"    	{ return token("return", yytext()); }
+<YYINITIAL> "class"         { return token("class", yytext()); }
+<YYINITIAL> "extends"       { return token("extends", yytext()); }
+<YYINITIAL> "static"        { return token("static", yytext()); }
+<YYINITIAL> "void"          { return token("void", yytext()); }
+<YYINITIAL> "int"           { return token("int", yytext()); }
+<YYINITIAL> "boolean"       { return token("boolean", yytext()); }
+<YYINITIAL> "string"        { return token("string", yytext()); }
+<YYINITIAL> "if"            { return token("if", yytext()); }
+<YYINITIAL> "else"          { return token("else", yytext()); }
+<YYINITIAL> "while"         { return token("while", yytext()); }
+<YYINITIAL> "break"         { return token("break", yytext()); }
+<YYINITIAL> "continue"      { return token("continue", yytext()); }
+<YYINITIAL> "this"          { return token("this", yytext()); }
+<YYINITIAL> "new"           { return token("new", yytext()); }
+<YYINITIAL> "length"        { return token("length", yytext()); }
+<YYINITIAL> "true"          { return token("true", yytext()); }
+<YYINITIAL> "false"         { return token("false", yytext()); }
+<YYINITIAL> "null"          { return token("null", yytext()); }
+
+<YYINITIAL> {
+  /* identifiers */ 
+  {ID}         		{ return token("ID", yytext()); }
+ 
+ {CapitalLtter}      { return token("CLASS_ID", yytext()); }
+  
+  /* literals */
+  {DecIntegerLiteral}            { return token("INTEGER", yytext()); }
+
+  /* comments */
+  {CommentContent}                      { /* ignore */ }
+ 
+  /* whitespace */
+  {WhiteSpace}                   { return token("WS", yytext());}
+}
+
+
+
