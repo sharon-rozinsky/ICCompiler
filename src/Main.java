@@ -17,9 +17,8 @@ public class Main {
 			reader = new FileReader(new File("text.txt"));
 			Lexer lexer = new Lexer(reader);
 			Token t = lexer.next_token();
-			int c=0;
-			while((t.getTag() != "EOF")&& (c<20)){
-			//while(t.getTag() != "EOF"){
+			int c = 0;
+			while((t.getTag() != "EOF")&&(c<50)){
 				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
 				tokArr.add(t);
 				t = lexer.next_token();

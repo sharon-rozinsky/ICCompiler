@@ -1,4 +1,6 @@
 tom /*23*/ Tom guy
-Sharon return
+Sharon return returni
 x = 0 + 353
-"Tom Sivan is the king? of Course!!"
+"Tom is the king!"
+123frg
+123!

@@ -42,17 +42,15 @@ CommentContent       	= ( [^*] | \*+ [^/*] )*
 Class_ID				= [A-Z][a-z|0-9]*
 ID 						= [a-z] ([a-z|0-9])*
 DecIntegerLiteral 		= [0-9]+
-//DecIntegerLiteral 	= 0|[1-9][0-9]*
 STRING 					= \".*\"
 
-ERROR					= .*
-
+ERROR					= [0-9]+[a-z|A-Z|/?|/!]+
 
 %state STRING
 
 %%
  /* keywords */
- <YYINITIAL> "return"    	{ return token("return", yytext()); }
+<YYINITIAL> "return"    	{ return token("return", yytext()); }
 <YYINITIAL> "class"         { return token("class", yytext()); }
 <YYINITIAL> "extends"       { return token("extends", yytext()); }
 <YYINITIAL> "static"        { return token("static", yytext()); }
@@ -95,8 +93,9 @@ ERROR					= .*
  
   	/* whitespace */
   	{WhiteSpace}                { }
-	
-	//{ERROR}                   	{ return token("ERROR", yytext());}
+  	
+  	{ERROR}                		{ return token("ERROR", yytext());}
+		
 }
 
 
