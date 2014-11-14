@@ -12,7 +12,7 @@ import java_cup.runtime.*;
 %cup
 
 %{
-
+	StringBuffer string = new StringBuffer();
   private Token token(String tag, Object value) {
     return new Token(yyline, yycolumn, tag, value.toString());
   }
@@ -42,9 +42,7 @@ CommentContent       	= ( [^*] | \*+ [^/*] )*
 Class_ID				= [A-Z][a-z|0-9]*
 ID 						= [a-z] ([a-z|0-9])*
 DecIntegerLiteral 		= [0-9]+
-STRING 					= \".*\"
 
-ERROR					= [0-9]+[a-z|A-Z|/?|/!]+
 
 %state STRING
 
@@ -82,21 +80,30 @@ ERROR					= [0-9]+[a-z|A-Z|/?|/!]+
   	{ID}         				{ return token("ID", yytext()); }
  
   	{Class_ID}      			{ return token("CLASS_ID", yytext()); }
- 
-  	{STRING}      				{ return token("STRING", yytext()); }
   
   	/* literals */
   	{DecIntegerLiteral}         { return token("INTEGER", yytext()); }
+  	 \"                         { string.setLength(0); yybegin(STRING); }
 
   	/* comments */
   	{Comment}                   { } // *ignore*
  
   	/* whitespace */
   	{WhiteSpace}                { }
-  	
-  	{ERROR}                		{ return token("ERROR", yytext());}
 		
 }
 
+<STRING> {
+  \"                             { yybegin(YYINITIAL); return token("STRING", string.toString());} 
+  [^\n\r\"\\]+                   { string.append( yytext() ); }
+  \\t                            { string.append('\t'); }
+  \\n                            { string.append('\n'); }
 
+  \\r                            { string.append('\r'); }
+  \\\"                           { string.append('\"'); }
 
+}
+
+/* error fallback */
+[^]                              { throw new Error("Illegal character <"+
+                                                    yytext()+">"); }
