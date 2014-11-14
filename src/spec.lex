@@ -41,10 +41,13 @@ DocumentationComment 	= "/**" {CommentContent} "*"+ "/"
 CommentContent       	= ( [^*] | \*+ [^/*] )*
 Class_ID				= [A-Z][a-z|0-9]*
 ID 						= [a-z] ([a-z|0-9])*
+DecIntegerLiteral 		= [0-9]+
+//DecIntegerLiteral 	= 0|[1-9][0-9]*
+STRING 					= \".*\"
 
-//ID = [:jletter:] [:jletterdigit:]*
+ERROR					= .*
 
-DecIntegerLiteral = 0|[1-9][0-9]*
+
 %state STRING
 
 %%
@@ -68,22 +71,32 @@ DecIntegerLiteral = 0|[1-9][0-9]*
 <YYINITIAL> "true"          { return token("true", yytext()); }
 <YYINITIAL> "false"         { return token("false", yytext()); }
 <YYINITIAL> "null"          { return token("null", yytext()); }
-<YYINITIAL> "/s"          	{/* ignore */}
+<YYINITIAL> "="          	{ return token("=", yytext()); }
+<YYINITIAL> "+"          	{ return token("+", yytext()); }
+<YYINITIAL> "*"          	{ return token("*", yytext()); }
+<YYINITIAL> "-"          	{ return token("-", yytext()); }
+<YYINITIAL> "/"          	{ return token("/", yytext()); }
+<YYINITIAL> ";"             { return token(";", yytext()); }
 
 <YYINITIAL> {
-  /* identifiers */ 
-  {ID}         		{ return token("ID", yytext()); }
+	
+  	/* identifiers */ 
+  	{ID}         				{ return token("ID", yytext()); }
  
- {Class_ID}      { return token("CLASS_ID", yytext()); }
+  	{Class_ID}      			{ return token("CLASS_ID", yytext()); }
+ 
+  	{STRING}      				{ return token("STRING", yytext()); }
   
-  /* literals */
-  {DecIntegerLiteral}            { return token("INTEGER", yytext()); }
+  	/* literals */
+  	{DecIntegerLiteral}         { return token("INTEGER", yytext()); }
 
-  /* comments */
-  {Comment}                      { return token("Comment", yytext());} // *ignore*
+  	/* comments */
+  	{Comment}                   { } // *ignore*
  
-  /* whitespace */
-  {WhiteSpace}                   { return token("WS", yytext());}
+  	/* whitespace */
+  	{WhiteSpace}                { }
+	
+	//{ERROR}                   	{ return token("ERROR", yytext());}
 }
 
 

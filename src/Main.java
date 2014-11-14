@@ -5,24 +5,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.ArrayList;
 
 
 public class Main {
 
 	public static void main(String[] args) {
 		Reader reader;
+		ArrayList<Token> tokArr = new ArrayList<Token>();
 		try {
 			reader = new FileReader(new File("text.txt"));
 			Lexer lexer = new Lexer(reader);
-			//int c = 0;
 			Token t = lexer.next_token();
-			while(t.getTag() != "EOF"){
-				if (t.getTag()!= "WS")
-				{
-					PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
-				}
+			int c=0;
+			while((t.getTag() != "EOF")&& (c<20)){
+			//while(t.getTag() != "EOF"){
+				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
+				tokArr.add(t);
 				t = lexer.next_token();
-				//System.out.println(c++);
+				c++;
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -30,6 +31,7 @@ public class Main {
 		} catch (IOException e){
 			
 		}
+		System.out.println("Done!");
 	}
 	
 	public static void PrintToken(String token, String tag, int line, int column){
