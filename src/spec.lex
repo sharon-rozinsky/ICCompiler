@@ -67,12 +67,30 @@ DecIntegerLiteral 		= [0-9]+
 <YYINITIAL> "true"          { return token("true", yytext()); }
 <YYINITIAL> "false"         { return token("false", yytext()); }
 <YYINITIAL> "null"          { return token("null", yytext()); }
+
+/* Operators */
 <YYINITIAL> "="          	{ return token("=", yytext()); }
 <YYINITIAL> "+"          	{ return token("+", yytext()); }
 <YYINITIAL> "*"          	{ return token("*", yytext()); }
 <YYINITIAL> "-"          	{ return token("-", yytext()); }
 <YYINITIAL> "/"          	{ return token("/", yytext()); }
 <YYINITIAL> ";"             { return token(";", yytext()); }
+<YYINITIAL> "%"      		{ return token("%", yytext()); }
+<YYINITIAL> "<"        		{ return token("<", yytext()); }
+<YYINITIAL> "<="          	{ return token("<=", yytext()); }
+<YYINITIAL> ">"         	{ return token(">", yytext()); }
+<YYINITIAL> ">="          	{ return token(">=", yytext()); }
+<YYINITIAL> "=="        	{ return token("==", yytext()); }
+<YYINITIAL> "!="         	{ return token("!=", yytext()); }
+<YYINITIAL> "&&"          	{ return token("&&", yytext()); }
+<YYINITIAL> "||"        	{ return token("||", yytext()); }
+
+/*symbols*/
+<YYINITIAL> "[]"       		{ return token("[]", yytext()); }
+<YYINITIAL> "()"       		{ return token("()", yytext()); }
+<YYINITIAL> "."            	{ return token(".", yytext()); }
+<YYINITIAL> "!"         	{ return token("!", yytext()); }
+
 
 <YYINITIAL> {
 	
