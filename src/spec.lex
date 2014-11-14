@@ -85,7 +85,7 @@ DecIntegerLiteral 		= [0-9]+
 <YYINITIAL> "&&"          	{ return token("&&", yytext()); }
 <YYINITIAL> "||"        	{ return token("||", yytext()); }
 
-/*symbols*/
+/* Symbols */
 <YYINITIAL> "[]"       		{ return token("[]", yytext()); }
 <YYINITIAL> "()"       		{ return token("()", yytext()); }
 <YYINITIAL> "."            	{ return token(".", yytext()); }

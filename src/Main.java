@@ -17,12 +17,11 @@ public class Main {
 			reader = new FileReader(new File("text.txt"));
 			Lexer lexer = new Lexer(reader);
 			Token t = lexer.next_token();
-			int c = 0;
-			while((t.getTag() != "EOF")&&(c<50)){
+			
+			while(t.getTag() != "EOF"){
 				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
 				tokArr.add(t);
 				t = lexer.next_token();
-				c++;
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
