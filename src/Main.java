@@ -17,7 +17,10 @@ public class Main {
 			//int c = 0;
 			Token t = lexer.next_token();
 			while(t.getTag() != "EOF"){
-				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
+				if (t.getTag()!= "WS")
+				{
+					PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
+				}
 				t = lexer.next_token();
 				//System.out.println(c++);
 			}
