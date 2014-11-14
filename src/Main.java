@@ -15,7 +15,7 @@ public class Main {
 			reader = new FileReader(new File("text.txt"));
 			Lexer lexer = new Lexer(reader);
 			int c = 0;
-			while(true){
+			while(c<10){
 				Token t = lexer.next_token();
 				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
 				System.out.println(c++);

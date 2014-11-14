@@ -33,13 +33,16 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
 
 TraditionalComment   	= "/*" [^*] ~"*/" | "/*" "*"+ "/"
+
 // Comment can be the last line of the file, without line terminator.
+
 EndOfLineComment     	= "//" {InputCharacter}* {LineTerminator}?
 DocumentationComment 	= "/**" {CommentContent} "*"+ "/"
 CommentContent       	= ( [^*] | \*+ [^/*] )*
-CapitalLtter			= [A-Z][.*]
+Class_ID				= [A-Z][a-z|0-9]*
+ID 						= [a-z] ([a-z|0-9])*
 
-ID = [:jletter:] [:jletterdigit:]*
+//ID = [:jletter:] [:jletterdigit:]*
 
 DecIntegerLiteral = 0|[1-9][0-9]*
 %state STRING
@@ -65,18 +68,19 @@ DecIntegerLiteral = 0|[1-9][0-9]*
 <YYINITIAL> "true"          { return token("true", yytext()); }
 <YYINITIAL> "false"         { return token("false", yytext()); }
 <YYINITIAL> "null"          { return token("null", yytext()); }
+<YYINITIAL> "/s"          	{/* ignore */}
 
 <YYINITIAL> {
   /* identifiers */ 
   {ID}         		{ return token("ID", yytext()); }
  
- {CapitalLtter}      { return token("CLASS_ID", yytext()); }
+ {Class_ID}      { return token("CLASS_ID", yytext()); }
   
   /* literals */
   {DecIntegerLiteral}            { return token("INTEGER", yytext()); }
 
   /* comments */
-  {CommentContent}                      { /* ignore */ }
+  {Comment}                      { return token("Comment", yytext());} // *ignore*
  
   /* whitespace */
   {WhiteSpace}                   { return token("WS", yytext());}
