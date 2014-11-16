@@ -14,10 +14,10 @@ import java_cup.runtime.*;
 %{
 	StringBuffer string = new StringBuffer();
   private Token token(String tag, Object value) {
-    return new Token(yyline, yycolumn, tag, value.toString());
+    return new Token(yyline + 1, yycolumn + 1, tag, value.toString());
   }
   private Token token(Object value) {
-    return new Token(yyline, yycolumn, value.toString(), value.toString());
+    return new Token(yyline + 1, yycolumn + 1, value.toString(), value.toString());
   }
 %}
 
@@ -40,7 +40,7 @@ EndOfLineComment     	= "//" {InputCharacter}* {LineTerminator}?
 DocumentationComment 	= "/**" {CommentContent} "*"+ "/"
 CommentContent       	= ( [^*] | \*+ [^/*] )*
 Class_ID				= [A-Z][a-z|0-9]*
-ID 						= [a-z] ([a-z|0-9])*
+ID 						= [a-z] ([A-Z|a-z|0-9])*
 DecIntegerLiteral 		= [0-9]+
 
 
@@ -84,12 +84,17 @@ DecIntegerLiteral 		= [0-9]+
 <YYINITIAL> "!="         	{ return token("!=", yytext()); }
 <YYINITIAL> "&&"          	{ return token("&&", yytext()); }
 <YYINITIAL> "||"        	{ return token("||", yytext()); }
+<YYINITIAL> ","        		{ return token(",", yytext()); }
 
 /* Symbols */
-<YYINITIAL> "[]"       		{ return token("[]", yytext()); }
-<YYINITIAL> "()"       		{ return token("()", yytext()); }
 <YYINITIAL> "."            	{ return token(".", yytext()); }
 <YYINITIAL> "!"         	{ return token("!", yytext()); }
+<YYINITIAL> "{"         	{ return token("{", yytext()); }
+<YYINITIAL> "}"         	{ return token("}", yytext()); }
+<YYINITIAL> "("         	{ return token("(", yytext()); }
+<YYINITIAL> ")"         	{ return token(")", yytext()); }
+<YYINITIAL> "["         	{ return token("[", yytext()); }
+<YYINITIAL> "]"         	{ return token("]", yytext()); }
 
 
 <YYINITIAL> {
