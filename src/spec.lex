@@ -106,7 +106,7 @@ DecIntegerLiteral 		= [0-9]+
   
   	/* literals */
   	{DecIntegerLiteral}         { return token("INTEGER", yytext()); }
-  	 \"                         { string.setLength(0); yybegin(STRING); }
+  	 \"                         { string.setLength(0); string.append('\"'); yybegin(STRING); }
 
   	/* comments */
   	{Comment}                   { } // *ignore*
@@ -118,7 +118,7 @@ DecIntegerLiteral 		= [0-9]+
 
 <STRING> {
   \"                             { yybegin(YYINITIAL); return token("STRING", string.toString());} 
-  [^\n\r\"\\]+                   { string.append( yytext() ); }
+  [^\n\r\"\\]+                   { string.append( yytext() ); string.append('\"');}
   \\t                            { string.append('\t'); }
   \\n                            { string.append('\n'); }
 
