@@ -130,5 +130,4 @@ DecIntegerLiteral 		= [0-9]+
 }
 
 /* error fallback */
-[^]                              { throw new Error("Illegal character <"+
-                                                    yytext()+">"); }
+[^]                              { throw new LexicalError("Illegal character"); }
