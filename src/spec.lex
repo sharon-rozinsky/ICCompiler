@@ -48,64 +48,64 @@ DecIntegerLiteral 		= [0-9]+
 
 %%
  /* keywords */
-<YYINITIAL> "return"    	{ return token("return", yytext()); }
-<YYINITIAL> "class"         { return token("class", yytext()); }
-<YYINITIAL> "extends"       { return token("extends", yytext()); }
-<YYINITIAL> "static"        { return token("static", yytext()); }
-<YYINITIAL> "void"          { return token("void", yytext()); }
-<YYINITIAL> "int"           { return token("int", yytext()); }
-<YYINITIAL> "boolean"       { return token("boolean", yytext()); }
-<YYINITIAL> "string"        { return token("string", yytext()); }
-<YYINITIAL> "if"            { return token("if", yytext()); }
-<YYINITIAL> "else"          { return token("else", yytext()); }
-<YYINITIAL> "while"         { return token("while", yytext()); }
-<YYINITIAL> "break"         { return token("break", yytext()); }
-<YYINITIAL> "continue"      { return token("continue", yytext()); }
-<YYINITIAL> "this"          { return token("this", yytext()); }
-<YYINITIAL> "new"           { return token("new", yytext()); }
-<YYINITIAL> "length"        { return token("length", yytext()); }
-<YYINITIAL> "true"          { return token("true", yytext()); }
-<YYINITIAL> "false"         { return token("false", yytext()); }
-<YYINITIAL> "null"          { return token("null", yytext()); }
+<YYINITIAL> "return"    	{ return token(sym.RETURN, yytext()); }
+<YYINITIAL> "class"         { return token(sym.CLASS, yytext()); }
+<YYINITIAL> "extends"       { return token(sym.EXTENDS, yytext()); }
+<YYINITIAL> "static"        { return token(sym.STATIC, yytext()); }
+<YYINITIAL> "void"          { return token(sym.VOID, yytext()); }
+<YYINITIAL> "int"           { return token(sym.INT, yytext()); }
+<YYINITIAL> "boolean"       { return token(sym.BOOLEAN, yytext()); }
+<YYINITIAL> "string"        { return token(sym.STR, yytext()); }
+<YYINITIAL> "if"            { return token(sym.IF, yytext()); }
+<YYINITIAL> "else"          { return token(sym.ELSE, yytext()); }
+<YYINITIAL> "while"         { return token(sym.WHILE, yytext()); }
+<YYINITIAL> "break"         { return token(sym.BREAK, yytext()); }
+<YYINITIAL> "continue"      { return token(sym.CONTINUE, yytext()); }
+<YYINITIAL> "this"          { return token(sym.THIS, yytext()); }
+<YYINITIAL> "new"           { return token(sym.NEW, yytext()); }
+<YYINITIAL> "length"        { return token(sym.LENGTH, yytext()); }
+<YYINITIAL> "true"          { return token(sym.TRUE, yytext()); }
+<YYINITIAL> "false"         { return token(sym.FALSE, yytext()); }
+<YYINITIAL> "null"          { return token(sym.NULL, yytext()); }
 
 /* Operators */
-<YYINITIAL> "="          	{ return token("=", yytext()); }
-<YYINITIAL> "+"          	{ return token("+", yytext()); }
-<YYINITIAL> "*"          	{ return token("*", yytext()); }
-<YYINITIAL> "-"          	{ return token("-", yytext()); }
-<YYINITIAL> "/"          	{ return token("/", yytext()); }
-<YYINITIAL> ";"             { return token(";", yytext()); }
-<YYINITIAL> "%"      		{ return token("%", yytext()); }
-<YYINITIAL> "<"        		{ return token("<", yytext()); }
-<YYINITIAL> "<="          	{ return token("<=", yytext()); }
-<YYINITIAL> ">"         	{ return token(">", yytext()); }
-<YYINITIAL> ">="          	{ return token(">=", yytext()); }
-<YYINITIAL> "=="        	{ return token("==", yytext()); }
-<YYINITIAL> "!="         	{ return token("!=", yytext()); }
-<YYINITIAL> "&&"          	{ return token("&&", yytext()); }
-<YYINITIAL> "||"        	{ return token("||", yytext()); }
-<YYINITIAL> ","        		{ return token(",", yytext()); }
+<YYINITIAL> "="          	{ return token(sym.EQ, yytext()); }
+<YYINITIAL> "+"          	{ return token(sym.PLUS, yytext()); }
+<YYINITIAL> "*"          	{ return token(sym.MUL, yytext()); }
+<YYINITIAL> "-"          	{ return token(sym.SUB, yytext()); }
+<YYINITIAL> "/"          	{ return token(sym.DIV, yytext()); }
+<YYINITIAL> ";"             { return token(sym.EOL, yytext()); }
+<YYINITIAL> "%"      		{ return token(sym.MOD, yytext()); }
+<YYINITIAL> "<"        		{ return token(sym.ST, yytext()); }
+<YYINITIAL> "<="          	{ return token(sym.STEQ, yytext()); }
+<YYINITIAL> ">"         	{ return token(sym.GT, yytext()); }
+<YYINITIAL> ">="          	{ return token(sym.GTEQ, yytext()); }
+<YYINITIAL> "=="        	{ return token(sym.EQEQ, yytext()); }
+<YYINITIAL> "!="         	{ return token(sym.NOTEQ, yytext()); }
+<YYINITIAL> "&&"          	{ return token(sym.AND, yytext()); }
+<YYINITIAL> "||"        	{ return token(sym.OR, yytext()); }
+<YYINITIAL> ","        		{ return token(sym.COMMA, yytext()); }
 
 /* Symbols */
-<YYINITIAL> "."            	{ return token(".", yytext()); }
-<YYINITIAL> "!"         	{ return token("!", yytext()); }
-<YYINITIAL> "{"         	{ return token("{", yytext()); }
-<YYINITIAL> "}"         	{ return token("}", yytext()); }
-<YYINITIAL> "("         	{ return token("(", yytext()); }
-<YYINITIAL> ")"         	{ return token(")", yytext()); }
-<YYINITIAL> "["         	{ return token("[", yytext()); }
-<YYINITIAL> "]"         	{ return token("]", yytext()); }
+<YYINITIAL> "."            	{ return token(sym.DOT, yytext()); }
+<YYINITIAL> "!"         	{ return token(sym.NOT, yytext()); }
+<YYINITIAL> "{"         	{ return token(sym.LP, yytext()); }
+<YYINITIAL> "}"         	{ return token(sym.RP, yytext()); }
+<YYINITIAL> "("         	{ return token(sym.LRP, yytext()); }
+<YYINITIAL> ")"         	{ return token(sym.RRP, yytext()); }
+<YYINITIAL> "["         	{ return token(sym.LSP, yytext()); }
+<YYINITIAL> "]"         	{ return token(sym.RSP, yytext()); }
 
 
 <YYINITIAL> {
 	
   	/* identifiers */ 
-  	{ID}         				{ return token("ID", yytext()); }
+  	{ID}         				{ return token(sym.ID, yytext()); }
  
-  	{Class_ID}      			{ return token("CLASS_ID", yytext()); }
+  	{Class_ID}      			{ return token(sym.CLASS_ID, yytext()); }
   
   	/* literals */
-  	{DecIntegerLiteral}         { return token("INTEGER", yytext()); }
+  	{DecIntegerLiteral}         { return token(sym.INTEGER, yytext()); }
   	 \"                         { string.setLength(0); string.append('\"'); yybegin(STRING); }
 
   	/* comments */
@@ -117,7 +117,7 @@ DecIntegerLiteral 		= [0-9]+
 }
 
 <STRING> {
-  \"                             { yybegin(YYINITIAL); return token("STRING", string.toString());} 
+  \"                             { yybegin(YYINITIAL); return token(sym.STRING, string.toString());} 
   [^\n\r\"\\]+                   { string.append( yytext() ); string.append('\"');}
   \\t                            { string.append('\t'); }
   \\n                            { string.append('\n'); }
