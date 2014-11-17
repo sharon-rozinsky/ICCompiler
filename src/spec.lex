@@ -17,17 +17,14 @@ import java_cup.runtime.*;
 	private Token token(sym tag, Object value) {
 		return new Token(yyline + 1, yycolumn + 1, tag, value.toString());
 	}
-	private Token token(Object value) {
-		return new Token(yyline + 1, yycolumn + 1, value.toString(), value.toString());
-	}
 	
-	private Token token(sym tag, Object value, strColumn) {
+	private Token token(sym tag, Object value,int strColumn) {
 		return new Token(yyline + 1, strColumn + 1, tag, value.toString());
 	}
 %}
 
 %eofval{
-  return token("EOF");
+  token(sym.EOF, yytext());
 %eofval}
 
 LineTerminator = \r|\n|\r\n
