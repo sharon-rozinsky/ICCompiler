@@ -17,7 +17,7 @@ public class Main {
 			reader = new FileReader(new File("text.txt"));
 			Lexer lexer = new Lexer(reader);
 			Token t = lexer.next_token();
-			
+			PrintHeader();
 			while(t.getTag() != "EOF"){
 				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
 				tokArr.add(t);
@@ -35,5 +35,15 @@ public class Main {
 	public static void PrintToken(String token, String tag, int line, int column){
 		System.out.println(token + "\t" + tag + "\t" + line + ":" + column);
 	}
+	
+	public static void PrintHeader(){
+		System.out.println("token\ttag\tline :column");
+	}
+	
+	public static void PrintTokenError(String errMsg) { 
+		System.err. println ("Error!\t"+errMsg);
+	}
 
 }
+
+// Command to run from terminal to create: Lexer.java
