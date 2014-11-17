@@ -25,7 +25,7 @@ import java_cup.runtime.*;
 %}
 
 %eofval{
-  token(sym.EOF, yytext());
+  token(sym.EOF, "EOF");
 %eofval}
 
 LineTerminator = \r|\n|\r\n
@@ -120,8 +120,8 @@ DecIntegerLiteral 		= [0-9]+
 }
 
 <STRING> {
-  \"                             { yybegin(YYINITIAL); return token(sym.STRING, string.toString(),strColumn);} 
-  [^\n\r\"\\]+                   { string.append( yytext() ); string.append('\"');}
+  \"                             { yybegin(YYINITIAL); return token(sym.STRING, string.append('\"').toString(),strColumn);} 
+  [^\n\r\"\\]+                   { string.append( yytext() ); }
   \\t                            { string.append('\t'); }
   \\n                            { string.append('\n'); }
 

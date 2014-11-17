@@ -12,11 +12,11 @@ public class Main {
 		Reader reader;
 		ArrayList<Token> tokArr = new ArrayList<Token>();
 		try {
-			reader = new FileReader(new File("Quicksort_bad.ic"));
+			reader = new FileReader(new File("Sieve.ic"));
 			Lexer lexer = new Lexer(reader);
 			Token t = lexer.next_token();
 			PrintHeader();
-			while(t.getTag() != "EOF"){
+			while(!t.getTag().equals("EOF")){
 				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
 				tokArr.add(t);
 				t = lexer.next_token();
