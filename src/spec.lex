@@ -25,7 +25,7 @@ import java_cup.runtime.*;
 %}
 
 %eofval{
-  token(sym.EOF, "EOF");
+  return token(sym.EOF, "EOF");
 %eofval}
 
 LineTerminator = \r|\n|\r\n

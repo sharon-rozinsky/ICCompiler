@@ -12,7 +12,7 @@ public class Main {
 		Reader reader;
 		ArrayList<Token> tokArr = new ArrayList<Token>();
 		try {
-			reader = new FileReader(new File("Sieve.ic"));
+			reader = new FileReader(new File(args[0]));
 			Lexer lexer = new Lexer(reader);
 			Token t = lexer.next_token();
 			PrintHeader();
