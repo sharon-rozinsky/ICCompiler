@@ -1,8 +1,18 @@
 
-public class sym {
-    public static final int EOF = 0;
-    public static final int ID = 1;
-    public static final int CLASS_ID = 2;
-    public static final int INTEGER = 3;
-    public static final int STRING = 4;
+public enum sym {
+    EOF("EOF"),
+    ID("ID"),
+    CLASS_ID("CLASS ID"),
+    INTEGER("INTEGER"),
+    STRING("STRING"),
+    LP("{");
+    
+    sym(String symbolDesc){
+    	this.symbolDesc = symbolDesc;
+    }
+    
+    private String symbolDesc;
+    public String getSymbolDesc(){
+    	return symbolDesc;
+    }
 }
