@@ -1,12 +1,14 @@
 
+@SuppressWarnings("serial")
 public class LexicalError extends Exception{
+	String errMsg;
 	
 	public LexicalError(String error){
-		PrintTokenError(error);
+		errMsg = error;
 	}
 	
 	
-	public static void PrintTokenError(String errMsg) { 
+	public static void toString(String errMsg) { 
 		System.err. println ("Error!\t"+errMsg);
 	}
 
