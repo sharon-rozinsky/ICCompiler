@@ -13,11 +13,16 @@ import java_cup.runtime.*;
 
 %{
 	StringBuffer string = new StringBuffer();
+	int strColumn = 0;
 	private Token token(sym tag, Object value) {
 		return new Token(yyline + 1, yycolumn + 1, tag, value.toString());
 	}
 	private Token token(Object value) {
 		return new Token(yyline + 1, yycolumn + 1, value.toString(), value.toString());
+	}
+	
+	private Token token(sym tag, Object value, strColumn) {
+		return new Token(yyline + 1, strColumn + 1, tag, value.toString());
 	}
 %}
 
@@ -106,7 +111,7 @@ DecIntegerLiteral 		= [0-9]+
   
   	/* literals */
   	{DecIntegerLiteral}         { return token(sym.INTEGER, yytext()); }
-  	 \"                         { string.setLength(0); string.append('\"'); yybegin(STRING); }
+  	 \"                         { string.setLength(0);strColumn = yycolumn; string.append('\"'); yybegin(STRING); }
 
   	/* comments */
   	{Comment}                   { } // *ignore*
@@ -117,7 +122,7 @@ DecIntegerLiteral 		= [0-9]+
 }
 
 <STRING> {
-  \"                             { yybegin(YYINITIAL); return token(sym.STRING, string.toString());} 
+  \"                             { yybegin(YYINITIAL); return token(sym.STRING, string.toString(),strColumn);} 
   [^\n\r\"\\]+                   { string.append( yytext() ); string.append('\"');}
   \\t                            { string.append('\t'); }
   \\n                            { string.append('\n'); }
