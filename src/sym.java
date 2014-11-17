@@ -47,7 +47,7 @@ public enum sym {
     LRP("("),
     RRP(")"),
     LSP("["),
-    RSP("}");
+    RSP("]");
         
     sym(String symbolDesc){
     	this.symbolDesc = symbolDesc;

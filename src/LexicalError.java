@@ -1,13 +1,9 @@
 
-@SuppressWarnings("serial")
 public class LexicalError extends Exception{
-	String errMsg;
+	private String message;
 	
 	public LexicalError(String error){
-		errMsg = error;
+		super(error);
+		message = error;
 	}
-	
-	
-	
-
 }

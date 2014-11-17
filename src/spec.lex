@@ -10,6 +10,7 @@ import java_cup.runtime.*;
 %type Token
 %class Lexer
 %cup
+%yylexthrow LexicalError
 
 %{
 	StringBuffer string = new StringBuffer();
@@ -130,4 +131,4 @@ DecIntegerLiteral 		= [0-9]+
 }
 
 /* error fallback */
-[^]                              { throw new LexicalError("Illegal character"); }
+[^]                              { throw new LexicalError("Illegal character: " + yytext()); }
