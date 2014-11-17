@@ -14,7 +14,7 @@ public class Main {
 		Reader reader;
 		ArrayList<Token> tokArr = new ArrayList<Token>();
 		try {
-			reader = new FileReader(new File("text.txt"));
+			reader = new FileReader(new File("Quicksort_bad.ic"));
 			Lexer lexer = new Lexer(reader);
 			Token t = lexer.next_token();
 			PrintHeader();
@@ -28,6 +28,8 @@ public class Main {
 			e.printStackTrace();
 		} catch (IOException e){
 			
+		} catch (LexicalError e){
+			PrintTokenError("Invalid Letter");
 		}
 		System.out.println("Done!");
 	}
@@ -40,7 +42,9 @@ public class Main {
 		System.out.println("token\ttag\tline :column");
 	}
 	
-	
+	public static void PrintTokenError(String errMsg) { 
+		System.err. println ("Error!\t"+errMsg);
+	}
 
 }
 

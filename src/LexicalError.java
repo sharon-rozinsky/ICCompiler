@@ -8,8 +8,6 @@ public class LexicalError extends Exception{
 	}
 	
 	
-	public static void toString(String errMsg) { 
-		System.err. println ("Error!\t"+errMsg);
-	}
+	
 
 }
