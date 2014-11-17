@@ -40,9 +40,7 @@ public class Main {
 		System.out.println("token\ttag\tline :column");
 	}
 	
-	public static void PrintTokenError(String errMsg) { 
-		System.err. println ("Error!\t"+errMsg);
-	}
+	
 
 }
 
