@@ -12,14 +12,21 @@ public class Main {
 		Reader reader;
 		ArrayList<Token> tokArr = new ArrayList<Token>();
 		try {
-			reader = new FileReader(new File(args[0]));
-			Lexer lexer = new Lexer(reader);
-			Token t = lexer.next_token();
-			PrintHeader();
-			while(!t.getTag().equals("EOF")){
-				PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
-				tokArr.add(t);
-				t = lexer.next_token();
+			 if(args.length != 0)
+			{
+				reader = new FileReader(new File(args[0]));
+				Lexer lexer = new Lexer(reader);
+				Token t = lexer.next_token();
+				PrintHeader();
+				while(!t.getTag().equals("EOF")){
+					PrintToken(t.getValue(), t.getTag(), t.getLine(), t.getColumn());
+					tokArr.add(t);
+					t = lexer.next_token();
+				}
+			}
+			else
+			{
+				System.out.println("No file was given, please update with file do you want to parse!");
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
