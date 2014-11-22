@@ -26,7 +26,7 @@ public class Main {
 			}
 			else
 			{
-				System.out.println("No file was given, please update with file do you want to parse!");
+				System.out.println("No file was given, please run again and insert which file do you want to parse!");
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
