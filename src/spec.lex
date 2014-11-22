@@ -122,10 +122,10 @@ DecIntegerLiteral 		= [0-9]+
 <STRING> {
   \"                             { yybegin(YYINITIAL); return token(sym.STRING, string.append('\"').toString(),strColumn);} 
   [^\n\r\"\\]+                   { string.append( yytext() ); }
-  \\t                            { string.append('\t'); }
-  \\n                            { string.append('\n'); }
+  \\t                            { string.append("\\t"); }
+  \\n                            { string.append("\\n"); }
 
-  \\r                            { string.append('\r'); }
+  \\r                            { string.append("\\r"); }
   \\\"                           { string.append('\"'); }
 
 }
