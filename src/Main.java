@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 
+import IC.Error.LexicalError;
+
 
 public class Main {
 

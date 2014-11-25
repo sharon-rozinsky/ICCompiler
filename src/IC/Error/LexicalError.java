@@ -1,3 +1,4 @@
+package IC.Error;
 
 public class LexicalError extends Exception{
 	private String message;

@@ -1,3 +1,4 @@
+
 import java_cup.runtime.Symbol;
 
 public class Token extends Symbol{
