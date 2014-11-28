@@ -1,4 +1,5 @@
 import java_cup.runtime.*;
+import IC.Error.*;
  
 /**
  * IC compiler lexer
@@ -15,11 +16,11 @@ import java_cup.runtime.*;
 %{
 	StringBuffer string = new StringBuffer();
 	int strColumn = 0;
-	private Token token(sym tag, Object value) {
+	private Token token(int tag, Object value) {
 		return new Token(yyline + 1, yycolumn + 1, tag, value.toString());
 	}
 	
-	private Token token(sym tag, Object value,int strColumn) {
+	private Token token(int tag, Object value,int strColumn) {
 		return new Token(yyline + 1, strColumn + 1, tag, value.toString());
 	}
 %}

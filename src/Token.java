@@ -8,8 +8,8 @@ public class Token extends Symbol{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Token(int line, int column, sym tag, String value){
-		super(line);
+	public Token(int line, int column, int tag, String value){
+		super(tag, value);
 		this.line = line;
 		this.column = column;
 		this.tag = tag;
@@ -18,7 +18,7 @@ public class Token extends Symbol{
 
 	private int line;
 	private int column;
-	private sym tag;
+	private int tag;
 	private String value;
 	
 	public int getLine() {
@@ -33,10 +33,10 @@ public class Token extends Symbol{
 	public void setColumn(int column) {
 		this.column = column;
 	}
-	public String getTag() {
-		return tag.getSymbolDesc();
+	public int getTag() {
+		return tag;
 	}
-	public void setTag(sym tag) {
+	public void setTag(int tag) {
 		this.tag = tag;
 	}
 	public String getValue() {
