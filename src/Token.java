@@ -14,6 +14,10 @@ public class Token extends Symbol{
 		this.column = column;
 		this.tag = tag;
 		this.value = value;
+		//This is a workaround for dealing with line numbers
+		//of the ASTNode elements. We use the left field which
+		//is accessed by the parser to hold the line number
+		this.left = line;
 	}
 
 	private int line;

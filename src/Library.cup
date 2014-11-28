@@ -53,7 +53,7 @@ scan with {:
 	Token t = lexer.next_token();
 	if (printTokens)
 		System.out.println(t.getLine() + ":" + Utils.getTokenName(t.getTag()));
-	return t; 
+	return t;
 :};
 
 terminal STRING;
