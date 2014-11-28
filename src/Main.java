@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 
 import java_cup.runtime.Symbol;
+import IC.AST.ASTNode;
 import IC.AST.PrettyPrinter;
 import IC.AST.Program;
 import IC.AST.StatementsBlock;
@@ -31,8 +32,10 @@ public class Main {
 				System.out.println("Parsed " + args[0] + " successfully!");
 				
 				//StatementsBlock root = (StatementsBlock) parseSymbol.value;
-				//PrettyPrinter printer = new PrettyPrinter(root);
-				//printer.print();
+				PrettyPrinter printer = new PrettyPrinter(args[0]);
+				ASTNode root = (ASTNode) parseSymbol.value;
+				String output = (String) root.accept(printer);
+				System.out.println(output);
 				Token t = lexer.next_token();
 				PrintHeader();
 				while(!Utils.getTokenName(t.getTag()).equals("EOF")){
