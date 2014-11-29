@@ -129,10 +129,25 @@ non terminal StaticCall StaticCall;
 non terminal VirtualCall VirtualCall;
 non terminal Location Location;
 
+
 //////////////////////////
 // Precedence declarations
 
 //////////////
+
+precedence nonassoc ELSE;
+
+precedence right ASSIGN;
+precedence left OR;
+precedence left AND;
+precedence left EQ, NOTEQ;
+precedence left GT, ST, GTEQ, STEQ;
+precedence left PLUS, SUB;
+precedence left DIV, MUL, MOD;
+precedence right UMINUS, NOT;
+precedence left DOT, LSP , LP;
+
+
 // The grammar
 
 //Literal ::= INTEGER | NULL;
