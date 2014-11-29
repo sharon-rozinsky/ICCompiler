@@ -57,10 +57,13 @@ scan with {:
 ////////////////////////////////////////////
 // Symbol list (terminals and non-terminals)
 
-nonterminal Program Program;
+non terminal Program Program;
 non terminal ICClass ICClass;
+non terminal Statement Statement;
+non terminal StatementsBlock StatementsBlock;
+non terminal Type Type;
 
-terminal         ASSIGN;
+terminal ASSIGN;
 terminal Integer INTEGER;
 terminal STRING;
 terminal RETURN;
@@ -133,7 +136,106 @@ Program ::=
 
 ICClass ::=
 	CLASS CLASS_ID LP 
-	
 
- 
+
+Statement ::= 
+	Location:location ASSIGN Expression:expression EOL
+	{:
+		parser.log("Statement ::= Location ASSIGN Expression EOL");
+		RESULT = new Assignment(location, expression);
+	:} 
+	|
+	Call:call EOL
+	{:
+		parser.log("Statement ::= Call EOL");
+		RESULT = new CallStatement(call);
+	:}
+	|
+	RETURN:returnTok EOL
+	{:
+		parser.log("Statement ::= RETURN EOL");
+		RESULT = new Return(returnTokleft);
+	:}
+	|
+	RETURN:returnTok Expression:expression EOL
+	{:
+		parser.log("Statement ::= RETURN Expression EOL");
+		RESULT = new Return(returnTokleft, expression);
+	:}
+	|
+	IF LRP Expression:expression RRP Statement:statement
+	{:
+		parser.log("Statement ::= IF LRP Expression RRP Statement");
+		RESULT = new If(expression, statement);
+	:} 
+	|
+	IF LRP Expression:expression RRP Statement:ifStatement ELSE Statement:elseStatement
+	{:
+		parser.log("Statement ::= IF LRP Expression RRP Statement ELSE Statement");
+		RESULT = new If(expression, ifStatement, elseStatement);
+	:} 
+	|
+	WHILE RRP Expression:expression RRP Statement:statement
+	{:
+		parser.log("Statement ::= WHILE LRP Expression RRP Statement");
+		RESULT = new While(expression, statement);
+	:}
+	|
+	BREAK:breakTok EOL
+	{:	
+		parser.log("Statement ::= BREAK EOL");
+		RESULT = new Break(breakTokleft);
+	:}
+	|
+	CONTINUE:continueTok EOL
+	{:
+		parser.log("Statement ::= CONTINUE EOL");
+		RESULT = new Continue(continueTokleft);
+	:}
+	|
+	LP:lp RP
+	{:
+		parser.log("Statement ::= LP RP");
+		RESULT = new StatementsBlock(lpleft, new ArrayList<Statement>());
+	:}
+	|
+	LP:lp StatementsBlock:statementsBlock RP
+	{:
+		parser.log("Statement ::= LP StatemntsBlock RP");
+		statementsBlock.setLine(lpleft);
+		RESULT = statementsBlock;
+	:}
+	|
+	Type:type ID:id EOL
+	{:
+		parser.log("Statement ::= Type ID EOL");
+		RESULT = new LocalVariable(type, id);
+	:}
+	|
+	Type:type ID:id ASSIGN Expression:expression EOL
+	{:
+		parser.log("Statement ::= Type ID ASSIGN Expression EOL");
+		RESULT = new LocalVariable(type, id, expression);
+	:} 
+;	
+
+StatementsBlock ::=
+	Statement:statement
+	{:
+		List<Statement> statements = new ArrayList<Statement>();
+		statements.add(statement);
+		StatementsBlock block = new StatementsBlock(0 /* retrieved later */, statements);
+		
+		parser.log("StatementsBlock ::= Statement");
+		RESULT = block;
+	:}
+	|
+	StatementsBlock:statementsBlock Statement:statement
+	{:
+		statementsBlock.getStatements().add(statement);
+		
+		parser.log("StatementsBlock ::= StatementsBlock Statement");
+		RESULT = statementsBlock;
+	:}
+;
 			
