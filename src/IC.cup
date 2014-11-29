@@ -97,18 +97,17 @@ terminal OR;
 terminal COMMA;
 terminal DOT;
 terminal NOT;
+terminal UMINUS;
 terminal LP;
 terminal RP;
 terminal LRP;
 terminal RRP;
 terminal LSP;
 terminal RSP;   
-
 terminal String CLASS_ID;
 terminal String ID;
-// Precedence terminals
-terminal UMINUS;
 
+// Precedence terminals
 non terminal Program Program;
 non terminal ICClass ICClass;
 non terminal List<ICClass> ICClassList;
@@ -136,31 +135,29 @@ non terminal Location Location;
 //////////////
 
 precedence nonassoc ELSE;
-
 precedence right ASSIGN;
+precedence right Program;
 precedence left OR;
 precedence left AND;
-precedence left EQ, NOTEQ;
+precedence left EQEQ, NOTEQ;
 precedence left GT, ST, GTEQ, STEQ;
 precedence left PLUS, SUB;
 precedence left DIV, MUL, MOD;
 precedence right UMINUS, NOT;
-precedence left DOT, LSP , LP;
+precedence left DOT, LSP , LRP, LP;
 
 
 // The grammar
 
-//Literal ::= INTEGER | NULL;
-
 Program ::=
 	ICClass:icClass
 	{: 
-		RESULT = new Program(class);
+		RESULT = new Program(icClass);
 	:}
 	| 
 	Program:program ICClass:icClass
 	{:
-		program.add(class); RESULT = program;
+		program.getClasses().add(icClass); RESULT = program;
 	:}
 	|
 	{:
@@ -419,23 +416,6 @@ StatementsBlock ::=
 	{:
 		stmtBlk.getStatements().add(stmt);
 		RESULT = stmtBlk;
-	:}
-;
-
-Location ::=
-	ID:id
-	{:
-		RESULT = new VariableLocation(idleft, id);
-	:}
-	|
-	Expression:expr DOT ID:id
-	{:
-		RESULT = new VariableLocation(idleft, expr, id);
-	:}
-	|
-	Expression:expr1 LSP Expression:expr2 RSP
-	{:
-		RESULT = new ArrayLocation(expr1, expr2);
 	:}
 ;
 
