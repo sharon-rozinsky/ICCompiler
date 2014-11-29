@@ -45,7 +45,7 @@ ID_SUFFIX = 	({ALPHA_NUMERIC}|_)*
 
 Class_ID =		{UPPERCASE}{ID_SUFFIX}
 ID 		= 		{LOWERCASE}{ID_SUFFIX}
-INTEGER = 		0|[1-9][0-9]*
+INTEGER = 		[0-9]+
 
 /* 
         NOTE: accepted range here is [-2147483648,2147483648]. 
