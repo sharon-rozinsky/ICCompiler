@@ -25,30 +25,53 @@ import IC.Error.*;
 	}
 %}
 
-%eofval{
-  return token(sym.EOF, "EOF");
-%eofval}
-
-LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r\n]
-WhiteSpace     = {LineTerminator} | [ \t\f]
+WHITESPACE=[ \t\n\r]
 
 /* comments */
-Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+ONELINECOMMENTSIGN ="//"
+MULTIPLELINECOMMENTSIGN =	"/*"
 
-TraditionalComment   	= "/*" [^*] ~"*/" | "/*" "*"+ "/"
+QUOTE=\"
+PRINTABLE_STRING = 		[\040\041\043-\133\135-\176]
+SEQUENCE_STRING = 		\\[nt\"\\]
+VALID_STRING_LETTER = 	{PRINTABLE_STRING}|{SEQUENCE_STRING}
 
-// Comment can be the last line of the file, without line terminator.
+UPPERCASE =		[A-Z]
+LOWERCASE =		[a-z]
+LETTER =		{UPPERCASE}|{LOWERCASE}
+DIGIT = 		[0-9]
+ALPHA_NUMERIC = {DIGIT}|{LETTER}
+ID_SUFFIX = 	({ALPHA_NUMERIC}|_)*
 
-EndOfLineComment     	= "//" {InputCharacter}* {LineTerminator}?
-DocumentationComment 	= "/**" {CommentContent} "*"+ "/"
-CommentContent       	= ( [^*] | \*+ [^/*] )*
-Class_ID				= [A-Z][a-z|0-9]*
-ID 						= [a-z] ([A-Z|a-z|0-9])*
-DecIntegerLiteral 		= [0-9]+
+CLASS_ID =		{UPPERCASE}{ID_SUFFIX}
+ID 		= 		{LOWERCASE}{ID_SUFFIX}
+INTEGER = 		0|[1-9][0-9]*
 
+/* 
+        NOTE: accepted range here is [-2147483648,2147483648]. 
+        Min/Max.INT will be handled within the parser.
+        Single line Comment can be the last line of the file, without line terminator.
+*/
+OUT_OF_RANGE_INTEGER=
+        [1-9][0-9]{10}[0-9]*|
+        [3-9][0-9]{9}[0-9]*|
+        2[2-9][0-9]{8}[0-9]*|
+        21[5-8][0-9]{7}[0-9]*|
+        214[8-9][0-9]{6}[0-9]*|
+        2147[5-9][0-9]{5}[0-9]*|
+        21474[9-9][0-9]{4}[0-9]*|
+        214748[4-9][0-9]{3}[0-9]*|
+        2147483[7-9][0-9]{2}[0-9]*|
+        21474836[5-9][0-9]{1}[0-9]*|
+        214748364[9-9][0-9]*
+        
+LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 
 %state STRING
+%state SINGLELINECOMMENT
+%state MULTILINECOMMENT
+%state MULTILINECOMMENTASTERISK
+
 
 %%
  /* keywords */
@@ -105,31 +128,60 @@ DecIntegerLiteral 		= [0-9]+
 	
   	/* identifiers */ 
   	{ID}         				{ return token(sym.ID, yytext()); }
- 
-  	{Class_ID}      			{ return token(sym.CLASS_ID, yytext()); }
-  
+  	{Class_ID}      			{ return token(sym.CLASS_ID, yytext()); } 	
+  	{LITERAL_ERROR}     		{ throw new LexicalError(lineNumber(), "bad format token: " + yytext());}
+    {OUT_OF_RANGE_INTEGER} 		{ throw new LexicalError(lineNumber(), "number is out of valid range: " + yytext()); }
+  	
   	/* literals */
-  	{DecIntegerLiteral}         { return token(sym.INTEGER, yytext()); }
-  	 \"                         { string.setLength(0);strColumn = yycolumn; string.append('\"'); yybegin(STRING); }
-
+  	{INTEGER}         			{ return token(sym.INTEGER, yytext()); }
+  	{QUOTE}                     { 	
+  									string.setLength(0);
+  									strColumn = yycolumn; 
+  									string.append('\"'); 
+  									yybegin(STRING); 
+  								}
   	/* comments */
-  	{Comment}                   { } // *ignore*
+  	{ONELINECOMMENTSIGN}    	{ yybegin(SINGLELINECOMMENT);   }
+    {MULTIPLELINECOMMENTSIGN} 	{ yybegin(MULTILINECOMMENT);    }
  
   	/* whitespace */
   	{WhiteSpace}                { }
 		
 }
 
-<STRING> {
-  \"                             { yybegin(YYINITIAL); return token(sym.STRING, string.append('\"').toString(),strColumn);} 
-  [^\n\r\"\\]+                   { string.append( yytext() ); }
-  \\t                            { string.append("\\t"); }
-  \\n                            { string.append("\\n"); }
+<SINGLELINECOMMENT> {
+    [\n]            			{ yybegin(YYINITIAL); }
+    [^\n]           			{ }
+}
 
-  \\r                            { string.append("\\r"); }
-  \\\"                           { string.append('\"'); }
+<MULTILINECOMMENT> {
+    [*]             			{ yybegin(MULTILINECOMMENTASTERISK); }
+    [^*]            			{ }
+    <<EOF>>         			{ throw new LexicalError(lineNumber(), "unclosed comment"); }
+}
+
+<MULTILINECOMMENTASTERISK> {
+	[*]             			{ }
+    [/]            				{ yybegin(YYINITIAL); }
+    [^/*]           			{ yybegin(MULTILINECOMMENT); }
+    <<EOF>>         			{ throw new LexicalError(lineNumber(), "unclosed comment"); }
+}
+
+<STRING> {
+ 	{QUOTE}             	{ 
+								yybegin(YYINITIAL); 
+							  	return token(sym.STRING, string.append('\"').toString(),strColumn);
+						 	} 
+  	{VALID_STRING_LETTER}+  { string.append(yytext()); }       
+	<<EOF>>         		{ throw new LexicalError(lineNumber(), "unclosed string literal"); }
+    \r                      { throw new LexicalError(lineNumber(), "illegal character in string literal '\\r'"); }
+    \n                      { throw new LexicalError(lineNumber(), "illegal character in string literal '\\n'"); }  
+    \t                      { throw new LexicalError(lineNumber(), "illegal character in string literal '\\t'"); }  
+    .                       { throw new LexicalError(lineNumber(), "illegal character in string literal '" + yytext() + "'"); }  
 
 }
 
+<<EOF>>	{ return token(sym.EOF, "EOF");}
+
 /* error fallback */
-[^]                              { throw new LexicalError("Illegal character: " + yytext()); }
+[^]                          { throw new LexicalError("Illegal character: " + yytext()); }
