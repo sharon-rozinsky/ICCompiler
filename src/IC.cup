@@ -110,7 +110,7 @@ terminal String ID;
 // Precedence terminals
 non terminal Program Program;
 non terminal ICClass ICClass;
-non terminal List<ICClass> ICClassList;
+non terminal List<ICClass> ProgramClassList;
 non terminal FieldsAndMethods FieldsAndMethods;
 non terminal List<Field> Fields;
 non terminal List<Field> FieldsNoEOL;
@@ -136,7 +136,6 @@ non terminal Location Location;
 
 precedence nonassoc ELSE;
 precedence right ASSIGN;
-precedence right Program;
 precedence left OR;
 precedence left AND;
 precedence left EQEQ, NOTEQ;
@@ -150,20 +149,29 @@ precedence left DOT, LSP , LRP, LP;
 // The grammar
 
 Program ::=
-	ICClass:icClass
-	{: 
-		RESULT = new Program(icClass);
-	:}
-	| 
-	Program:program ICClass:icClass
+	ProgramClassList:programClassesList
 	{:
-		program.getClasses().add(icClass); RESULT = program;
+		RESULT = new program(programClassList);
 	:}
 	|
 	{:
 		RESULT = new Program(new ArrayList<ICClass>())
 	:}   
 ;
+
+ProgramClassList ::=
+	ICClass:ICclass
+	{:
+		List<ICClass> programClassList = new ArrayList<ICClass>();
+		programClassList.add(icClass);
+		RESULT = programClassList;
+	:}
+	|
+	ProgramClassList:programClassList ICClass:ICclass
+	{:
+		programClassList.add(ICclass); RESULT = programClassList;
+	:}
+;		
 
 ICClass ::=
 	CLASS CLASS_ID:classId LP RP
