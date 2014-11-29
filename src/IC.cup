@@ -54,28 +54,8 @@ scan with {:
 		System.out.println(t.getLine() + ":" + Utils.getTokenName(t.getTag()));
 	return t;
 :};
-////////////////////////////////////////////
-// Symbol list (terminals and non-terminals)
 
-non terminal Program Program;
-non terminal ICClass ICClass;
-non terminal List<ICClass> ICClassList;
-non terminal FieldsAndMethods FieldsAndMethods;
-non terminal List<Field> Fields;
-non terminal List<Field> FieldsNoEOL;
-non terminal Field Field;
-non terminal Method Method;
-non terminal List<Formal> Formals;
-non terminal Formal Formal;
-non terminal Statement Statement;
-non terminal StatementsBlock StatementsBlock;
-non terminal Type Type;
-non terminal List<Expression> Expressions;
-non terminal Expression Expression;
-non terminal Call Call;
-non terminal StaticCall StaticCall;
-non terminal VirtualCall VirtualCall;
-non terminal Location Location;
+// Symbol list (terminals and non-terminals)
 
 terminal ASSIGN;
 terminal Integer INTEGER;
@@ -126,6 +106,28 @@ terminal RSP;
 
 terminal String CLASS_ID;
 terminal String ID;
+// Precedence terminals
+terminal UMINUS;
+
+non terminal Program Program;
+non terminal ICClass ICClass;
+non terminal List<ICClass> ICClassList;
+non terminal FieldsAndMethods FieldsAndMethods;
+non terminal List<Field> Fields;
+non terminal List<Field> FieldsNoEOL;
+non terminal Field Field;
+non terminal Method Method;
+non terminal List<Formal> Formals;
+non terminal Formal Formal;
+non terminal Statement Statement;
+non terminal StatementsBlock StatementsBlock;
+non terminal Type Type;
+non terminal List<Expression> Expressions;
+non terminal Expression Expression;
+non terminal Call Call;
+non terminal StaticCall StaticCall;
+non terminal VirtualCall VirtualCall;
+non terminal Location Location;
 
 //////////////////////////
 // Precedence declarations
@@ -136,12 +138,12 @@ terminal String ID;
 //Literal ::= INTEGER | NULL;
 
 Program ::=
-	ICClass:class
+	ICClass:icClass
 	{: 
 		RESULT = new Program(class);
 	:}
 	| 
-	Program:program ICClass:class
+	Program:program ICClass:icClass
 	{:
 		program.add(class); RESULT = program;
 	:}
@@ -230,6 +232,7 @@ Field ::=
 		RESULT = new Field(type, id);
 	:} 
 ;
+
 
 Method ::= 
 	Type:returnType ID:id LRP RSP LP StatementsBlock:stmtBlk RP
@@ -404,6 +407,23 @@ StatementsBlock ::=
 	:}
 ;
 
+Location ::=
+	ID:id
+	{:
+		RESULT = new VariableLocation(idleft, id);
+	:}
+	|
+	Expression:expr DOT ID:id
+	{:
+		RESULT = new VariableLocation(idleft, expr, id);
+	:}
+	|
+	Expression:expr1 LSP Expression:expr2 RSP
+	{:
+		RESULT = new ArrayLocation(expr1, expr2);
+	:}
+;
+
 Expression ::= 
 	Location:location
 	{:
@@ -440,17 +460,17 @@ Expression ::=
 		RESULT = new MathBinaryOp(exp1,BinaryOps.PLUS,exp2);
 	:}
 	|
-	Expression:exp1 MINUS Expression:exp2
+	Expression:exp1 SUB Expression:exp2
 	{:
 		RESULT = new MathBinaryOp(exp1,BinaryOps.MINUS,exp2);
 	:}
 	|
-	Expression:exp1 MULTIPLY Expression:exp2
+	Expression:exp1 MUL Expression:exp2
 	{:
 		RESULT = new MathBinaryOp(exp1,BinaryOps.MULTIPLY,exp2);
 	:}
 	|
-	Expression:exp1 DIVIDE Expression:exp2
+	Expression:exp1 DIV Expression:exp2
 	{:
 		RESULT = new MathBinaryOp(exp1,BinaryOps.DIVIDE,exp2);
 	:}
@@ -500,7 +520,7 @@ Expression ::=
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.NEQUAL,exp2);
 	:}
 	|	
-	MINUS Expression:exp 
+	SUB Expression:exp 
 	{:
 		RESULT = new MathUnaryOp(UnaryOps.UMINUS, exp);
 	:} %prec UMINUS

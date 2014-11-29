@@ -5,4 +5,4 @@ jflex --nobak /users/tomsivan/Documents/ICCompiler/src/spec.lex
 
 cmd for Cup:
 
-java -jar /users/tomsivan/Documents/ICCompiler/java-cup-bin-11b-2014902/java-cup-11b.jar /users/tomsivan/Documents/ICCompiler/src/IC.cup
+java -jar /users/tomsivan/Documents/ICCompiler/java-cup-bin-11b-20140902/java-cup-11b.jar /users/tomsivan/Documents/ICCompiler/src/IC.cup
