@@ -25,7 +25,7 @@ import IC.Error.*;
 	}
 %}
 
-WHITESPACE=[ \t\n\r]
+WhiteSpace=[ \t\n\r]
 
 /* comments */
 ONELINECOMMENTSIGN ="//"
@@ -43,7 +43,7 @@ DIGIT = 		[0-9]
 ALPHA_NUMERIC = {DIGIT}|{LETTER}
 ID_SUFFIX = 	({ALPHA_NUMERIC}|_)*
 
-CLASS_ID =		{UPPERCASE}{ID_SUFFIX}
+Class_ID =		{UPPERCASE}{ID_SUFFIX}
 ID 		= 		{LOWERCASE}{ID_SUFFIX}
 INTEGER = 		0|[1-9][0-9]*
 
