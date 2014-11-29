@@ -815,11 +815,11 @@ class Lexer implements java_cup.runtime.Scanner {
           }
         case 85: break;
         case 25: 
-          { throw new LexicalError(lineNumber(), "illegal character in string literal '" + yytext() + "'");
+          { throw new LexicalError("Illegal character in string literal '" + yytext() + "'");
           }
         case 86: break;
         case 26: 
-          { throw new LexicalError(lineNumber(), "illegal character in string literal '\\t'");
+          { throw new LexicalError("Illegal character in string literal '\\t'");
           }
         case 87: break;
         case 27: 
@@ -832,11 +832,11 @@ class Lexer implements java_cup.runtime.Scanner {
           }
         case 89: break;
         case 29: 
-          { throw new LexicalError(lineNumber(), "illegal character in string literal '\\n'");
+          { throw new LexicalError("Illegal character in string literal '\\n'");
           }
         case 90: break;
         case 30: 
-          { throw new LexicalError(lineNumber(), "illegal character in string literal '\\r'");
+          { throw new LexicalError("Illegal character in string literal '\\r'");
           }
         case 91: break;
         case 31: 
@@ -856,7 +856,7 @@ class Lexer implements java_cup.runtime.Scanner {
           }
         case 95: break;
         case 35: 
-          { throw new LexicalError(lineNumber(), "bad format token: " + yytext());
+          { throw new LexicalError("bad format token: " + yytext());
           }
         case 96: break;
         case 36: 
@@ -960,7 +960,7 @@ class Lexer implements java_cup.runtime.Scanner {
           }
         case 121: break;
         case 61: 
-          { throw new LexicalError(lineNumber(), "number is out of valid range: " + yytext());
+          { throw new LexicalError("number is out of valid range: " + yytext());
           }
         case 122: break;
         default: 
@@ -969,15 +969,15 @@ class Lexer implements java_cup.runtime.Scanner {
             zzDoEOF();
             switch (zzLexicalState) {
             case STRING: {
-              throw new LexicalError(lineNumber(), "unclosed string literal");
+              throw new LexicalError("Ununclosed string literal");
             }
             case 158: break;
             case MULTILINECOMMENT: {
-              throw new LexicalError(lineNumber(), "unclosed comment");
+              throw new LexicalError("Unclosed comment");
             }
             case 159: break;
             case MULTILINECOMMENTASTERISK: {
-              throw new LexicalError(lineNumber(), "unclosed comment");
+              throw new LexicalError("Unclosed comment");
             }
             case 160: break;
             default:

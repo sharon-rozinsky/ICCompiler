@@ -129,8 +129,8 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
   	/* identifiers */ 
   	{ID}         				{ return token(sym.ID, yytext()); }
   	{Class_ID}      			{ return token(sym.CLASS_ID, yytext()); } 	
-  	{LITERAL_ERROR}     		{ throw new LexicalError(lineNumber(), "bad format token: " + yytext());}
-    {OUT_OF_RANGE_INTEGER} 		{ throw new LexicalError(lineNumber(), "number is out of valid range: " + yytext()); }
+  	{LITERAL_ERROR}     		{ throw new LexicalError("bad format token: " + yytext());}
+    {OUT_OF_RANGE_INTEGER} 		{ throw new LexicalError("number is out of valid range: " + yytext()); }
   	
   	/* literals */
   	{INTEGER}         			{ return token(sym.INTEGER, yytext()); }
@@ -157,14 +157,14 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 <MULTILINECOMMENT> {
     [*]             			{ yybegin(MULTILINECOMMENTASTERISK); }
     [^*]            			{ }
-    <<EOF>>         			{ throw new LexicalError(lineNumber(), "unclosed comment"); }
+    <<EOF>>         			{ throw new LexicalError("Unclosed comment"); }
 }
 
 <MULTILINECOMMENTASTERISK> {
 	[*]             			{ }
     [/]            				{ yybegin(YYINITIAL); }
     [^/*]           			{ yybegin(MULTILINECOMMENT); }
-    <<EOF>>         			{ throw new LexicalError(lineNumber(), "unclosed comment"); }
+    <<EOF>>         			{ throw new LexicalError("Unclosed comment"); }
 }
 
 <STRING> {
@@ -173,11 +173,11 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 							  	return token(sym.STRING, string.append('\"').toString(),strColumn);
 						 	} 
   	{VALID_STRING_LETTER}+  { string.append(yytext()); }       
-	<<EOF>>         		{ throw new LexicalError(lineNumber(), "unclosed string literal"); }
-    \r                      { throw new LexicalError(lineNumber(), "illegal character in string literal '\\r'"); }
-    \n                      { throw new LexicalError(lineNumber(), "illegal character in string literal '\\n'"); }  
-    \t                      { throw new LexicalError(lineNumber(), "illegal character in string literal '\\t'"); }  
-    .                       { throw new LexicalError(lineNumber(), "illegal character in string literal '" + yytext() + "'"); }  
+	<<EOF>>         		{ throw new LexicalError("Ununclosed string literal"); }
+    \r                      { throw new LexicalError("Illegal character in string literal '\\r'"); }
+    \n                      { throw new LexicalError("Illegal character in string literal '\\n'"); }  
+    \t                      { throw new LexicalError("Illegal character in string literal '\\t'"); }  
+    .                       { throw new LexicalError("Illegal character in string literal '" + yytext() + "'"); }  
 
 }
 
