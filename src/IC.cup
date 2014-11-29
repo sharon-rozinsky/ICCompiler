@@ -57,8 +57,8 @@ scan with {:
 
 // Symbol list (terminals and non-terminals)
 
-terminal Integer INTEGER;
-terminal STRING;
+terminal String INTEGER;
+terminal String STRING;
 terminal RETURN;
 terminal CLASS;
 terminal EXTENDS;
@@ -149,13 +149,9 @@ precedence left DOT, LSP , LRP;
 
 Program ::=
 	ProgramClassList:programClassList
-	{:
-		RESULT = new Program(programClassList);
-	:}
+	{:RESULT = new Program(programClassList);:}
 	|
-	{:
-		RESULT = new Program(new ArrayList<ICClass>());
-	:}   
+	{:RESULT = new Program(new ArrayList<ICClass>());:}   
 ;
 
 ProgramClassList ::=
@@ -167,31 +163,21 @@ ProgramClassList ::=
 	:}
 	|
 	ProgramClassList:programClassList ICClass:ICclass
-	{:
-		programClassList.add(ICclass); RESULT = programClassList;
-	:}
+	{:programClassList.add(ICclass); RESULT = programClassList;:}
 ;		
 
 ICClass ::=
 	CLASS CLASS_ID:classId LP RP
-	{:
-		RESULT = new ICClass(classIdleft, classId, new ArrayList<Field>(), new ArrayList<Method>());
-	:}
+	{:RESULT = new ICClass(classIdleft, classId, new ArrayList<Field>(), new ArrayList<Method>());:}
 	| 
 	CLASS CLASS_ID:classId LP FieldsAndMethods:fnm RP
-	{:
-		RESULT = new ICClass(classIdleft, classId, fnm.getFields(), fnm.getMethods());
-	:}
+	{:RESULT = new ICClass(classIdleft, classId, fnm.getFields(), fnm.getMethods());:}
 	|
 	CLASS CLASS_ID:classId EXTENDS CLASS_ID:super_classid LP RP 
-	{:
-		RESULT = new ICClass(classIdleft, classId, super_classid, new ArrayList<Field>(), new ArrayList<Method>());
-	:}
+	{:RESULT = new ICClass(classIdleft, classId, super_classid, new ArrayList<Field>(), new ArrayList<Method>());:}
 	|
 	CLASS CLASS_ID:classId EXTENDS CLASS_ID:super_classid LP FieldsAndMethods:fnm RP
-	{:
-		RESULT = new ICClass(classIdleft, classId, super_classid,  fnm.getFields(), fnm.getMethods());
-	:}
+	{:RESULT = new ICClass(classIdleft, classId, super_classid,  fnm.getFields(), fnm.getMethods());:}
 ;
 
 FieldsAndMethods ::=
@@ -224,9 +210,7 @@ FieldsAndMethods ::=
 
 Fields ::= 
 	FieldsNoEOL:fields EOL 
-	{:
-		RESULT = fields;	
-	:}
+	{:RESULT = fields;	:}
 ;
 
 FieldsNoEOL ::=
@@ -247,32 +231,22 @@ FieldsNoEOL ::=
 
 Field ::=
 	Type:type ID:id
-	{:
-		RESULT = new Field(type, id);
-	:} 
+	{:RESULT = new Field(type, id);:} 
 ;
 
 
 Method ::= 
 	Type:returnType ID:id LRP RSP LP StatementsBlock:stmtBlk RP
-	{:
-		RESULT = new VirtualMethod(returnType, id, new ArrayList<Formal>(), stmtBlk.getStatements());
-	:} 
+	{:RESULT = new VirtualMethod(returnType, id, new ArrayList<Formal>(), stmtBlk.getStatements());:} 
 	|
 	STATIC Type:returnType ID:id LRP RRP LP StatementsBlock:stmtBlk RP
-	{:
-		RESULT = new StaticMethod(returnType, id, new ArrayList<Formal>(), stmtBlk.getStatements());
-	:} 
+	{:RESULT = new StaticMethod(returnType, id, new ArrayList<Formal>(), stmtBlk.getStatements());:} 
 	|
 	Type:returnType ID:id LRP Formals:formals RRP LP StatementsBlock:stmtBlk RP
-	{:
-		RESULT = new VirtualMethod(returnType, id, formals, stmtBlk.getStatements());
-	:} 
+	{:RESULT = new VirtualMethod(returnType, id, formals, stmtBlk.getStatements());:} 
 	|
 	STATIC Type:returnType ID:id LRP Formals:formals RRP LP StatementsBlock:stmtBlk RP
-	{:
-		RESULT = new StaticMethod(returnType, id, formals,stmtBlk.getStatements());
-	:} 
+	{:RESULT = new StaticMethod(returnType, id, formals,stmtBlk.getStatements());:} 
 	|
 	VOID ID:id LRP RRP LP StatementsBlock:stmtBlk RP
 	{:
@@ -299,24 +273,16 @@ Method ::=
 	:} 
 	|
 	Type:returnType ID:id LRP RRP LP RP
-	{:
-		RESULT = new VirtualMethod(returnType, id, new ArrayList<Formal>(), new ArrayList<Statement>());
-	:} 
+	{:RESULT = new VirtualMethod(returnType, id, new ArrayList<Formal>(), new ArrayList<Statement>());:} 
 	|
 	STATIC Type:returnType ID:id LRP RRP LP RP
-	{:
-		RESULT = new StaticMethod(returnType, id, new ArrayList<Formal>(), new ArrayList<Statement>());
-	:} 
+	{:RESULT = new StaticMethod(returnType, id, new ArrayList<Formal>(), new ArrayList<Statement>());:} 
 	|
 	Type:returnType ID:id LRP Formals:formals RRP LP RP
-	{:
-		RESULT = new VirtualMethod(returnType, id, formals, new ArrayList<Statement>());
-	:} 
+	{:RESULT = new VirtualMethod(returnType, id, formals, new ArrayList<Statement>());:} 
 	|
 	STATIC Type:returnType ID:id LRP Formals:formals RRP LP RP
-	{:
-		RESULT = new StaticMethod(returnType, id, formals, new ArrayList<Statement>());
-	:} 
+	{:RESULT = new StaticMethod(returnType, id, formals, new ArrayList<Statement>());:} 
 	|
 	VOID ID:id LRP RRP LP RP
 	{:
@@ -344,54 +310,34 @@ Method ::=
 ;
 Statement ::= 
 	Location:location EQ Expression:expr EOL
-	{:
-		RESULT = new Assignment(location, expr);
-	:} 
+	{:RESULT = new Assignment(location, expr);:} 
 	|
 	Call:call EOL
-	{:
-		RESULT = new CallStatement(call);
-	:}
+	{:RESULT = new CallStatement(call);:}
 	|
 	RETURN:returnTok EOL
-	{:
-		RESULT = new Return(returnTokleft);
-	:}
+	{:RESULT = new Return(returnTokleft);:}
 	|
 	RETURN:returnTok Expression:expr EOL
-	{:
-		RESULT = new Return(returnTokleft, expr);
-	:}
+	{:RESULT = new Return(returnTokleft, expr);:}
 	|
 	IF LRP Expression:expr RRP Statement:stmt
-	{:
-		RESULT = new If(expr, stmt);
-	:} 
+	{:RESULT = new If(expr, stmt);:} 
 	|
 	IF LRP Expression:expr RRP Statement:ifStmt ELSE Statement:elseStmt
-	{:
-		RESULT = new If(expr, ifStmt, elseStmt);
-	:} 
+	{:RESULT = new If(expr, ifStmt, elseStmt);:} 
 	|
-	WHILE RRP Expression:expr RRP Statement:stmt
-	{:
-		RESULT = new While(expr, stmt);
-	:}
+	WHILE LRP Expression:expr RRP Statement:stmt
+	{:RESULT = new While(expr, stmt);:}
 	|
 	BREAK:breakTok EOL
-	{:	
-		RESULT = new Break(breakTokleft);
-	:}
+	{:	RESULT = new Break(breakTokleft);:}
 	|
 	CONTINUE:continueTok EOL
-	{:
-		RESULT = new Continue(continueTokleft);
-	:}
+	{:RESULT = new Continue(continueTokleft);:}
 	|
 	LP:lp RP
-	{:
-		RESULT = new StatementsBlock(lpleft, new ArrayList<Statement>());
-	:}
+	{:RESULT = new StatementsBlock(lpleft, new ArrayList<Statement>());:}
 	|
 	LP:lp StatementsBlock:stmtsBlk RP
 	{:
@@ -400,14 +346,10 @@ Statement ::=
 	:}
 	|
 	Type:type ID:id EOL
-	{:
-		RESULT = new LocalVariable(type, id);
-	:}
+	{:RESULT = new LocalVariable(type, id);:}
 	|
 	Type:type ID:id EQ Expression:expression EOL
-	{:
-		RESULT = new LocalVariable(type, id, expression);
-	:} 
+	{:RESULT = new LocalVariable(type, id, expression);:} 
 ;	
 
 StatementsBlock ::=
@@ -428,24 +370,16 @@ StatementsBlock ::=
 
 Type ::= 
 	INT:intToken 
-	{:
-		RESULT = new PrimitiveType(intTokenleft, DataTypes.INT);
-	:}
+	{:RESULT = new PrimitiveType(intTokenleft, DataTypes.INT);:}
 	| 
 	BOOLEAN:boolToken
-	{:
-		RESULT = new PrimitiveType(boolTokenleft, DataTypes.BOOLEAN);
-	:} 
+	{:RESULT = new PrimitiveType(boolTokenleft, DataTypes.BOOLEAN);:} 
 	| 
 	STR:strToken
-	{:
-		RESULT = new PrimitiveType(strTokenleft, DataTypes.STRING);
-	:}  
+	{:RESULT = new PrimitiveType(strTokenleft, DataTypes.STRING);:}  
 	| 
 	CLASS_ID:classID
-	{:
-		RESULT = new UserType(classIDleft, classID);
-	:}
+	{:RESULT = new UserType(classIDleft, classID);:}
 	|
 	Type:type LSP RSP
 	{:
@@ -456,99 +390,61 @@ Type ::=
 
 Expression ::= 
 	Location:location
-	{:
-		RESULT = location;
-	:}
+	{:RESULT = location;:}
 	| 
 	Call:call
-	{:
-		RESULT = call;
-	:}
+	{:RESULT = call;:}
 	|
 	THIS:thisToken
-	{:
-		RESULT = new This(thisTokenleft);
-	:}
+	{:RESULT = new This(thisTokenleft);:}
 	|
 	NEW CLASS_ID:classId LRP RRP
-	{:
-		RESULT = new NewClass(classIdleft, classId);
-	:}
+	{:RESULT = new NewClass(classIdleft, classId);:}
 	|
 	NEW Type:type LSP Expression:exp RSP
-	{:
-		RESULT = new NewArray(type, exp);
-	:}
+	{:RESULT = new NewArray(type, exp);:}
 	|
 	Expression:exp DOT LENGTH
-	{:
-		RESULT = new Length(exp);
-	:}
+	{:RESULT = new Length(exp);:}
 	|
 	Expression:exp1 PLUS Expression:exp2
-	{:
-		RESULT = new MathBinaryOp(exp1,BinaryOps.PLUS,exp2);
-	:}
+	{:RESULT = new MathBinaryOp(exp1,BinaryOps.PLUS,exp2);:}
 	|
 	Expression:exp1 SUB Expression:exp2
-	{:
-		RESULT = new MathBinaryOp(exp1,BinaryOps.MINUS,exp2);
-	:}
+	{:RESULT = new MathBinaryOp(exp1,BinaryOps.MINUS,exp2);:}
 	|
 	Expression:exp1 MUL Expression:exp2
-	{:
-		RESULT = new MathBinaryOp(exp1,BinaryOps.MULTIPLY,exp2);
-	:}
+	{:RESULT = new MathBinaryOp(exp1,BinaryOps.MULTIPLY,exp2);:}
 	|
 	Expression:exp1 DIV Expression:exp2
-	{:
-		RESULT = new MathBinaryOp(exp1,BinaryOps.DIVIDE,exp2);
-	:}
+	{:RESULT = new MathBinaryOp(exp1,BinaryOps.DIVIDE,exp2);:}
 	|
 	Expression:exp1 MOD Expression:exp2
-	{:
-		RESULT = new MathBinaryOp(exp1,BinaryOps.MOD,exp2);
-	:}
+	{:RESULT = new MathBinaryOp(exp1,BinaryOps.MOD,exp2);:}
 	|
 	Expression:exp1 AND Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LAND,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.LAND,exp2);:}
 	|
 	Expression:exp1 OR Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LOR,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.LOR,exp2);:}
 	|
 	Expression:exp1 ST Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LT,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.LT,exp2);:}
 	|	
 	Expression:exp1 STEQ Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LTE,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.LTE,exp2);:}
 	|
 	Expression:exp1 GT Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.GT,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.GT,exp2);:}
 	|
 	Expression:exp1 GTEQ Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.GTE,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.GTE,exp2);:}
 	|
 	Expression:exp1 EQEQ Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.EQUAL,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.EQUAL,exp2);:}
 	|		
 	Expression:exp1 NOTEQ Expression:exp2
-	{:
-		RESULT = new LogicalBinaryOp(exp1,BinaryOps.NEQUAL,exp2);
-	:}
+	{:RESULT = new LogicalBinaryOp(exp1,BinaryOps.NEQUAL,exp2);:}
 	|	
 	SUB Expression:exp 
 	{:
@@ -556,51 +452,33 @@ Expression ::=
 	:} %prec UMINUS
 	|
 	NOT Expression:exp
-	{:
-		RESULT = new LogicalUnaryOp(UnaryOps.LNEG, exp);
-	:}
+	{:RESULT = new LogicalUnaryOp(UnaryOps.LNEG, exp);:}
 	|
 	TRUE:trueToken
-	{:
-		RESULT = new Literal(trueTokenleft, LiteralTypes.TRUE);
-	:}
+	{:RESULT = new Literal(trueTokenleft, LiteralTypes.TRUE);:}
 	|
 	FALSE:falseToken
-	{:
-		RESULT = new Literal(falseTokenleft, LiteralTypes.FALSE);
-	:}
+	{:RESULT = new Literal(falseTokenleft, LiteralTypes.FALSE);:}
 	|
 	NULL:nullToken
-	{:
-		RESULT = new Literal(nullTokenleft, LiteralTypes.NULL);
-	:}
+	{:RESULT = new Literal(nullTokenleft, LiteralTypes.NULL);:}
 	|
 	STRING:str
-	{:
-		RESULT = new Literal(strleft, LiteralTypes.STRING, str);
-	:}
+	{:RESULT = new Literal(strleft, LiteralTypes.STRING, str);:}
 	|
 	INTEGER:integer
-	{:
-		RESULT = new Literal(integerleft, LiteralTypes.INTEGER, integer);
-	:}
+	{:RESULT = new Literal(integerleft, LiteralTypes.INTEGER, integer);:}
 	|
 	LRP Expression:exp RRP
-	{:
-		RESULT = new ExpressionBlock(exp);
-	:}
+	{:RESULT = new ExpressionBlock(exp);:}
 ;
 
 Call ::=
 	StaticCall:staticCall
-	{:
-		RESULT = staticCall;
-	:}
+	{:RESULT = staticCall;:}
 	|
 	VirtualCall:virtualCall
-	{:
-		RESULT = virtualCall;
-	:}
+	{:RESULT = virtualCall;:}
 ;
 
 Expressions ::=
@@ -620,53 +498,35 @@ Expressions ::=
 
 StaticCall ::=
 	CLASS_ID:classId DOT ID:id LRP RRP
-	{:
-		RESULT = new StaticCall(classIdleft, classId, id, new ArrayList<Expression>());
-	:}
+	{:RESULT = new StaticCall(classIdleft, classId, id, new ArrayList<Expression>());:}
 	|
 	CLASS_ID:classId DOT ID:id LRP Expressions:expressions RRP
-	{:
-		RESULT = new StaticCall(classIdleft, classId, id, expressions);
-	:}
+	{:RESULT = new StaticCall(classIdleft, classId, id, expressions);:}
 ;
 
 VirtualCall ::=
 	ID:id LRP RRP
-	{:
-		RESULT = new VirtualCall(idleft, id, new ArrayList<Expression>());
-	:}
+	{:RESULT = new VirtualCall(idleft, id, new ArrayList<Expression>());:}
 	|
 	Expression:expression DOT ID:id LRP RRP
-	{:
-		RESULT = new VirtualCall(idleft, expression, id, new ArrayList<Expression>());
-	:}
+	{:RESULT = new VirtualCall(idleft, expression, id, new ArrayList<Expression>());:}
 	|
 	ID:id LRP Expressions:expressions RRP
-	{:
-		RESULT = new VirtualCall(idleft, id, expressions);
-	:}
+	{:RESULT = new VirtualCall(idleft, id, expressions);:}
 	|
 	Expression:expression DOT ID:id LRP Expressions:expressions RRP
-	{:
-		RESULT = new VirtualCall(idleft, expression, id, expressions);
-	:}
+	{:RESULT = new VirtualCall(idleft, expression, id, expressions);:}
 ;
 
 Location ::=
 	ID:id
-	{:
-		RESULT = new VariableLocation(idleft, id);
-	:}
+	{:RESULT = new VariableLocation(idleft, id);:}
 	|
 	Expression:expr DOT ID:id
-	{:
-		RESULT = new VariableLocation(idleft, expr, id);
-	:}
+	{:RESULT = new VariableLocation(idleft, expr, id);:}
 	|
 	Expression:expr1 LSP Expression:expr2 RSP
-	{:
-		RESULT = new ArrayLocation(expr1, expr2);
-	:}
+	{:RESULT = new ArrayLocation(expr1, expr2);:}
 ;
 
 Formals ::= 
@@ -686,9 +546,7 @@ Formals ::=
 
 Formal ::= 
 	Type:type ID:id
-	{:
-		RESULT = new Formal(type, id);
-	:}
+	{:RESULT = new Formal(type, id);:}
 ;
 
 
