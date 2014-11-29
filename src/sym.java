@@ -6,60 +6,62 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int ST = 29;
-  public static final int GTEQ = 32;
-  public static final int STR = 10;
-  public static final int UMINUS = 50;
-  public static final int INTEGER = 48;
-  public static final int CONTINUE = 15;
-  public static final int INT = 8;
-  public static final int LSP = 44;
-  public static final int STATIC = 6;
-  public static final int NOT = 39;
-  public static final int AND = 35;
-  public static final int LP = 40;
-  public static final int OR = 36;
-  public static final int COMMA = 37;
-  public static final int CLASS = 4;
-  public static final int RP = 41;
-  public static final int DIV = 26;
-  public static final int EOL = 27;
-  public static final int PLUS = 23;
-  public static final int QUOTE = 49;
-  public static final int IF = 11;
-  public static final int THIS = 16;
-  public static final int ID = 47;
-  public static final int DOT = 38;
+  public static final int ST = 31;
+  public static final int GTEQ = 34;
+  public static final int STR = 12;
+  public static final int UMINUS = 42;
+  public static final int INTEGER = 3;
+  public static final int CONTINUE = 17;
+  public static final int INT = 10;
+  public static final int LSP = 47;
+  public static final int STATIC = 8;
+  public static final int NOT = 41;
+  public static final int AND = 37;
+  public static final int LP = 43;
+  public static final int OR = 38;
+  public static final int COMMA = 39;
+  public static final int CLASS = 6;
+  public static final int RP = 44;
+  public static final int DIV = 28;
+  public static final int EOL = 29;
+  public static final int PLUS = 25;
+  public static final int ASSIGN = 2;
+  public static final int IF = 13;
+  public static final int THIS = 18;
+  public static final int ID = 50;
+  public static final int DOT = 40;
   public static final int EOF = 0;
-  public static final int BOOLEAN = 9;
-  public static final int RETURN = 3;
-  public static final int TRUE = 19;
-  public static final int NEW = 17;
+  public static final int BOOLEAN = 11;
+  public static final int RETURN = 5;
+  public static final int TRUE = 21;
+  public static final int NEW = 19;
   public static final int error = 1;
-  public static final int MUL = 24;
-  public static final int RSP = 45;
-  public static final int NULL = 21;
-  public static final int EQEQ = 33;
-  public static final int MOD = 28;
-  public static final int LRP = 42;
-  public static final int BREAK = 14;
-  public static final int VOID = 7;
-  public static final int EQ = 22;
-  public static final int ELSE = 12;
-  public static final int WHILE = 13;
-  public static final int CLASS_ID = 46;
-  public static final int EXTENDS = 5;
-  public static final int STRING = 2;
-  public static final int RRP = 43;
-  public static final int FALSE = 20;
-  public static final int GT = 31;
-  public static final int SUB = 25;
-  public static final int LENGTH = 18;
-  public static final int STEQ = 30;
-  public static final int NOTEQ = 34;
+  public static final int MUL = 26;
+  public static final int RSP = 48;
+  public static final int EQEQ = 35;
+  public static final int NULL = 23;
+  public static final int MOD = 30;
+  public static final int LRP = 45;
+  public static final int BREAK = 16;
+  public static final int VOID = 9;
+  public static final int EQ = 24;
+  public static final int ELSE = 14;
+  public static final int WHILE = 15;
+  public static final int CLASS_ID = 49;
+  public static final int EXTENDS = 7;
+  public static final int STRING = 4;
+  public static final int RRP = 46;
+  public static final int FALSE = 22;
+  public static final int GT = 33;
+  public static final int SUB = 27;
+  public static final int LENGTH = 20;
+  public static final int STEQ = 32;
+  public static final int NOTEQ = 36;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
+  "ASSIGN",
+  "INTEGER",
   "STRING",
   "RETURN",
   "CLASS",
@@ -98,6 +100,7 @@ public class sym {
   "COMMA",
   "DOT",
   "NOT",
+  "UMINUS",
   "LP",
   "RP",
   "LRP",
@@ -105,10 +108,7 @@ public class sym {
   "LSP",
   "RSP",
   "CLASS_ID",
-  "ID",
-  "INTEGER",
-  "QUOTE",
-  "UMINUS"
+  "ID"
   };
 }
 

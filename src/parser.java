@@ -9,7 +9,6 @@ import IC.Error.*;
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.List;
-import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20140808 (SVN rev 54) generated parser.
   */

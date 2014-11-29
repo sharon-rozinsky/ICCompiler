@@ -9,7 +9,7 @@ parser code {:
 
 	private Lexer lexer;
 	
-	public IcParser(Lexer lexer) {
+	public parser(Lexer lexer) {
 		super(lexer);
 		this.lexer = lexer;
 	}
@@ -149,13 +149,13 @@ precedence left DOT, LSP , LRP, LP;
 // The grammar
 
 Program ::=
-	ProgramClassList:programClassesList
+	ProgramClassList:programClassList
 	{:
-		RESULT = new program(programClassList);
+		RESULT = new Program(programClassList);
 	:}
 	|
 	{:
-		RESULT = new Program(new ArrayList<ICClass>())
+		RESULT = new Program(new ArrayList<ICClass>());
 	:}   
 ;
 
@@ -163,7 +163,7 @@ ProgramClassList ::=
 	ICClass:ICclass
 	{:
 		List<ICClass> programClassList = new ArrayList<ICClass>();
-		programClassList.add(icClass);
+		programClassList.add(ICclass);
 		RESULT = programClassList;
 	:}
 	|
@@ -240,9 +240,9 @@ FieldsNoEOL ::=
 	|
 	FieldsNoEOL:fields COMMA ID:id 
 	{:
-		Field field = new Field(Fields.get(0).getType(), id);
-		Fields.add(field);
-		RESULT = Fields;
+		Field field = new Field(fields.get(0).getType(), id);
+		fields.add(field);
+		RESULT = fields;
 	:}	
 ;
 
@@ -415,7 +415,7 @@ StatementsBlock ::=
 	Statement:stmt
 	{:
 		List<Statement> stmts = new ArrayList<Statement>();
-		statements.add(stmt);
+		stmts.add(stmt);
 		StatementsBlock stmtBlk = new StatementsBlock(0 /* retrieved later */, stmts);		
 		RESULT = stmtBlk;
 	:}
