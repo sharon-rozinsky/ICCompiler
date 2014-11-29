@@ -37,7 +37,7 @@ public class Main {
 				String output = (String) root.accept(printer);
 				System.out.println(output);
 				Token t = lexer.next_token();
-				PrintHeader();
+				//PrintHeader();
 				while(!Utils.getTokenName(t.getTag()).equals("EOF")){
 					PrintToken(t.getValue(), Utils.getTokenName(t.getTag()), t.getLine(), t.getColumn());
 					tokArr.add(t);

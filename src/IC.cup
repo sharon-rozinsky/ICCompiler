@@ -1,14 +1,116 @@
-package IC.Parser;
-
 import IC.AST.*;
+import IC.Types.*;
+import IC.Error.*;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.util.List;
 
+parser code {:
+
+	private Lexer lexer;
+	
+	public IcParser(Lexer lexer) {
+		super(lexer);
+		this.lexer = lexer;
+	}
+
+	/**
+	 *	Causes the parser to print every reduction.
+	 */
+	public boolean printParsing = false;
+	
+	public void log(String message) {
+		if (printParsing) {
+			System.out.println(message);
+		}
+	}
+
+	/**
+	 * Causes the parser to print every token it reads.
+	 */
+	public boolean printTokens;
+	
+	/* all errors are unrecoverable */
+	public void syntax_error(Symbol s) { }
+	
+	public void unrecovered_syntax_error(Symbol s) throws SyntaxError {
+		report_fatal_error(null, s);
+	}
+	
+	/* nothing to report, we will throw an exception instead and report outside */
+	public void report_error(String message, Object info) { }
+	
+	public void report_fatal_error(String message, Object info) throws SyntaxError {
+		done_parsing();
+		Token tok = (Token) info;
+		throw new SyntaxError(tok.getLine() + ":" + tok.getColumn() + " : "  +  message);
+	}
+	
+:};
+
+scan with {:
+	Token t = lexer.next_token();
+	if (printTokens)
+		System.out.println(t.getLine() + ":" + Utils.getTokenName(t.getTag()));
+	return t;
+:};
 ////////////////////////////////////////////
 // Symbol list (terminals and non-terminals)
 
 nonterminal Program Program;
+non terminal ICClass ICClass;
 
 terminal         ASSIGN;
 terminal Integer INTEGER;
+terminal STRING;
+terminal RETURN;
+terminal CLASS;
+terminal EXTENDS;
+terminal STATIC;
+terminal VOID;
+terminal INT;
+terminal BOOLEAN;
+terminal STR;
+terminal IF;
+terminal ELSE;
+terminal WHILE;
+terminal BREAK;
+terminal CONTINUE;
+terminal THIS;
+terminal NEW;
+terminal LENGTH;
+terminal TRUE;
+terminal FALSE;
+terminal NULL;
+terminal EQ;
+terminal PLUS;
+terminal MUL;
+terminal SUB;
+terminal DIV;
+terminal EOL;
+terminal MOD;
+terminal ST;
+terminal STEQ;
+terminal GT;
+terminal GTEQ;
+terminal EQEQ;
+terminal NOTEQ;
+terminal AND;
+terminal OR;
+terminal COMMA;
+terminal DOT;
+terminal NOT;
+terminal LP;
+terminal RP;
+terminal LRP;
+terminal RRP;
+terminal LSP;
+terminal RSP;   
+
+terminal String CLASS_ID;
+terminal String ID;
+terminal String INTEGER;
+terminal String QUOTE;
 
 //////////////////////////
 // Precedence declarations
@@ -16,4 +118,22 @@ terminal Integer INTEGER;
 //////////////
 // The grammar
 
-Literal ::= INTEGER | NULL;
+//Literal ::= INTEGER | NULL;
+
+Program ::=
+	ICClass:class
+	{: 
+		Program program = new Program(class);
+	:}
+	| Program:program ICClass:class
+	{:
+		program.add(class); RESULT = program;
+	:}   
+;
+
+ICClass ::=
+	CLASS CLASS_ID LP 
+	
+
+ 
+			

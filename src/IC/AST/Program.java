@@ -1,5 +1,6 @@
 package IC.AST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,19 @@ public class Program extends ASTNode {
 	 */
 	public Program(List<ICClass> classes) {
 		super(0);
+		this.classes = classes;
+	}
+	
+	/**
+	 * Constructs a new program node.
+	 * 
+	 * @param class
+	 *            first classes declared in the program.
+	 */
+	public Program(ICClass icclass) {
+		super(0);
+		List<ICClass> classes = new ArrayList<>();
+		classes.add(icclass);
 		this.classes = classes;
 	}
 
