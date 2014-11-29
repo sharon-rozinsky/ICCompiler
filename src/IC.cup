@@ -480,22 +480,22 @@ Expression ::=
 		RESULT = new MathBinaryOp(exp1,BinaryOps.MOD,exp2);
 	:}
 	|
-	Expression:exp1 LAND Expression:exp2
+	Expression:exp1 AND Expression:exp2
 	{:
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LAND,exp2);
 	:}
 	|
-	Expression:exp1 LOR Expression:exp2
+	Expression:exp1 OR Expression:exp2
 	{:
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LOR,exp2);
 	:}
 	|
-	Expression:exp1 LT Expression:exp2
+	Expression:exp1 ST Expression:exp2
 	{:
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LT,exp2);
 	:}
 	|	
-	Expression:exp1 LTE Expression:exp2
+	Expression:exp1 STEQ Expression:exp2
 	{:
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.LTE,exp2);
 	:}
@@ -505,17 +505,17 @@ Expression ::=
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.GT,exp2);
 	:}
 	|
-	Expression:exp1 GTE Expression:exp2
+	Expression:exp1 GTEQ Expression:exp2
 	{:
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.GTE,exp2);
 	:}
 	|
-	Expression:exp1 EQUAL Expression:exp2
+	Expression:exp1 EQEQ Expression:exp2
 	{:
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.EQUAL,exp2);
 	:}
 	|		
-	Expression:exp1 NEQUAL Expression:exp2
+	Expression:exp1 NOTEQ Expression:exp2
 	{:
 		RESULT = new LogicalBinaryOp(exp1,BinaryOps.NEQUAL,exp2);
 	:}
@@ -525,7 +525,7 @@ Expression ::=
 		RESULT = new MathUnaryOp(UnaryOps.UMINUS, exp);
 	:} %prec UMINUS
 	|
-	LNEG Expression:exp
+	NOT Expression:exp
 	{:
 		RESULT = new LogicalUnaryOp(UnaryOps.LNEG, exp);
 	:}
