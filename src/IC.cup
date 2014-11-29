@@ -143,7 +143,7 @@ precedence left GT, ST, GTEQ, STEQ;
 precedence left PLUS, SUB;
 precedence left DIV, MUL, MOD;
 precedence right UMINUS, NOT;
-precedence left DOT, LSP , LRP, LP;
+precedence left DOT, LSP , LRP;
 
 
 // The grammar
@@ -424,6 +424,34 @@ StatementsBlock ::=
 	{:
 		stmtBlk.getStatements().add(stmt);
 		RESULT = stmtBlk;
+	:}
+;
+
+Type ::= 
+	INT:intToken 
+	{:
+		RESULT = new PrimitiveType(intTokenleft, DataTypes.INT);
+	:}
+	| 
+	BOOLEAN:boolToken
+	{:
+		RESULT = new PrimitiveType(boolTokenleft, DataTypes.BOOLEAN);
+	:} 
+	| 
+	STRING:strToken
+	{:
+		RESULT = new PrimitiveType(strTokenleft, DataTypes.STRING);
+	:}  
+	| 
+	CLASS_ID:classID
+	{:
+		RESULT = new UserType(classIDleft, classID);
+	:}
+	|
+	Type:type LSP RSP
+	{:
+		type.incrementDimension();
+		RESULT = type;
 	:}
 ;
 
