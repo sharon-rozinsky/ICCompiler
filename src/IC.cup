@@ -77,7 +77,7 @@ non terminal StaticCall StaticCall;
 non terminal VirtualCall VirtualCall;
 non terminal Location Location;
 
-terminal         ASSIGN;
+terminal ASSIGN;
 terminal Integer INTEGER;
 terminal STRING;
 terminal RETURN;
@@ -621,9 +621,4 @@ Location ::=
 
 
 	
-	 
-		
-	
-
- 
 			
