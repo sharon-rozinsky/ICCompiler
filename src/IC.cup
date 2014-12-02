@@ -5,6 +5,9 @@ import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//////////////////////
+// Additional methods
+
 parser code {:
 
 	private Lexer lexer;
@@ -14,51 +17,37 @@ parser code {:
 		this.lexer = lexer;
 	}
 
-	/**
-	 *	Causes the parser to print every reduction.
-	 */
-	public boolean printParsing = false;
+	// used for printing the tokens in the scan with part
+	public boolean isDebugMode;
 	
-	public void log(String message) {
-		if (printParsing) {
-			System.out.println(message);
-		}
-	}
-
-	/**
-	 * Causes the parser to print every token it reads.
-	 */
-	public boolean printTokens;
-	
-	/* all errors are unrecoverable */
+	// all errors are unrecoverable
 	public void syntax_error(Symbol s) { }
 	
 	public void unrecovered_syntax_error(Symbol s) throws SyntaxError {
 		report_fatal_error(null, s);
 	}
 	
-	/* nothing to report, we will throw an exception instead and report outside */
+	// nothing to report, we will throw an exception instead and report outside
 	public void report_error(String message, Object info) { }
 	
 	public void report_fatal_error(String message, Object info) throws SyntaxError {
 		done_parsing();
-		Token tok = (Token) info;
-		throw new SyntaxError(tok.getLine() + ":" + tok.getColumn() + " : "  +  message);
+		Token token = (Token) info;
+		throw new SyntaxError(token.getLine() + ":" + token.getColumn() + " : "  +  message);
 	}
 	
 :};
 
 scan with {:
 	Token t = lexer.next_token();
-	if (printTokens)
+	if (isDebugMode)
 		System.out.println(t.getLine() + ":" + Utils.getTokenName(t.getTag()));
 	return t;
 :};
 
+////////////////////////////////////////////
 // Symbol list (terminals and non-terminals)
 
-terminal String INTEGER;
-terminal String STRING;
 terminal RETURN;
 terminal CLASS;
 terminal EXTENDS;
@@ -103,10 +92,12 @@ terminal LRP;
 terminal RRP;
 terminal LSP;
 terminal RSP;   
+
 terminal String CLASS_ID;
 terminal String ID;
+terminal String INTEGER;
+terminal String STRING;
 
-// Precedence terminals
 non terminal Program Program;
 non terminal ICClass ICClass;
 non terminal List<ICClass> ProgramClassList;
@@ -131,8 +122,6 @@ non terminal Location Location;
 //////////////////////////
 // Precedence declarations
 
-//////////////
-
 precedence nonassoc ELSE;
 precedence right EQ;
 precedence left OR;
@@ -145,14 +134,14 @@ precedence right UMINUS, NOT;
 precedence left DOT, LSP , LRP;
 
 
+//////////////
 // The grammar
 
 Program ::=
 	ProgramClassList:programClassList
 	{:RESULT = new Program(programClassList);:}
 	|
-	{:RESULT = new Program(new ArrayList<ICClass>());:}   
-;
+	{:RESULT = new Program(new ArrayList<ICClass>());:};
 
 ProgramClassList ::=
 	ICClass:ICclass
@@ -163,8 +152,7 @@ ProgramClassList ::=
 	:}
 	|
 	ProgramClassList:programClassList ICClass:ICclass
-	{:programClassList.add(ICclass); RESULT = programClassList;:}
-;		
+	{:programClassList.add(ICclass); RESULT = programClassList;:};		
 
 ICClass ::=
 	CLASS CLASS_ID:classId LP RP
@@ -177,8 +165,7 @@ ICClass ::=
 	{:RESULT = new ICClass(classIdleft, classId, super_classid, new ArrayList<Field>(), new ArrayList<Method>());:}
 	|
 	CLASS CLASS_ID:classId EXTENDS CLASS_ID:super_classid LP FieldsAndMethods:fnm RP
-	{:RESULT = new ICClass(classIdleft, classId, super_classid,  fnm.getFields(), fnm.getMethods());:}
-;
+	{:RESULT = new ICClass(classIdleft, classId, super_classid,  fnm.getFields(), fnm.getMethods());:};
 
 FieldsAndMethods ::=
 	Fields:fields
@@ -205,13 +192,11 @@ FieldsAndMethods ::=
 	{:
 		fieldsAndMethods.getMethods().add(method);
 		RESULT = fieldsAndMethods;
-	:}
-;
+	:};
 
 Fields ::= 
 	FieldsNoEOL:fields EOL 
-	{:RESULT = fields;	:}
-;
+	{:RESULT = fields;	:};
 
 FieldsNoEOL ::=
 	Field:field 
@@ -226,14 +211,11 @@ FieldsNoEOL ::=
 		Field field = new Field(fields.get(0).getType(), id);
 		fields.add(field);
 		RESULT = fields;
-	:}	
-;
+	:};
 
 Field ::=
 	Type:type ID:id
-	{:RESULT = new Field(type, id);:} 
-;
-
+	{:RESULT = new Field(type, id);:};
 
 Method ::= 
 	Type:returnType ID:id LRP RSP LP StatementsBlock:stmtBlk RP
@@ -306,8 +288,8 @@ Method ::=
 	{:
 		Type type = new PrimitiveType(idleft, DataTypes.VOID);
 		RESULT = new StaticMethod(type, id, formals, new ArrayList<Statement>());
-	:} 
-;
+	:};
+	
 Statement ::= 
 	Location:location EQ Expression:expr EOL
 	{:RESULT = new Assignment(location, expr);:} 
@@ -349,8 +331,7 @@ Statement ::=
 	{:RESULT = new LocalVariable(type, id);:}
 	|
 	Type:type ID:id EQ Expression:expression EOL
-	{:RESULT = new LocalVariable(type, id, expression);:} 
-;	
+	{:RESULT = new LocalVariable(type, id, expression);:};	
 
 StatementsBlock ::=
 	Statement:stmt
@@ -365,8 +346,7 @@ StatementsBlock ::=
 	{:
 		stmtBlk.getStatements().add(stmt);
 		RESULT = stmtBlk;
-	:}
-;
+	:};
 
 Type ::= 
 	INT:intToken 
@@ -385,8 +365,7 @@ Type ::=
 	{:
 		type.incrementDimension();
 		RESULT = type;
-	:}
-;
+	:};
 
 Expression ::= 
 	Location:location
@@ -470,16 +449,14 @@ Expression ::=
 	{:RESULT = new Literal(integerleft, LiteralTypes.INTEGER, integer);:}
 	|
 	LRP Expression:exp RRP
-	{:RESULT = new ExpressionBlock(exp);:}
-;
+	{:RESULT = new ExpressionBlock(exp);:};
 
 Call ::=
 	StaticCall:staticCall
 	{:RESULT = staticCall;:}
 	|
 	VirtualCall:virtualCall
-	{:RESULT = virtualCall;:}
-;
+	{:RESULT = virtualCall;:};
 
 Expressions ::=
 	Expressions:expressions COMMA Expression:expression
@@ -493,16 +470,14 @@ Expressions ::=
 		List<Expression> expressions = new ArrayList<Expression>();
 		expressions.add(expression);
 		RESULT = expressions; 
-	:}
-;
+	:};
 
 StaticCall ::=
 	CLASS_ID:classId DOT ID:id LRP RRP
 	{:RESULT = new StaticCall(classIdleft, classId, id, new ArrayList<Expression>());:}
 	|
 	CLASS_ID:classId DOT ID:id LRP Expressions:expressions RRP
-	{:RESULT = new StaticCall(classIdleft, classId, id, expressions);:}
-;
+	{:RESULT = new StaticCall(classIdleft, classId, id, expressions);:};
 
 VirtualCall ::=
 	ID:id LRP RRP
@@ -515,8 +490,7 @@ VirtualCall ::=
 	{:RESULT = new VirtualCall(idleft, id, expressions);:}
 	|
 	Expression:expression DOT ID:id LRP Expressions:expressions RRP
-	{:RESULT = new VirtualCall(idleft, expression, id, expressions);:}
-;
+	{:RESULT = new VirtualCall(idleft, expression, id, expressions);:};
 
 Location ::=
 	ID:id
@@ -526,8 +500,7 @@ Location ::=
 	{:RESULT = new VariableLocation(idleft, expr, id);:}
 	|
 	Expression:expr1 LSP Expression:expr2 RSP
-	{:RESULT = new ArrayLocation(expr1, expr2);:}
-;
+	{:RESULT = new ArrayLocation(expr1, expr2);:};
 
 Formals ::= 
 	Formals:formals COMMA Formal:formal 
@@ -541,13 +514,11 @@ Formals ::=
 		List<Formal> formals = new ArrayList<Formal>();
 		formals.add(formal);		
 		RESULT = formals; 
-	:}
-;
+	:};
 
 Formal ::= 
 	Type:type ID:id
-	{:RESULT = new Formal(type, id);:}
-;
+	{:RESULT = new Formal(type, id);:};
 
 
 	

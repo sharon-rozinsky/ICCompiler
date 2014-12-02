@@ -6,6 +6,9 @@ import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//////////////////////
+// Additional methods
+
 parser code {:
 
 	private Lexer lexer;
@@ -15,48 +18,60 @@ parser code {:
 		this.lexer = lexer;
 	}
 
-	/**
-	 *	Causes the parser to print every reduction.
-	 */
-	public boolean printParsing = false;
-	
-	public void log(String message) {
-		if (printParsing) {
-			System.out.println(message);
-		}
-	}
-
-	/**
-	 * Causes the parser to print every token it reads.
-	 */
-	public boolean printTokens;
-	
-	/* all errors are unrecoverable */
-	public void syntax_error(Symbol s) { }
+	// used for printing the tokens in the scan with part
+	public boolean isDebugMode;
 	
 	public void unrecovered_syntax_error(Symbol s) throws SyntaxError {
 		report_fatal_error(null, s);
 	}
 	
-	/* nothing to report, we will throw an exception instead and report outside */
-	public void report_error(String message, Object info) { }
-	
 	public void report_fatal_error(String message, Object info) throws SyntaxError {
-		done_parsing();
-		Token tok = (Token) info;
-		throw new SyntaxError(tok.getLine() + ":" + tok.getColumn() + " : "  +  message);
+		throw new SyntaxError("");
 	}
 	
+	public void report_error(String message, Object info) {
+		if(message.equals("Syntax Error"));{
+			done_parsing();
+			printErrorMessage(info);
+		}
+	}
+	
+	public void printErrorMessage(Object info){
+		Token token = (Token) info;
+		List<Integer> expectedIds = null;
+		String expectedIdsStr = ""; 
+		try {
+			expectedIds = expected_token_ids();
+			for(int i = 0; i < expectedIds.size(); i++){
+				if(i+1 == expectedIds.size())
+					expectedIdsStr += Utils.getTokenName(expectedIds.get(i));
+				else
+					expectedIdsStr += Utils.getTokenName(expectedIds.get(i)) + " or ";
+			}
+		} catch (Exception e) {
+			System.out
+					.println(token.getLine() + ":"
+							+ token.getColumn() + " : "
+							+ "syntax error; Can't get list of expected tokens. Found: "
+							+ token.getValue());
+			return;
+		}
+		System.out.println(token.getLine() + ":" + token.getColumn() + " : "
+				+ "syntax error; expected " + expectedIdsStr + ", but found "
+				+ token.getValue());
+	}
 :};
 
 scan with {:
 	Token t = lexer.next_token();
-	if (printTokens)
+	if (isDebugMode)
 		System.out.println(t.getLine() + ":" + Utils.getTokenName(t.getTag()));
 	return t;
 :};
 
-terminal STRING;
+////////////////////////////////////////////
+// Symbol list (terminals and non-terminals)
+
 terminal RETURN;
 terminal CLASS;
 terminal EXTENDS;
@@ -94,6 +109,7 @@ terminal OR;
 terminal COMMA;
 terminal DOT;
 terminal NOT;
+terminal UMINUS;
 terminal LP;
 terminal RP;
 terminal LRP;
@@ -104,10 +120,7 @@ terminal RSP;
 terminal String CLASS_ID;
 terminal String ID;
 terminal String INTEGER;
-terminal String QUOTE;
-
-// Precedence terminals
-terminal UMINUS;
+terminal String STRING;
 
 non terminal ICClass ICClass;
 non terminal List<Method> LibraryMethods;
@@ -117,17 +130,16 @@ non terminal Type Type;
 non terminal List<Formal> Formals;
 non terminal Formal Formal;
 
+//////////////
+// The grammar
+
 ICClass ::=
 	CLASS CLASS_ID:classId LP LibraryMethods:libraryMethods RP
-	{: 
-		RESULT = new ICClass(classIdleft, classId, new ArrayList<Field>(), libraryMethods); 
-	:} 
+	{: RESULT = new ICClass(classIdleft, classId, new ArrayList<Field>(), libraryMethods); :} 
 	| 
 	CLASS CLASS_ID:classId LP RP
-	{:
-		RESULT = new ICClass(classIdleft, classId, new ArrayList<Field>(), new ArrayList<Method>());
-	:}
-;
+	{: RESULT = new ICClass(classIdleft, classId, new ArrayList<Field>(), new ArrayList<Method>()); :};
+	
 LibraryMethods ::= 
 	LibraryMethod:libraryMethod
 	{:
@@ -140,52 +152,38 @@ LibraryMethods ::=
 	{:
 		libraryMethods.add(libraryMethod);
 		RESULT = libraryMethods;
-	:} 
-;
+	:};
+
 LibraryMethod ::= 
 	STATIC ReturnType:returnType ID:id LRP Formals:formals RRP EOL 
-	{:
-		RESULT = new LibraryMethod(returnType, id, formals);
-	:}
+	{: RESULT = new LibraryMethod(returnType, id, formals); :}
 	|
 	STATIC ReturnType:returnType ID:id LRP RRP EOL
-	{:
-		RESULT = new LibraryMethod(returnType, id, new ArrayList<Formal>());
-	:}
-;
+	{: RESULT = new LibraryMethod(returnType, id, new ArrayList<Formal>()); :};
+	
 ReturnType ::= 
 	Type:type 
-	{:
-		RESULT = type;
-	:} 
+	{: RESULT = type; :} 
 	| 
-	VOID:voidTok
-	{:
-		RESULT = new PrimitiveType(voidTokleft, DataTypes.VOID);
-	:}
-;
+	VOID:voidToken
+	{: RESULT = new PrimitiveType(voidTokenleft, DataTypes.VOID); :};
+	
 Type ::= 
-	INT:intTok 
-	{:
-		RESULT = new PrimitiveType(intTokleft, DataTypes.INT);
-	:}
+	INT:intToken 
+	{: RESULT = new PrimitiveType(intTokenleft, DataTypes.INT); :}
 	| 
-	BOOLEAN:boolTok
-	{:
-		RESULT = new PrimitiveType(boolTokleft, DataTypes.BOOLEAN);
-	:} 
+	BOOLEAN:boolToken
+	{: RESULT = new PrimitiveType(boolTokenleft, DataTypes.BOOLEAN); :} 
 	| 
-	STR:strTok
-	{:
-		RESULT = new PrimitiveType(strTokleft, DataTypes.STRING);
-	:}  
+	STR:strToken
+	{: RESULT = new PrimitiveType(strTokenleft, DataTypes.STRING); :}  
 	| 
 	Type:type LSP RSP
 	{:
 		type.incrementDimension();
 		RESULT = type;
-	:}
-;
+	:};
+	
 Formals ::= 
 	Formals:formals COMMA Formal:formal 
 	{:
@@ -198,11 +196,8 @@ Formals ::=
 		List<Formal> formals = new ArrayList<Formal>();
 		formals.add(formal);
 		RESULT = formals; 
-	:}
-;
+	:};
+	
 Formal ::= 
 	Type:type ID:id
-	{:
-		RESULT = new Formal(type, id);
-	:}
-;
+	{: RESULT = new Formal(type, id); :};
