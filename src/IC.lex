@@ -177,11 +177,11 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 	"\\\""							 {string.append( "\"" ); }
 	"\\\\"							 {string.append( "\\" ); }
   	{STRING_LETTER}+  		{ string.append(yytext()); }       
-	<<EOF>>         		{ throw new LexicalError("Ununclosed string literal"); }
-    \r                      { throw new LexicalError("Illegal character in string literal '\\r'"); }
-    \n                      { throw new LexicalError("Illegal character in string literal '\\n'"); }  
-    \t                      { throw new LexicalError("Illegal character in string literal '\\t'"); }  
-    .                       { throw new LexicalError("Illegal character in string literal '" + yytext() + "'"); }  
+	<<EOF>>         		{ throw new LexicalError("Unclosed String"); }
+    \r                      { throw new LexicalError("Illegal character in String '\\r'"); }
+    \n                      { throw new LexicalError("Illegal character in String '\\n'"); }  
+    \t                      { throw new LexicalError("Illegal character in String '\\t'"); }  
+    .                       { throw new LexicalError("Illegal character in String '" + yytext() + "'"); }  
 
 }
 
