@@ -137,7 +137,7 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
   	[\"]                    { 	
   									string.setLength(0);
   									strColumn = yycolumn; 
-  									string.append(yytext()); 
+  									//string.append(yytext()); 
   									yybegin(STRING); 
   								}
   	/* comments */
@@ -170,8 +170,12 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 <STRING> {
  	[\"]             			{ 
 								yybegin(YYINITIAL); 
-							  	return token(sym.STRING, string.append(yytext()).toString(),strColumn);
+							  	return token(sym.STRING, string.toString(),strColumn);
 						 	} 
+	"\\n"							 {string.append( "\n" ); }
+	"\\t"							 {string.append( "\t" ); }
+	"\\\""							 {string.append( "\"" ); }
+	"\\\\"							 {string.append( "\\" ); }
   	{STRING_LETTER}+  		{ string.append(yytext()); }       
 	<<EOF>>         		{ throw new LexicalError("Ununclosed string literal"); }
     \r                      { throw new LexicalError("Illegal character in string literal '\\r'"); }
