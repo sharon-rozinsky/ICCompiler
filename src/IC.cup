@@ -20,20 +20,45 @@ parser code {:
 	// used for printing the tokens in the scan with part
 	public boolean isDebugMode;
 	
-	// all errors are unrecoverable
-	public void syntax_error(Symbol s) { }
-	
+	// overriding error methods
 	public void unrecovered_syntax_error(Symbol s) throws SyntaxError {
 		report_fatal_error(null, s);
 	}
 	
-	// nothing to report, we will throw an exception instead and report outside
-	public void report_error(String message, Object info) { }
-	
 	public void report_fatal_error(String message, Object info) throws SyntaxError {
-		done_parsing();
+		throw new SyntaxError("");
+	}
+	
+	public void report_error(String message, Object info) {
+		if(message.equals("Syntax Error"));{
+			done_parsing();
+			printErrorMessage(info);
+		}
+	}
+	
+	public void printErrorMessage(Object info){
 		Token token = (Token) info;
-		throw new SyntaxError(token.getLine() + ":" + token.getColumn() + " : "  +  message);
+		List<Integer> expectedIds = null;
+		String expectedIdsStr = ""; 
+		try {
+			expectedIds = expected_token_ids();
+			for(int i = 0; i < expectedIds.size(); i++){
+				if(i+1 == expectedIds.size())
+					expectedIdsStr += Utils.getTokenName(expectedIds.get(i));
+				else
+					expectedIdsStr += Utils.getTokenName(expectedIds.get(i)) + " or ";
+			}
+		} catch (Exception e) {
+			System.out
+					.println(token.getLine() + ":"
+							+ token.getColumn() + " : "
+							+ "syntax error; Can't get list of expected tokens. Found: "
+							+ token.getValue());
+			return;
+		}
+		System.out.println(token.getLine() + ":" + token.getColumn() + " : "
+				+ "syntax error; expected " + expectedIdsStr + ", but found "
+				+ token.getValue());
 	}
 	
 :};

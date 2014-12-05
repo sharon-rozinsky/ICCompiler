@@ -21,6 +21,7 @@ parser code {:
 	// used for printing the tokens in the scan with part
 	public boolean isDebugMode;
 	
+	// overriding error methods
 	public void unrecovered_syntax_error(Symbol s) throws SyntaxError {
 		report_fatal_error(null, s);
 	}
