@@ -249,6 +249,9 @@ Method ::=
 	STATIC Type:returnType ID:id LRP RRP LP StatementsBlock:stmtBlk RP
 	{:RESULT = new StaticMethod(returnType, id, new ArrayList<Formal>(), stmtBlk.getStatements());:} 
 	|
+	Type:returnType ID:id LRP RRP LP StatementsBlock:stmtBlk RP
+	{:RESULT = new VirtualMethod(returnType, id, new ArrayList<Formal>(), stmtBlk.getStatements());:}
+	|
 	Type:returnType ID:id LRP Formals:formals RRP LP StatementsBlock:stmtBlk RP
 	{:RESULT = new VirtualMethod(returnType, id, formals, stmtBlk.getStatements());:} 
 	|
