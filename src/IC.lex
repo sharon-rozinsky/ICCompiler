@@ -31,20 +31,19 @@ WhiteSpace=[ \t\n\r]
 ONELINECOMMENTSIGN ="//"
 MULTIPLELINECOMMENTSIGN =	"/*"
 
-QUOTE=\"
 PRINTABLE_STRING = 		[\040\041\043-\133\135-\176]
 SEQUENCE_STRING = 		\\[nt\"\\]
-VALID_STRING_LETTER = 	{PRINTABLE_STRING}|{SEQUENCE_STRING}
+STRING_LETTER = 	{PRINTABLE_STRING}|{SEQUENCE_STRING}
 
-UPPERCASE =		[A-Z]
-LOWERCASE =		[a-z]
-LETTER =		{UPPERCASE}|{LOWERCASE}
+UPPERCASE_LETTER =		[A-Z]
+LOWERCASE_LETTER =		[a-z]
+LETTER =		{UPPERCASE_LETTER}|{LOWERCASE_LETTER}
 DIGIT = 		[0-9]
 ALPHA_NUMERIC = {DIGIT}|{LETTER}
 ID_SUFFIX = 	({ALPHA_NUMERIC}|_)*
 
-Class_ID =		{UPPERCASE}{ID_SUFFIX}
-ID 		= 		{LOWERCASE}{ID_SUFFIX}
+Class_ID =		{UPPERCASE_LETTER}{ID_SUFFIX}
+ID 		= 		{LOWERCASE_LETTER}{ID_SUFFIX}
 INTEGER = 		[0-9]+
 
 /* 
@@ -68,9 +67,9 @@ OUT_OF_RANGE_INTEGER=
 LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 
 %state STRING
-%state SINGLELINECOMMENT
-%state MULTILINECOMMENT
-%state MULTILINECOMMENTASTERISK
+%state ONELINECOMMENT
+%state MULTIPLELINECOMMENT
+%state MULTIPLELINECOMMENTASTERISK
 
 
 %%
@@ -134,45 +133,46 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
   	
   	/* literals */
   	{INTEGER}         			{ return token(sym.INTEGER, yytext()); }
-  	{QUOTE}                     { 	
+  	/* String start */
+  	[\"]                    { 	
   									string.setLength(0);
   									strColumn = yycolumn; 
   									string.append('\"'); 
   									yybegin(STRING); 
   								}
   	/* comments */
-  	{ONELINECOMMENTSIGN}    	{ yybegin(SINGLELINECOMMENT);   }
-    {MULTIPLELINECOMMENTSIGN} 	{ yybegin(MULTILINECOMMENT);    }
+  	{ONELINECOMMENTSIGN}    	{ yybegin(ONELINECOMMENT);   }
+    {MULTIPLELINECOMMENTSIGN} 	{ yybegin(MULTIPLELINECOMMENT);    }
  
   	/* whitespace */
   	{WhiteSpace}                { }
 		
 }
 
-<SINGLELINECOMMENT> {
+<ONELINECOMMENT> {
     [\n]            			{ yybegin(YYINITIAL); }
     [^\n]           			{ }
 }
 
-<MULTILINECOMMENT> {
-    [*]             			{ yybegin(MULTILINECOMMENTASTERISK); }
+<MULTIPLELINECOMMENT> {
+    [*]             			{ yybegin(MULTIPLELINECOMMENTASTERISK); }
     [^*]            			{ }
     <<EOF>>         			{ throw new LexicalError("Unclosed comment"); }
 }
 
-<MULTILINECOMMENTASTERISK> {
+<MULTIPLELINECOMMENTASTERISK> {
 	[*]             			{ }
     [/]            				{ yybegin(YYINITIAL); }
-    [^/*]           			{ yybegin(MULTILINECOMMENT); }
+    [^/*]           			{ yybegin(MULTIPLELINECOMMENT); }
     <<EOF>>         			{ throw new LexicalError("Unclosed comment"); }
 }
 
 <STRING> {
- 	{QUOTE}             	{ 
+ 	[\"]             			{ 
 								yybegin(YYINITIAL); 
 							  	return token(sym.STRING, string.append('\"').toString(),strColumn);
 						 	} 
-  	{VALID_STRING_LETTER}+  { string.append(yytext()); }       
+  	{STRING_LETTER}+  		{ string.append(yytext()); }       
 	<<EOF>>         		{ throw new LexicalError("Ununclosed string literal"); }
     \r                      { throw new LexicalError("Illegal character in string literal '\\r'"); }
     \n                      { throw new LexicalError("Illegal character in string literal '\\n'"); }  
