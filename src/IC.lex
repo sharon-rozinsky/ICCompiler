@@ -137,7 +137,7 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
   	[\"]                    { 	
   									string.setLength(0);
   									strColumn = yycolumn; 
-  									string.append('\"'); 
+  									string.append(yytext()); 
   									yybegin(STRING); 
   								}
   	/* comments */
@@ -170,7 +170,7 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 <STRING> {
  	[\"]             			{ 
 								yybegin(YYINITIAL); 
-							  	return token(sym.STRING, string.append('\"').toString(),strColumn);
+							  	return token(sym.STRING, string.append(yytext()).toString(),strColumn);
 						 	} 
   	{STRING_LETTER}+  		{ string.append(yytext()); }       
 	<<EOF>>         		{ throw new LexicalError("Ununclosed string literal"); }
