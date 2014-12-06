@@ -46,11 +46,6 @@ public class Main {
 						LibraryParser libParser = new LibraryParser(libLexer);
 						Symbol libParseSymbol = libParser.parse();
 						System.out.println("The file: " + args[1] + " was successfully parsed");
-						
-						printer = new PrettyPrinter(args[1]);
-						ASTNode libRoot = (ASTNode) libParseSymbol.value;
-						output = (String) libRoot.accept(printer);
-						System.out.println(output);
 						reader.close();
 					}
 				}

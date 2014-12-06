@@ -68,7 +68,7 @@ parser code {:
 		}
 		System.out.println(token.getLine() + ":" + token.getColumn() + " : "
 				+ "syntax error; expected " + expectedIdsStr + ", but found "
-				+  "\"" + token.getValue()) + "\"";
+				+  "\"" + token.getValue() + "\"");
 	}
 	
 :};
