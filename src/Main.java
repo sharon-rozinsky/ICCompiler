@@ -21,6 +21,7 @@ public class Main {
 			if(args.length != 0) {
 				//parser.isDebugMode = printtokens;
 				// read the program file and parse it
+				Utils.initSymbolToSignMap();
 				reader = new FileReader(new File(args[0]));
 				Lexer lexer = new Lexer(reader);
 				parser parser = new parser(lexer);

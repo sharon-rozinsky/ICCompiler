@@ -54,9 +54,9 @@ parser code {:
 			expectedIds = expected_token_ids();
 			for(int i = 0; i < expectedIds.size(); i++){
 				if(i+1 == expectedIds.size())
-					expectedIdsStr += Utils.getTokenName(expectedIds.get(i));
+					expectedIdsStr += "\"" + Utils.getSymbolSign(Utils.getTokenName(expectedIds.get(i))) + "\"";
 				else
-					expectedIdsStr += Utils.getTokenName(expectedIds.get(i)) + " or ";
+					expectedIdsStr += "\"" + Utils.getSymbolSign(Utils.getTokenName(expectedIds.get(i))) + "\"" + " or ";
 			}
 		} catch (Exception e) {
 			System.out
@@ -68,7 +68,7 @@ parser code {:
 		}
 		System.out.println(token.getLine() + ":" + token.getColumn() + " : "
 				+ "syntax error; expected " + expectedIdsStr + ", but found "
-				+ token.getValue());
+				+  Utils.getSymbolSign(token.getValue()));
 	}
 	
 :};
