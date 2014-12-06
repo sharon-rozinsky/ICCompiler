@@ -134,11 +134,11 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
   	/* literals */
   	{INTEGER}         			{ return token(sym.INTEGER, yytext()); }
   	/* String start */
-  	[\"]                    { 	
-  									string.setLength(0);
-  									strColumn = yycolumn; 
-  									//string.append(yytext()); 
-  									yybegin(STRING); 
+  	[\"]                    	{ 	
+								string.setLength(0);
+								strColumn = yycolumn; 
+								//string.append(yytext()); 
+								yybegin(STRING); 
   								}
   	/* comments */
   	{ONELINECOMMENTSIGN}    	{ yybegin(ONELINECOMMENT);   }
@@ -160,7 +160,7 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
     <<EOF>>         			{ throw new LexicalError("Unclosed comment"); }
 }
 
-<MULTIPLELINECOMMENTASTERISK> {
+<MULTIPLELINECOMMENTASTERISK> 	{
 	[*]             			{ }
     [/]            				{ yybegin(YYINITIAL); }
     [^/*]           			{ yybegin(MULTIPLELINECOMMENT); }
@@ -171,21 +171,21 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
  	[\"]             			{ 
 								yybegin(YYINITIAL); 
 							  	return token(sym.STRING, string.toString(),strColumn);
-						 	} 
-	"\\n"							 {string.append( "\n" ); }
-	"\\t"							 {string.append( "\t" ); }
-	"\\\""							 {string.append( "\"" ); }
-	"\\\\"							 {string.append( "\\" ); }
-  	{STRING_LETTER}+  		{ string.append(yytext()); }       
-	<<EOF>>         		{ throw new LexicalError("Unclosed String"); }
-    \r                      { throw new LexicalError("Illegal character in String '\\r'"); }
-    \n                      { throw new LexicalError("Illegal character in String '\\n'"); }  
-    \t                      { throw new LexicalError("Illegal character in String '\\t'"); }  
-    .                       { throw new LexicalError("Illegal character in String '" + yytext() + "'"); }  
+						 		} 
+	"\\n"						{string.append( "\n" ); }
+	"\\t"						{string.append( "\t" ); }
+	"\\\""						{string.append( "\"" ); }
+	"\\\\"						{string.append( "\\" ); }
+  	{STRING_LETTER}+  			{ string.append(yytext()); }       
+	<<EOF>>         			{ throw new LexicalError("Unclosed String"); }
+    \r                      	{ throw new LexicalError("Illegal character in String '\\r'"); }
+    \n                      	{ throw new LexicalError("Illegal character in String '\\n'"); }  
+    \t                      	{ throw new LexicalError("Illegal character in String '\\t'"); }  
+    .                       	{ throw new LexicalError("Illegal character in String '" + yytext() + "'"); }  
 
 }
 
 <<EOF>>	{ return token(sym.EOF, "EOF");}
 
 /* error fallback */
-[^]                          { throw new LexicalError("Illegal character: " + yytext()); }
+[^]                          	{ throw new LexicalError("Illegal character: " + yytext()); }

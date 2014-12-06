@@ -79,7 +79,7 @@ public class Main {
 	}
 	
 	public static void PrintTokenError(String errMsg) { 
-		System.err. println ("Error!\t"+errMsg);
+		System.out.println ("Error!\t"+errMsg);
 	}
 
 }

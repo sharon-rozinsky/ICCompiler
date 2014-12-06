@@ -26,9 +26,19 @@ parser code {:
 	}
 	
 	public void report_fatal_error(String message, Object info) throws SyntaxError {
+		//this method is called after the syntax_error method, so by now we have already
+		//dealt with the expected tokens. we throw a SyntaxError with an empty string
+		//to exit the parsing process.
 		throw new SyntaxError("");
 	}
 	
+	public void syntax_error(Symbol cur_token){
+		//for some strange reason calling this here and then in printErrorMessage
+		//gives the correct expected id's
+		List<Integer> expectedIds = expected_token_ids();
+		report_error("Syntax Error", cur_token);
+	}
+	    
 	public void report_error(String message, Object info) {
 		if(message.equals("Syntax Error"));{
 			done_parsing();
