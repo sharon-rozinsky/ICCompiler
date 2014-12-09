@@ -1,5 +1,8 @@
+package IC;
 import java.util.HashMap;
 import java.util.TreeMap;
+
+import IC.Parser.sym;
 
 
 public class Utils {

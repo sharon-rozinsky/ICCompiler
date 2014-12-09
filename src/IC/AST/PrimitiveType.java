@@ -1,6 +1,6 @@
 package IC.AST;
 
-import IC.Types.DataTypes;
+import IC.DataTypes;
 
 
 /**

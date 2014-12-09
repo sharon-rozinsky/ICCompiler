@@ -1,6 +1,6 @@
 package IC.AST;
 
-import IC.Types.UnaryOps;
+import IC.UnaryOps;
 
 
 /**

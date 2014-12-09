@@ -1,4 +1,4 @@
-package IC.Error;
+package IC.Parser;
 
 public class LexicalError extends Exception{
 	private String message;

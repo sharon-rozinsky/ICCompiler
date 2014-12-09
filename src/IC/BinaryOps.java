@@ -1,4 +1,4 @@
-package IC.Types;
+package IC;
 /**
  * Enum of the IC language's binary operators.
  * 

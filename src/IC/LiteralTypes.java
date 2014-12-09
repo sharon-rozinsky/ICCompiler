@@ -1,4 +1,4 @@
-package IC.Types;
+package IC;
 /**
  * Enum of the IC language's literal value types. Includes methods for creating
  * a string representation of each type of value.

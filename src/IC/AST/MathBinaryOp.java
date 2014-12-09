@@ -1,6 +1,6 @@
 package IC.AST;
 
-import IC.Types.BinaryOps;
+import IC.BinaryOps;
 
 
 /**

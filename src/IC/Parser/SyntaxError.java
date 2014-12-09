@@ -1,4 +1,4 @@
-package IC.Error;
+package IC.Parser;
 
 import java_cup.sym;
 

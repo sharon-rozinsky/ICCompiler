@@ -1,3 +1,5 @@
+package IC;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,11 +9,12 @@ import java.io.Reader;
 import java_cup.runtime.Symbol;
 import IC.AST.ASTNode;
 import IC.AST.PrettyPrinter;
-import IC.Error.LexicalError;
-import IC.Error.SyntaxError;
+import IC.Parser.LexicalError;
+import IC.Parser.LibraryParser;
+import IC.Parser.SyntaxError;
 
 
-public class Main {
+public class Compiler {
 	
 	private static boolean printtokens = true;
 
