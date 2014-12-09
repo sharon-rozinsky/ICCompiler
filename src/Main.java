@@ -24,7 +24,7 @@ public class Main {
 				Utils.initSymbolToSignMap();
 				reader = new FileReader(new File(args[0]));
 				Lexer lexer = new Lexer(reader);
-				parser parser = new parser(lexer);
+				Parser parser = new Parser(lexer);
 				Symbol parseSymbol = parser.parse();
 				System.out.println("The file: " + args[0] + " was successfully parsed");
 				
