@@ -9,10 +9,7 @@ import java.io.Reader;
 import java_cup.runtime.Symbol;
 import IC.AST.ASTNode;
 import IC.AST.PrettyPrinter;
-import IC.Parser.LexicalError;
-import IC.Parser.LibraryParser;
-import IC.Parser.SyntaxError;
-
+import IC.Parser.*;
 
 public class Compiler {
 	

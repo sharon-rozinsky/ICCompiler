@@ -1,5 +1,5 @@
+package IC.Parser;
 import java_cup.runtime.*;
-import IC.Error.*;
  
 /**
  * IC compiler lexer
@@ -12,6 +12,7 @@ import IC.Error.*;
 %class Lexer
 %cup
 %yylexthrow LexicalError
+%public
 
 %{
 	StringBuffer string = new StringBuffer();
