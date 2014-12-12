@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GlobalSymbolTable extends SymbolTable{
-	public Map<String, Symbol> classes;
+	private Map<String, Symbol> classes;
 	
 	public GlobalSymbolTable(String id) {
 		// global symbol table has no parent symbol tables.
@@ -23,5 +23,6 @@ public class GlobalSymbolTable extends SymbolTable{
 			return classes.get(id);
 		}
 		return null;
+		//TODO: consider throwing semantic error in here.
 	}
 }

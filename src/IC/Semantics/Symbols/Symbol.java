@@ -1,5 +1,7 @@
 package IC.Semantics.Symbols;
 
+import IC.Semantics.Types.Kind;
+
 public class Symbol {
 	private String id;
 	private Type type;
