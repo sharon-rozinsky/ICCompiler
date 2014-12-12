@@ -1,4 +1,6 @@
-package IC.SymbolTable;
+package IC.Semantics.Types;
+
+import java.util.Map;
 
 class TypeTable { //TODO this is a class template from recitation 7....need to complet.
 	// Maps element types to array types
@@ -13,12 +15,12 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 		
 		if (uniqueArrayTypes.containsKey(elemType)) 
 		{
-			// array type object already created – return it
+			// array type object already created ï¿½ return it
 			return uniqueArrayTypes.get(elemType);
 		}      
 		else 
 		{          
-			// object doesn’t exist – create and return it
+			// object doesnï¿½t exist ï¿½ create and return it
 			ArrayType arrt = new ArrayType(elemType);
 			uniqueArrayTypes.put(elemType,ArrayType);
 			return arrt;
