@@ -1,4 +1,4 @@
-package IC.Semantics.Types;
+package IC.Types;
 
 public abstract class Type {
 

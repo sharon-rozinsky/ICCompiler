@@ -1,4 +1,4 @@
-package IC.Semantics.Symbols;
+package IC.Symbols;
 
 import java.util.HashMap;
 import java.util.Map;

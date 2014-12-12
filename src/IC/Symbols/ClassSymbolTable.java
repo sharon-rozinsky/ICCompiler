@@ -1,9 +1,9 @@
-package IC.Semantics.Symbols;
+package IC.Symbols;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import IC.Semantics.Types.Kind;
+import IC.Types.Kind;
 
 public class ClassSymbolTable extends SymbolTable {
 	
