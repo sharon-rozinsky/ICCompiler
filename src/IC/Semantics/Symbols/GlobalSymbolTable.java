@@ -1,10 +1,7 @@
-package IC.Semantics.Types;
+package IC.Semantics.Symbols;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import IC.Semantics.Symbols.Symbol;
-import IC.Semantics.Symbols.SymbolTable;
 
 public class GlobalSymbolTable extends SymbolTable{
 	public Map<String, Symbol> classes;
