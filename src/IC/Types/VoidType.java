@@ -6,5 +6,9 @@ public class VoidType extends Type{
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	@Override
+	public String toString(){   	
+		return "void";  	
+    }
 }

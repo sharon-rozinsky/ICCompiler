@@ -15,9 +15,26 @@ public abstract class Type {
 		this.typeID = typeID;
 	}
 	
-	public boolean isType(Type type){
-		if (this.typeID == type.typeID)
-			return true;
-		return false;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + typeID;
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Type other = (Type) obj;
+		if (typeID != other.typeID)
+			return false;
+		return true;
+	}
+
 }

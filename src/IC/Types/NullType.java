@@ -6,5 +6,10 @@ public class NullType extends Type{
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
+	
+	@Override
+	public String toString(){
+		return "null";  	
+    }
 
 }

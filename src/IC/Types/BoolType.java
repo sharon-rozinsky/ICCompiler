@@ -7,4 +7,9 @@ public class BoolType extends Type {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
+	public String toString(){   	
+		return "boolean";   	
+    }
+	
 }
