@@ -53,8 +53,8 @@ public class SemanticUtils {
         return elementType;
 
     }
-
-	public static SymbolType convertNodeMethodToSymType(Method method) {
+    
+    public static MethodContent MethodToMethodContents(Method method){
 		SymbolType retType = convertNodeTypeToSymType(method.getType());
         if (retType == null) {
             return null;
@@ -70,9 +70,13 @@ public class SemanticUtils {
             paramTypes[i] = type;
         }
         boolean staticRef = method instanceof StaticMethod;
-        MethodContent methd = new MethodContent(method.getName(), retType, paramTypes, staticRef);
-        return TypeTable.methodType(methd);
+        return new MethodContent(method.getName(), retType, paramTypes, staticRef);
 
+	}
+    
+	public static SymbolType convertNodeMethodToSymType(Method method) {
+        MethodContent methd = MethodToMethodContents(method);
+        return TypeTable.methodType(methd);
 	}
 	
 }
