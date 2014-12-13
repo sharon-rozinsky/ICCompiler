@@ -38,4 +38,27 @@ public class ClassSymbolTable extends SymbolTable {
 		}
 	}
 
+	@Override
+	public boolean symbolContainedInCurrentScope(String id) {
+		if(methods.containsKey(id) || memberVariables.containsKey(id))
+			return true;
+		return false;
+	}
+
+	public Map<String, Symbol> getMethods() {
+		return methods;
+	}
+
+	public void setMethods(Map<String, Symbol> methods) {
+		this.methods = methods;
+	}
+
+	public Map<String, Symbol> getMemberVariables() {
+		return memberVariables;
+	}
+
+	public void setMemberVariables(Map<String, Symbol> memberVariables) {
+		this.memberVariables = memberVariables;
+	}
+
 }

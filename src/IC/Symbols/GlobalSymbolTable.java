@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class GlobalSymbolTable extends SymbolTable{
 	private Map<String, Symbol> classes;
-	
+
 	public GlobalSymbolTable(String id) {
 		// global symbol table has no parent symbol tables.
 		super(id, null);
@@ -24,5 +24,20 @@ public class GlobalSymbolTable extends SymbolTable{
 		}
 		return null;
 		//TODO: consider throwing semantic error in here.
+	}
+
+	@Override
+	public boolean symbolContainedInCurrentScope(String id) {
+		if(classes.containsKey(id))
+			return true;
+		return false;
+	}
+	
+	public Map<String, Symbol> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Map<String, Symbol> classes) {
+		this.classes = classes;
 	}
 }

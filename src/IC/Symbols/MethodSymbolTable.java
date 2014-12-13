@@ -35,4 +35,27 @@ public class MethodSymbolTable extends SymbolTable {
 			return getParentSymbolTable().getSymbol(id);
 		}
 	}
+
+	@Override
+	public boolean symbolContainedInCurrentScope(String id) {
+		if(parameters.containsKey(id) || variables.containsKey(id))
+			return true;
+		return false;
+	}
+	
+	public Map<String, Symbol> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Map<String, Symbol> parameters) {
+		this.parameters = parameters;
+	}
+
+	public Map<String, Symbol> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(Map<String, Symbol> variables) {
+		this.variables = variables;
+	}
 }

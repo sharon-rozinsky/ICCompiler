@@ -33,6 +33,15 @@ public abstract class SymbolTable {
 		childSymbolTables.put(id, symTable);
 	}
 	
+	public boolean symbolContained(String id){
+		Symbol symbol = getSymbol(id);
+		if(symbol != null){
+			return true;
+		}
+		return false;
+	}
+	
 	public abstract void addSymbol(Symbol symbol);
 	public abstract Symbol getSymbol(String id);
+	public abstract boolean symbolContainedInCurrentScope(String id);
 }
