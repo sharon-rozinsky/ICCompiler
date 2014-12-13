@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import IC.AST.ICClass;
+import IC.AST.Method;
+import IC.SemanticChecks.SemanticUtils;
 
 public class TypeTable { //TODO this is a class template from recitation 7....need to complet.
 	
@@ -97,6 +99,14 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 		}
 	}
 
+	public static MethodType methodType(Method method){
+		MethodContent methodContent = SemanticUtils.MethodToMethodContents(method);
+		if(methodContent != null){
+			return methodType(methodContent);
+		}
+		return null;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder typeTableStr = new StringBuilder();

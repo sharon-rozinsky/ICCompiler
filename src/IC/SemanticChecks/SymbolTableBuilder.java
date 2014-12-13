@@ -1,7 +1,5 @@
 package IC.SemanticChecks;
 
-import com.sun.javafx.binding.SelectBinding.AsInteger;
-
 import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
@@ -48,7 +46,10 @@ import IC.Symbols.Symbol;
 import IC.Symbols.SymbolTable;
 import IC.Types.ClassType;
 import IC.Types.Kind;
-import IC.Types.Type;
+import IC.Types.MethodContent;
+import IC.Types.MethodType;
+import IC.Types.SymbolType;
+import IC.Types.TypeTable;
 
 public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boolean> {
 
@@ -95,8 +96,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	public Boolean visit(ICClass icClass, SymbolTable scope) {
 		String className = icClass.getName();
 		String superClassName = "";
-		ClassSymbolTable classSymbolTable = new ClassSymbolTable(className, scope);
-		SymbolTable superClassSymbolTable;
+		SymbolTable parentSymbolTable = scope;
 		
 		// Handle super class
 		if(icClass.hasSuperClass()){
@@ -110,15 +110,16 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			} else {
 				//if a super class exists, the scope of the current class is
 				//nested in the scope of the super class
-				Symbol superClassSymbol = scope.getSymbol(superClassName);
-				ICClass superClass = ((ClassType)superClassSymbol.getType()).getIcClass();
-				superClassSymbolTable = superClass.getEnclosingScopeSymTable();
+				ICClass superClass = TypeTable.classType(superClassName, null, null).getClassNode();
+				parentSymbolTable = superClass.getEnclosingScopeSymTable();
 			}
 		}
 		
-		ClassType type = new ClassType(className, superClassName, unique_id);
-		Symbol symbol = new Symbol(icClass.getName(), type, Kind.Class); 
-		scope.addSymbol(symbol);
+		ClassType type = TypeTable.classType(className, null, null);
+		Symbol symbol = new Symbol(className, type, Kind.Class); 
+		parentSymbolTable.addSymbol(symbol);
+		
+		ClassSymbolTable classSymbolTable = new ClassSymbolTable(className, parentSymbolTable);
 		icClass.setEnclosingScopeSymTable(classSymbolTable);
 		
 		propagate(icClass.getFields(), classSymbolTable);
@@ -132,7 +133,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			//TODO: error handling
 			return false;
 		} else {
-			Type type = null; // = some conversion from field.getType() which returns ASTNode type 
+			SymbolType type = SemanticUtils.convertNodeTypeToSymType(field.getType()); 
 			Symbol symbol = new Symbol(field.getName(), type, Kind.MemberVariable);
 			scope.addSymbol(symbol);
 		}
@@ -144,7 +145,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	public Boolean methodVisit(Method method, SymbolTable scope, boolean isStaticMethod){
 		
 		String methodName = method.getName();
-		Type methodType = null; // = some conversion from ASTNode method
+		SymbolType methodType = TypeTable.methodType(method);
 		Kind methodKind;
 		if(isStaticMethod){
 			methodKind = Kind.StaticMethod;
@@ -156,21 +157,21 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			//TODO: error handling
 			return false;
 		} else if(scope.symbolContained(methodName)){
-			Symbol methodInstanceSymbol = scope.getSymbol(method.getName());
-			Type methodInstanceType = methodInstanceSymbol.getType();
+			Symbol methodInstanceSymbol = scope.getSymbol(methodName);
 			Kind methodInstanceKind = methodInstanceSymbol.getKind();
+			SymbolType methodInstanceType = methodInstanceSymbol.getType();
 			
 			if(methodType != methodInstanceType && methodKind != methodInstanceKind){
-				//TODO: error handling
+				//TODO: error handling. method name found in another scope with another kind or type
 				return false;
 			}
 		}
 		
-		MethodSymbolTable methodSymbolTable = new MethodSymbolTable(methodName, scope);
-		method.setEnclosingScopeSymTable(methodSymbolTable);
-		
 		Symbol symbol = new Symbol(methodName, methodType, methodKind);
 		scope.addSymbol(symbol);
+		
+		MethodSymbolTable methodSymbolTable = new MethodSymbolTable(methodName, scope);
+		method.setEnclosingScopeSymTable(methodSymbolTable);
 		
 		propagate(method.getFormals(), methodSymbolTable);
 		propagate(method.getStatements(), methodSymbolTable);
@@ -202,7 +203,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			return false;
 		} else {
 			formal.setEnclosingScopeSymTable(scope);
-			Type type = formal.getType();
+			SymbolType type = SemanticUtils.convertNodeTypeToSymType(formal.getType());
 			Symbol symbol = new Symbol(formalName, type, Kind.Parameter);
 			scope.addSymbol(symbol);
 			propagate(formal.getType(), scope);
@@ -291,7 +292,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			//TODO: error handling
 			return false;
 		} else {
-			Type type = localVariable.getType();
+			SymbolType type = SemanticUtils.convertNodeTypeToSymType(localVariable.getType());
 			Symbol symbol = new Symbol(localVariable.getName(), type, Kind.MethodVariable);
 			scope.addSymbol(symbol);
 		}
