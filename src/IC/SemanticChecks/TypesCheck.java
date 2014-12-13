@@ -34,6 +34,7 @@ import IC.AST.VirtualCall;
 import IC.AST.VirtualMethod;
 import IC.AST.Visitor;
 import IC.AST.While;
+import IC.Symbols.ClassSymbolTable;
 
 public class TypesCheck implements Visitor{
 
@@ -70,7 +71,14 @@ public class TypesCheck implements Visitor{
 
 	@Override
 	public Object visit(Field field) {
-		// TODO Auto-generated method stub
+		if(field != null)
+		{
+			field.accept(this);
+		}
+		
+		ClassSymbolTable classSymbolTable = (ClassSymbolTable)  field.getEnclosingScopeSymTable();
+		field.setSymbolType(classSymbolTable.getMemberVariables().get(field.getName()).getType());
+		
 		return null;
 	}
 
