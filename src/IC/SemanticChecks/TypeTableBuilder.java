@@ -42,20 +42,20 @@ public class TypeTableBuilder implements Visitor{
         TypeTable.typeTableInit(fileName);
     }
     
-    protected void into(ASTNode node) {
+    protected void stepIn(ASTNode node) {
         if (node != null) {
             node.accept(this);
         }
     }
     
-    /*@SuppressWarnings("rawtypes")
-    protected void into(Iterable iterable) {
+    @SuppressWarnings("rawtypes")
+    protected void stepIn(Iterable iterable) {
         if (iterable != null) {
             for (Object node : iterable) {
-                into((ASTNode)node);
+            	stepIn((ASTNode)node);
             }
         }
-    }*/
+    }
 
 	@Override
 	public Object visit(Program program) {

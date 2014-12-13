@@ -31,7 +31,7 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 	public static SymbolType intType = new IntType(INT_TYPE_ID);
 	public static SymbolType strType = new StringType(STRING_TYPE_ID);
 	public static SymbolType nullType = new NullType(NULL_TYPE_ID);
-	public static SymbolType voideType = new VoidType(VOID_TYPE_ID);
+	public static SymbolType voidType = new VoidType(VOID_TYPE_ID);
 	
 
 	// Returns unique array type object
@@ -68,6 +68,10 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 		}
 	}
 	
+    public static boolean classTypeExists(String classId) {
+        return uniqueClassTypes.containsKey(classId);
+    }
+	
 	// Initialize the Table
 	public static void typeTableInit(String sourceFile) {
 		TypeTable.fileName = sourceFile;
@@ -101,7 +105,7 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 		typeTableStr.append("\t" + BOOLEAN_TYPE_ID + ": " + "Primitive type: " + boolType.toString() + "\n");
 		typeTableStr.append("\t" + NULL_TYPE_ID + ": " + "Primitive type: " + nullType.toString() + "\n");
 		typeTableStr.append("\t" + STRING_TYPE_ID + ": " + "Primitive type: " + strType.toString() + "\n");
-		typeTableStr.append("\t" + VOID_TYPE_ID + ": " + "Primitive type: " + voideType.toString() + "\n");
+		typeTableStr.append("\t" + VOID_TYPE_ID + ": " + "Primitive type: " + voidType.toString() + "\n");
 				
 		List<ClassType> classTypesList = new ArrayList<ClassType>(uniqueClassTypes.values());
 		Collections.sort(classTypesList);
