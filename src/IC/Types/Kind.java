@@ -1,5 +1,8 @@
 package IC.Types;
 
 public enum Kind {
-	Method, MemberVariable, Parameter, MethodVariable
+	Method, 
+	MemberVariable, 
+	Parameter, 
+	MethodVariable
 }
