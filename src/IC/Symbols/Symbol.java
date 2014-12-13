@@ -1,6 +1,7 @@
 package IC.Symbols;
 
 import IC.Types.Kind;
+import IC.Types.Type;
 
 public class Symbol {
 	private String id;

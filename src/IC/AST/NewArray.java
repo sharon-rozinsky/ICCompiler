@@ -37,4 +37,8 @@ public class NewArray extends New {
 		return size;
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

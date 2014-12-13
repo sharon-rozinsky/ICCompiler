@@ -32,4 +32,9 @@ public class PrimitiveType extends Type {
 	public String getName() {
 		return type.getDescription();
 	}
+	
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

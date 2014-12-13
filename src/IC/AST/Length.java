@@ -1,3 +1,4 @@
+
 package IC.AST;
 
 /**
@@ -28,4 +29,8 @@ public class Length extends Expression {
 		return array;
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

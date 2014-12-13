@@ -21,4 +21,8 @@ public class This extends Expression {
 		super(line);
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

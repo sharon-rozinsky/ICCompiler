@@ -29,4 +29,8 @@ public class LogicalBinaryOp extends BinaryOp {
 		super(operand1, operator, operand2);
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

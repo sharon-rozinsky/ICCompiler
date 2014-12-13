@@ -63,4 +63,8 @@ public class LocalVariable extends Statement {
 		return initValue;
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

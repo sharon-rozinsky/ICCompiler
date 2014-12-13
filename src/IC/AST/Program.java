@@ -44,4 +44,8 @@ public class Program extends ASTNode {
 		return classes;
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

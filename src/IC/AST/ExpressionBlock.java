@@ -28,4 +28,8 @@ public class ExpressionBlock extends Expression {
 		return expression;
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

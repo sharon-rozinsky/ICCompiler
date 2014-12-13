@@ -36,4 +36,9 @@ public class ArrayLocation extends Location {
 	public Expression getIndex() {
 		return index;
 	}
+
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

@@ -27,4 +27,9 @@ public class LibraryMethod extends Method {
 	public LibraryMethod(Type type, String name, List<Formal> formals) {
 		super(type, name, formals, new ArrayList<Statement>());
 	}
+	
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

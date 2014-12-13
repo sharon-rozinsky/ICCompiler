@@ -55,4 +55,8 @@ public class VariableLocation extends Location {
 		return name;
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

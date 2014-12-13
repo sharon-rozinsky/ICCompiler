@@ -62,4 +62,8 @@ public class If extends Statement {
 		return elseOperation;
 	}
 
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

@@ -36,5 +36,9 @@ public class Assignment extends Statement {
 	public Expression getAssignment() {
 		return assignment;
 	}
-
+	
+	@Override
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }
