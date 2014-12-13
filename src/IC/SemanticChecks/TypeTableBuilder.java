@@ -40,7 +40,18 @@ import IC.Types.TypeTable;
 
 public class TypeTableBuilder implements Visitor{
 	
-    public TypeTableBuilder(String fileName) {
+	private boolean state = true;
+    
+	
+    public boolean isState() {
+		return state;
+	}
+
+	public void setState(boolean state) {
+		this.state = state;
+	}
+
+	public TypeTableBuilder(String fileName) {
         TypeTable.typeTableInit(fileName);
     }
     
@@ -59,212 +70,248 @@ public class TypeTableBuilder implements Visitor{
         }
     }
     
-    private SymbolType type(IC.AST.Type ASTType) {
-    	SymbolType type = SemanticUtils.convertNodeTypeToSymType(ASTType);
+    private SymbolType type(IC.AST.Type nodeType) {
+    	SymbolType type = SemanticUtils.convertNodeTypeToSymType(nodeType);
         if (type == null) {
-           // state.insertError(ASTType, ErrorType.ReferenceToUndefinedType);
-        }
-        
+           state = false;
+        }      
         return type;
     }
     
     private SymbolType type(Method method) {
-        if (getState().isValidRun()) {
+        if (state) {
             return SemanticUtils.convertNodeMethodToSymType(method);
-        } else {
+        } 
+        else 
+        {
             return null;
         }
     }
     
 	@Override
 	public Object visit(Program program) {
-		// TODO Auto-generated method stub
-		return null;
+		for (ICClass icClass : program.getClasses()) {
+            
+            String className = icClass.getName();
+            String superClassName = icClass.getSuperClassName();
+            
+            if (!TypeTable.classTypeExists(className)) { // make sure there are no classes redefinition
+                TypeTable.classType(className, superClassName, icClass);
+            } 
+            else 
+            {
+            	state = false;
+                return null;
+            }
+        }      
+        stepIn(program.getClasses()); 	// start of "recursive" run
+        return isState(); 				//returns true at the end of the recursive run if successes
 	}
 
 	@Override
 	public Object visit(ICClass icClass) {
-		// TODO Auto-generated method stub
+		stepIn(icClass.getFields());
+		stepIn(icClass.getMethods());
 		return null;
 	}
 
 	@Override
 	public Object visit(Field field) {
-		// TODO Auto-generated method stub
+		stepIn(field.getType());
 		return null;
 	}
 
 	@Override
 	public Object visit(VirtualMethod method) {
-		// TODO Auto-generated method stub
+		stepIn(method.getType());
+		stepIn(method.getFormals());
+		stepIn(method.getStatements());
+        type(method);
 		return null;
 	}
 
 	@Override
 	public Object visit(StaticMethod method) {
-		// TODO Auto-generated method stub
+		stepIn(method.getType());
+		stepIn(method.getFormals());
+		stepIn(method.getStatements());
+        type(method);
 		return null;
 	}
 
 	@Override
 	public Object visit(LibraryMethod method) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(Formal formal) {
-		// TODO Auto-generated method stub
+		stepIn(method.getType());
+		stepIn(method.getFormals());
+        type(method);
 		return null;
 	}
 
 	@Override
 	public Object visit(PrimitiveType type) {
-		// TODO Auto-generated method stub
+		type(type);
 		return null;
 	}
 
 	@Override
 	public Object visit(UserType type) {
-		// TODO Auto-generated method stub
+		type(type);
+		return null;
+	}
+	
+	@Override
+	public Object visit(Formal formal) {
+		stepIn(formal.getType());
 		return null;
 	}
 
 	@Override
 	public Object visit(Assignment assignment) {
-		// TODO Auto-generated method stub
+		stepIn(assignment.getAssignment());
+		stepIn(assignment.getVariable());
 		return null;
 	}
 
 	@Override
 	public Object visit(CallStatement callStatement) {
-		// TODO Auto-generated method stub
+		stepIn(callStatement.getCall());
 		return null;
 	}
 
 	@Override
 	public Object visit(Return returnStatement) {
-		// TODO Auto-generated method stub
+		stepIn(returnStatement.getValue());
 		return null;
 	}
 
 	@Override
 	public Object visit(If ifStatement) {
-		// TODO Auto-generated method stub
+		stepIn(ifStatement.getCondition());
+		stepIn(ifStatement.getOperation());
+		stepIn(ifStatement.getElseOperation());
 		return null;
 	}
 
 	@Override
 	public Object visit(While whileStatement) {
-		// TODO Auto-generated method stub
+		stepIn(whileStatement.getCondition());
+		stepIn(whileStatement.getOperation());
 		return null;
 	}
 
 	@Override
 	public Object visit(Break breakStatement) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(Continue continueStatement) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(StatementsBlock statementsBlock) {
-		// TODO Auto-generated method stub
+		stepIn(statementsBlock.getStatements());
 		return null;
 	}
 
 	@Override
 	public Object visit(LocalVariable localVariable) {
-		// TODO Auto-generated method stub
+		stepIn(localVariable.getType());
+		stepIn(localVariable.getInitValue());
 		return null;
 	}
 
 	@Override
 	public Object visit(VariableLocation location) {
-		// TODO Auto-generated method stub
+		stepIn(location.getLocation());
 		return null;
 	}
 
 	@Override
 	public Object visit(ArrayLocation location) {
-		// TODO Auto-generated method stub
+		stepIn(location.getArray());
+		stepIn(location.getIndex());
 		return null;
 	}
 
 	@Override
 	public Object visit(StaticCall call) {
-		// TODO Auto-generated method stub
+		if (!TypeTable.classTypeExists(call.getClassName())) {
+            state = false;
+        } else {
+            stepIn(call.getArguments());
+        }
 		return null;
 	}
 
 	@Override
 	public Object visit(VirtualCall call) {
-		// TODO Auto-generated method stub
+		stepIn(call.getLocation());
+		stepIn(call.getArguments());
 		return null;
 	}
 
 	@Override
 	public Object visit(This thisExpression) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(NewClass newClass) {
-		// TODO Auto-generated method stub
+		if (!TypeTable.classTypeExists(newClass.getName())) {
+            state = false;
+        }
 		return null;
 	}
 
 	@Override
-	public Object visit(NewArray newArray) {
-		// TODO Auto-generated method stub
+	public Object visit(NewArray arr) {
+		stepIn(arr.getType());
+		stepIn(arr.getSize());
 		return null;
 	}
 
 	@Override
 	public Object visit(Length length) {
-		// TODO Auto-generated method stub
+		stepIn(length.getArray());
 		return null;
 	}
 
 	@Override
 	public Object visit(MathBinaryOp binaryOp) {
-		// TODO Auto-generated method stub
+		stepIn(binaryOp.getFirstOperand());
+		stepIn(binaryOp.getSecondOperand());
 		return null;
 	}
 
 	@Override
 	public Object visit(LogicalBinaryOp binaryOp) {
-		// TODO Auto-generated method stub
+		stepIn(binaryOp.getFirstOperand());
+		stepIn(binaryOp.getSecondOperand());
 		return null;
 	}
 
 	@Override
 	public Object visit(MathUnaryOp unaryOp) {
-		// TODO Auto-generated method stub
+		stepIn(unaryOp.getOperand());
 		return null;
 	}
 
 	@Override
 	public Object visit(LogicalUnaryOp unaryOp) {
-		// TODO Auto-generated method stub
+		stepIn(unaryOp.getOperand());
 		return null;
 	}
 
 	@Override
 	public Object visit(Literal literal) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(ExpressionBlock expressionBlock) {
-		// TODO Auto-generated method stub
+		stepIn(expressionBlock.getExpression());		
 		return null;
 	}
 
