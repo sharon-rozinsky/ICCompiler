@@ -66,13 +66,18 @@ public class ClassType extends Type {
 			return false;
 		return true;
 	}
-
-	public boolean isSubClass(Type type){
-		ClassType cType = (ClassType) type;
-		if (super.getTypeID() == type.getTypeID()) return true; // good?
-
-
-		return false;
-	}
+	
+    public boolean isSubClass(Type type) {
+        if (this.equals(type)) {
+            return true;
+        }
+        
+        if (!(type instanceof ClassType) || superClassName == null) {
+            return false;
+        }
+        
+        return TypeTable.uniqueClassTypes.get(superClassName).isSubClass(type);
+            
+    }
 
 }
