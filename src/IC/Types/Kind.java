@@ -4,5 +4,7 @@ public enum Kind {
 	Method, 
 	MemberVariable, 
 	Parameter, 
-	MethodVariable
+	MethodVariable,
+	StaticMethod,
+	Class
 }
