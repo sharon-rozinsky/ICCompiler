@@ -2,18 +2,18 @@ package IC.Types;
 
 public class MethodType extends Type {
 	
-	private Method method;
+	private MethodContent method;
 
-	public MethodType(Method method, int id) {
+	public MethodType(MethodContent method, int id) {
 		super(id);
 		this.method = method;
 	}
 
-	public Method getMethod() {
+	public MethodContent getMethod() {
 		return method;
 	}
 
-	public void setMethod(Method method) {
+	public void setMethod(MethodContent method) {
 		this.method = method;
 	}
 

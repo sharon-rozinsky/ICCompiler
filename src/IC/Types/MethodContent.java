@@ -2,7 +2,7 @@ package IC.Types;
 
 import java.util.Arrays;
 
-public class Method {
+public class MethodContent {
 	
 	private String methodName;
 	private Type retType;
@@ -11,7 +11,7 @@ public class Method {
 	private boolean StaticRef;
 	
 	
-	public Method(String methodName, Type retType, Type[] params, Type context,
+	public MethodContent(String methodName, Type retType, Type[] params, Type context,
 			boolean staticRef) {
 		super();
 		this.methodName = methodName;
@@ -94,7 +94,7 @@ public class Method {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Method other = (Method) obj;
+		MethodContent other = (MethodContent) obj;
 		if (StaticRef != other.StaticRef)
 			return false;
 		if (context == null) {

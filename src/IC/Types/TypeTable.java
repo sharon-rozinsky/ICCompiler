@@ -24,7 +24,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 	// Maps element types to array types
 	private static Map<Type,ArrayType> uniqueArrayTypes;
 	protected static Map<String,ClassType> uniqueClassTypes;
-	private static Map<Method,MethodType> uniqueMethodTypes;
+	private static Map<MethodContent,MethodType> uniqueMethodTypes;
 
 	public static Type boolType = new BoolType(BOOLEAN_TYPE_ID);
 	public static Type intType = new IntType(INT_TYPE_ID);
@@ -68,7 +68,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 	}
 	
 	// Returns unique method type object
-	public static MethodType methodType(Method method) {
+	public static MethodType methodType(MethodContent method) {
 		
 		if (uniqueMethodTypes.containsKey(method)) 
 		{
