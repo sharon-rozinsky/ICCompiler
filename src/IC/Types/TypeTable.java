@@ -73,7 +73,7 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 		TypeTable.fileName = sourceFile;
         uniqueArrayTypes = new HashMap<Type,ArrayType>();
         uniqueClassTypes = new HashMap<String, ClassType>();
-        uniqueMethodTypes = new HashMap<Method,MethodType>();
+        uniqueMethodTypes = new HashMap<MethodContent,MethodType>();
 	}
 	
 	// Returns unique method type object

@@ -80,4 +80,12 @@ public class ClassType extends Type {
             
     }
 
+	public ICClass getClassNode() {
+		return classNode;
+	}
+
+	public void setClassNode(ICClass classNode) {
+		this.classNode = classNode;
+	}
+
 }
