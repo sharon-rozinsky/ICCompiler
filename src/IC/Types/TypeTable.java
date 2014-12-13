@@ -4,11 +4,12 @@ import java.util.Map;
 
 class TypeTable { //TODO this is a class template from recitation 7....need to complet.
 	// Maps element types to array types
-	private Map<Type,ArrayType> uniqueArrayTypes;
+	private static Map<Type,ArrayType> uniqueArrayTypes;
 	private Map<String,ClassType> uniqueClassTypes;
 
 	public static Type boolType = new BoolType();
 	public static Type intType = new IntType();
+	
 
 	// Returns unique array type object
 	public static ArrayType arrayType(Type elemType) {
@@ -20,9 +21,9 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 		}      
 		else 
 		{          
-			// object doesn�t exist � create and return it
+			// object doesn't exist create and return it
 			ArrayType arrt = new ArrayType(elemType);
-			uniqueArrayTypes.put(elemType,ArrayType);
+			uniqueArrayTypes.put(elemType,arrt);
 			return arrt;
 		}
 	}
