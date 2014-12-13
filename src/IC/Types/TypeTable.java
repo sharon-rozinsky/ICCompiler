@@ -23,9 +23,9 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 	private static int unique_id = NUM_OF_PREMITIVE_TYPES;
 	
 	// Maps element types to array types
-	private static Map<SymbolType,ArrayType> uniqueArrayTypes;
-	protected static Map<String,ClassType> uniqueClassTypes;
-	private static Map<MethodContent,MethodType> uniqueMethodTypes;
+	public static Map<SymbolType,ArrayType> uniqueArrayTypes;
+	public static Map<String,ClassType> uniqueClassTypes;
+	public static Map<MethodContent,MethodType> uniqueMethodTypes;
 
 	public static SymbolType boolType = new BoolType(BOOLEAN_TYPE_ID);
 	public static SymbolType intType = new IntType(INT_TYPE_ID);

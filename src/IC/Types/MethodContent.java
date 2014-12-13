@@ -7,17 +7,14 @@ public class MethodContent {
 	private String methodName;
 	private SymbolType retType;
 	private SymbolType[] params;
-	private SymbolType context; //The scope in which this method is defined (classType). 
 	private boolean StaticRef;
 	
 	
-	public MethodContent(String methodName, SymbolType retType, SymbolType[] params, SymbolType context,
-			boolean staticRef) {
+	public MethodContent(String methodName, SymbolType retType, SymbolType[] params, boolean staticRef) {
 		super();
 		this.methodName = methodName;
 		this.retType = retType;
 		this.params = params;
-		this.context = context;
 		StaticRef = staticRef;
 	}
 
@@ -52,16 +49,6 @@ public class MethodContent {
 	}
 
 
-	public SymbolType getContext() {
-		return context;
-	}
-
-
-	public void setContext(SymbolType context) {
-		this.context = context;
-	}
-
-
 	public boolean isStaticRef() {
 		return StaticRef;
 	}
@@ -77,7 +64,6 @@ public class MethodContent {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (StaticRef ? 1231 : 1237);
-		result = prime * result + ((context == null) ? 0 : context.hashCode());
 		result = prime * result
 				+ ((methodName == null) ? 0 : methodName.hashCode());
 		result = prime * result + Arrays.hashCode(params);
@@ -96,11 +82,6 @@ public class MethodContent {
 			return false;
 		MethodContent other = (MethodContent) obj;
 		if (StaticRef != other.StaticRef)
-			return false;
-		if (context == null) {
-			if (other.context != null)
-				return false;
-		} else if (!context.equals(other.context))
 			return false;
 		if (methodName == null) {
 			if (other.methodName != null)

@@ -19,6 +19,7 @@ import IC.AST.LogicalBinaryOp;
 import IC.AST.LogicalUnaryOp;
 import IC.AST.MathBinaryOp;
 import IC.AST.MathUnaryOp;
+import IC.AST.Method;
 import IC.AST.NewArray;
 import IC.AST.NewClass;
 import IC.AST.PrimitiveType;
@@ -34,6 +35,7 @@ import IC.AST.VirtualCall;
 import IC.AST.VirtualMethod;
 import IC.AST.Visitor;
 import IC.AST.While;
+import IC.Types.SymbolType;
 import IC.Types.TypeTable;
 
 public class TypeTableBuilder implements Visitor{
@@ -56,7 +58,24 @@ public class TypeTableBuilder implements Visitor{
             }
         }
     }
-
+    
+    private SymbolType type(IC.AST.Type ASTType) {
+    	SymbolType type = SemanticUtils.convertNodeTypeToSymType(ASTType);
+        if (type == null) {
+           // state.insertError(ASTType, ErrorType.ReferenceToUndefinedType);
+        }
+        
+        return type;
+    }
+    
+    private SymbolType type(Method method) {
+        if (getState().isValidRun()) {
+            return SemanticUtils.convertNodeMethodToSymType(method);
+        } else {
+            return null;
+        }
+    }
+    
 	@Override
 	public Object visit(Program program) {
 		// TODO Auto-generated method stub
