@@ -4,12 +4,14 @@ import java.util.Map;
 
 class TypeTable { //TODO this is a class template from recitation 7....need to complet.
 	
-	private static final int NULL_TYPE_ID 				= 0;
+	private static String fileName = "";
+
+	private static final int NULL_TYPE_ID 				= 3;
 	private static final int INT_TYPE_ID 				= 1;
-	private static final int STRING_TYPE_ID 			= 2;
-	private static final int BOOLEAN_TYPE_ID 			= 3;
-	private static final int VOID_TYPE_ID				= 4;
-	private static final int NUM_OF_PREMITIVE_TYPES		= 5;
+	private static final int STRING_TYPE_ID 			= 4;
+	private static final int BOOLEAN_TYPE_ID 			= 2;
+	private static final int VOID_TYPE_ID				= 5;
+	private static final int NUM_OF_PREMITIVE_TYPES		= 6;
 
 
 	private static int unique_id = NUM_OF_PREMITIVE_TYPES;
@@ -37,7 +39,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 		else 
 		{          
 			// object doesn't exist create and return it
-			ArrayType arrt = new ArrayType(elemType,unique_id++);
+			ArrayType arrt = new ArrayType(elemType, unique_id++);
 			uniqueArrayTypes.put(elemType,arrt);
 			return arrt;
 		}
@@ -76,6 +78,28 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 			return methodType;
 		}
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder typeTableStr = new StringBuilder();
+		typeTableStr.append("Type Table: " + fileName + "\n");
+		typeTableStr.append("\t" + INT_TYPE_ID + ": " + "Primitive type: " + intType.toString() + "\n");
+		typeTableStr.append("\t" + BOOLEAN_TYPE_ID + ": " + "Primitive type: " + boolType.toString() + "\n");
+		typeTableStr.append("\t" + NULL_TYPE_ID + ": " + "Primitive type: " + nullType.toString() + "\n");
+		typeTableStr.append("\t" + STRING_TYPE_ID + ": " + "Primitive type: " + strType.toString() + "\n");
+		typeTableStr.append("\t" + VOID_TYPE_ID + ": " + "Primitive type: " + voideType.toString() + "\n");
+		
+		for(ClassType classType:uniqueClassTypes.values())
+		{
+			
+		}
+
+
+		
+		
+		return typeTableStr.toString();
+	}
+
 }
 
 
