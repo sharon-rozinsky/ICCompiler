@@ -1,6 +1,11 @@
 package IC.Types;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
+import IC.AST.ICClass;
 
 class TypeTable { //TODO this is a class template from recitation 7....need to complet.
 	
@@ -46,7 +51,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 	}
 	
 	// Returns unique class type object
-	public static ClassType classType(String classId,String superClassId) {
+	public static ClassType classType(String classId,String superClassId,ICClass classNode) {
 		
 		if (uniqueClassTypes.containsKey(classId)) 
 		{
@@ -56,7 +61,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 		else 
 		{          
 			// object doesn't exist create and return it
-			ClassType classType = new ClassType(classId,superClassId,unique_id++);
+			ClassType classType = new ClassType(classId,superClassId,unique_id++, classNode);
 			uniqueClassTypes.put(classId,classType);
 			return classType;
 		}
@@ -88,15 +93,31 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 		typeTableStr.append("\t" + NULL_TYPE_ID + ": " + "Primitive type: " + nullType.toString() + "\n");
 		typeTableStr.append("\t" + STRING_TYPE_ID + ": " + "Primitive type: " + strType.toString() + "\n");
 		typeTableStr.append("\t" + VOID_TYPE_ID + ": " + "Primitive type: " + voideType.toString() + "\n");
+				
+		List<ClassType> classTypesList = new ArrayList<ClassType>(uniqueClassTypes.values());
+		Collections.sort(classTypesList);
 		
-		for(ClassType classType:uniqueClassTypes.values())
+		for(ClassType classType : classTypesList)
 		{
-			
+			typeTableStr.append("\t" + classType.getTypeID() + ": " + "Class: " + classType.toString() + "\n");
+		}
+		
+		List<ArrayType> arrayTypesList = new ArrayList<ArrayType>(uniqueArrayTypes.values());
+		Collections.sort(arrayTypesList);
+		
+		for(ArrayType arrType : arrayTypesList)
+		{
+			typeTableStr.append("\t" + arrType.getTypeID() + ": " + "Array type: " + arrType.toString() + "\n");
+		}
+		
+		List<MethodType> mehodsTypesList = new ArrayList<MethodType>(uniqueMethodTypes.values());
+		Collections.sort(mehodsTypesList);
+		
+		for(MethodType methodType : mehodsTypesList)
+		{
+			typeTableStr.append("\t" + methodType.getTypeID() + ": " + "Method type: " + methodType.toString() + "\n");
 		}
 
-
-		
-		
 		return typeTableStr.toString();
 	}
 

@@ -2,5 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="java-cup-bin-11b-20140902/java-cup-11b-runtime.jar"/>
+	<classpathentry kind="lib" path="//GUYREUVEN/Users/dell/Google Drive2/University/GitHub/jflex-1.6.0/lib/jflex-1.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

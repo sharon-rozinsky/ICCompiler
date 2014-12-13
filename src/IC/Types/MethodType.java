@@ -1,21 +1,12 @@
 package IC.Types;
 
-public class MethodType {
+public class MethodType extends Type {
 	
-	private int id;
 	private Method method;
 
 	public MethodType(Method method, int id) {
-		this.id = id;
+		super(id);
 		this.method = method;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Method getMethod() {
@@ -25,5 +16,20 @@ public class MethodType {
 	public void setMethod(Method method) {
 		this.method = method;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder methodStr = new StringBuilder();
+		methodStr.append("{");
+		for(Type t:method.getParams())
+		{
+			methodStr.append(t.toString());
+		}
+		methodStr.append(" -> " + method.getRetType().toString() + "\n");
+		
+		return methodStr.toString();
+	}
+	
+	
 
 }

@@ -1,7 +1,5 @@
 package IC.Parser;
 
-import java_cup.sym;
-
 public class SyntaxError extends Exception {
 	private String message;
 	

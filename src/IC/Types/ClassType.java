@@ -1,13 +1,17 @@
 package IC.Types;
 
-public class ClassType extends Type{
+import IC.AST.ICClass;
+
+public class ClassType extends Type {
 	private String classUniqueName;
 	private String superClassName;
+	private ICClass classNode;
 
-	public ClassType(String className, String superClassName, int unique_id) {
+	public ClassType(String className, String superClassName, int unique_id, ICClass classNode) {
 		super(unique_id);
 		this.classUniqueName = className;
 		this.superClassName = superClassName;
+		this.classNode = classNode;
 	}
 
 	public String getClassName() {
@@ -26,9 +30,9 @@ public class ClassType extends Type{
 		this.superClassName = superClassName;
 	}
 
-    public String toString() {
-        return classUniqueName+", Superclass ID: "+ TypeTable.uniqueClassTypes.get(superClassName).getTypeID();
-    }
+	public String toString() {
+		return classUniqueName+", Superclass ID: "+ TypeTable.uniqueClassTypes.get(superClassName).getTypeID();
+	}
 
 	@Override
 	public int hashCode() {
@@ -62,14 +66,13 @@ public class ClassType extends Type{
 			return false;
 		return true;
 	}
-	
+
 	public boolean isSubClass(Type type){
 		ClassType cType = (ClassType) type;
 		if (super.getTypeID() == type.getTypeID()) return true; // good?
-		
-		
+
+
 		return false;
 	}
-    
 
 }

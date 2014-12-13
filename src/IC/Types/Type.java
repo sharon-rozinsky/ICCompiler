@@ -1,6 +1,6 @@
 package IC.Types;
 
-public abstract class Type {
+public abstract class Type implements Comparable<Type>{
 	private int typeID;
 	
 	public Type(int id){
@@ -36,5 +36,22 @@ public abstract class Type {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public int compareTo(Type o) {
+		if(this.getTypeID() > o.getTypeID())
+		{
+			return 1;
+		}
+		else if(this.getTypeID() < o.getTypeID())
+		{
+			return -1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 
 }
