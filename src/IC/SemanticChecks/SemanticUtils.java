@@ -1,4 +1,4 @@
-package IC;
+package IC.SemanticChecks;
 
 import IC.Types.SymbolType;
 import IC.Types.TypeTable;
