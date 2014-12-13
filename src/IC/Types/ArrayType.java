@@ -3,33 +3,50 @@ package IC.Types;
 public class ArrayType extends Type{
 
 	private Type elementsType;
-	private int arraySize;
 	
-	public ArrayType(Type elemType, int size, int unique_id) {
+	public ArrayType(Type elementsType, int unique_id) {
 		super(unique_id);
-		this.elementsType = elemType;
-		this.arraySize = size;
+		this.elementsType = elementsType;
 	}
 
-	public Type getElementsType() {
-		return elementsType;
-	}
+    public Type getElementsType() {
+            return elementsType;
+    }
 
 	public void setElementsType(Type elementsType) {
 		this.elementsType = elementsType;
 	}
 	
-	
-	public String toString(){   	
-		return elementsType.toString()+" array";    	
+    @Override
+    public String toString() {       
+        return elementsType.toString() + "[]";
     }
 
-	public int getDimentions() {
-		return arraySize;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((elementsType == null) ? 0 : elementsType.hashCode());
+		return result;
 	}
 
-	public void setDimentions(int size) {
-		arraySize = size;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArrayType other = (ArrayType) obj;
+		if (elementsType == null) {
+			if (other.elementsType != null)
+				return false;
+		} else if (!elementsType.equals(other.elementsType))
+			return false;
+		return true;
 	}
+
 
 }

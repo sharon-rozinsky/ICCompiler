@@ -16,7 +16,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 	
 	// Maps element types to array types
 	private static Map<Type,ArrayType> uniqueArrayTypes;
-	private static Map<String,ClassType> uniqueClassTypes;
+	protected static Map<String,ClassType> uniqueClassTypes;
 	private static Map<Method,MethodType> uniqueMethodTypes;
 
 	public static Type boolType = new BoolType(BOOLEAN_TYPE_ID);
