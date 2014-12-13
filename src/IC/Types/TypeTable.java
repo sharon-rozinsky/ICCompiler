@@ -2,12 +2,13 @@ package IC.Types;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import IC.AST.ICClass;
 
-class TypeTable { //TODO this is a class template from recitation 7....need to complet.
+public class TypeTable { //TODO this is a class template from recitation 7....need to complet.
 	
 	private static String fileName = "";
 
@@ -65,6 +66,14 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 			uniqueClassTypes.put(classId,classType);
 			return classType;
 		}
+	}
+	
+	// Initialize the Table
+	public static void typeTableInit(String sourceFile) {
+		TypeTable.fileName = sourceFile;
+        uniqueArrayTypes = new HashMap<Type,ArrayType>();
+        uniqueClassTypes = new HashMap<String, ClassType>();
+        uniqueMethodTypes = new HashMap<Method,MethodType>();
 	}
 	
 	// Returns unique method type object
