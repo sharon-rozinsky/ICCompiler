@@ -40,7 +40,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 	}
 	
 	// Returns unique class type object
-	public static ClassType classType(String classId) {
+	public static ClassType classType(String classId,String superClassId) {
 		
 		if (uniqueClassTypes.containsKey(classId)) 
 		{
@@ -50,7 +50,7 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 		else 
 		{          
 			// object doesn't exist create and return it
-			ClassType classType = new ClassType(classId,unique_id++);
+			ClassType classType = new ClassType(classId,superClassId,unique_id++);
 			uniqueClassTypes.put(classId,classType);
 			return classType;
 		}
