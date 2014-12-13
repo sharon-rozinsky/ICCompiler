@@ -17,9 +17,13 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 	// Maps element types to array types
 	private static Map<Type,ArrayType> uniqueArrayTypes;
 	private static Map<String,ClassType> uniqueClassTypes;
+	private static Map<Method,MethodType> uniqueMethodTypes;
 
-	public static Type boolType = new BoolType();
-	public static Type intType = new IntType();
+	public static Type boolType = new BoolType(BOOLEAN_TYPE_ID);
+	public static Type intType = new IntType(INT_TYPE_ID);
+	public static Type strType = new StringType(STRING_TYPE_ID);
+	public static Type nullType = new NullType(NULL_TYPE_ID);
+	public static Type voideType = new VoidType(VOID_TYPE_ID);
 	
 
 	// Returns unique array type object
@@ -53,6 +57,23 @@ class TypeTable { //TODO this is a class template from recitation 7....need to c
 			ClassType classType = new ClassType(classId,superClassId,unique_id++);
 			uniqueClassTypes.put(classId,classType);
 			return classType;
+		}
+	}
+	
+	// Returns unique method type object
+	public static MethodType methodType(Method method) {
+		
+		if (uniqueMethodTypes.containsKey(method)) 
+		{
+			// array type object already created return it
+			return uniqueMethodTypes.get(method);
+		}      
+		else 
+		{          
+			// object doesn't exist create and return it
+			MethodType methodType = new MethodType(method,unique_id++);
+			uniqueMethodTypes.put(method,methodType);
+			return methodType;
 		}
 	}
 }
