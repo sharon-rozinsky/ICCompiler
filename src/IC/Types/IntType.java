@@ -1,6 +1,6 @@
 package IC.Types;
 
-public class IntType extends Type {
+public class IntType extends SymbolType {
 
 	public IntType(int id) {
 		super(id);

@@ -2,7 +2,7 @@ package IC.Types;
 
 import IC.AST.ICClass;
 
-public class ClassType extends Type {
+public class ClassType extends SymbolType {
 	private String classUniqueName;
 	private String superClassName;
 	private ICClass classNode;
@@ -67,7 +67,7 @@ public class ClassType extends Type {
 		return true;
 	}
 	
-    public boolean isSubClass(Type type) {
+    public boolean isSubClass(SymbolType type) {
         if (this.equals(type)) {
             return true;
         }

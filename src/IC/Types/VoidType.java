@@ -1,6 +1,6 @@
 package IC.Types;
 
-public class VoidType extends Type{
+public class VoidType extends SymbolType{
 
 	public VoidType(int id) {
 		super(id);

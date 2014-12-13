@@ -1,6 +1,6 @@
 package IC.Types;
 
-public class MethodType extends Type {
+public class MethodType extends SymbolType {
 	
 	private MethodContent method;
 
@@ -21,7 +21,7 @@ public class MethodType extends Type {
 	public String toString() {
 		StringBuilder methodStr = new StringBuilder();
 		methodStr.append("{");
-		for(Type t:method.getParams())
+		for(SymbolType t:method.getParams())
 		{
 			methodStr.append(t.toString());
 		}

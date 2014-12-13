@@ -5,13 +5,13 @@ import java.util.Arrays;
 public class MethodContent {
 	
 	private String methodName;
-	private Type retType;
-	private Type[] params;
-	private Type context; //The scope in which this method is defined (classType). 
+	private SymbolType retType;
+	private SymbolType[] params;
+	private SymbolType context; //The scope in which this method is defined (classType). 
 	private boolean StaticRef;
 	
 	
-	public MethodContent(String methodName, Type retType, Type[] params, Type context,
+	public MethodContent(String methodName, SymbolType retType, SymbolType[] params, SymbolType context,
 			boolean staticRef) {
 		super();
 		this.methodName = methodName;
@@ -32,32 +32,32 @@ public class MethodContent {
 	}
 
 
-	public Type getRetType() {
+	public SymbolType getRetType() {
 		return retType;
 	}
 
 
-	public void setRetType(Type retType) {
+	public void setRetType(SymbolType retType) {
 		this.retType = retType;
 	}
 
 
-	public Type[] getParams() {
+	public SymbolType[] getParams() {
 		return params;
 	}
 
 
-	public void setParams(Type[] params) {
+	public void setParams(SymbolType[] params) {
 		this.params = params;
 	}
 
 
-	public Type getContext() {
+	public SymbolType getContext() {
 		return context;
 	}
 
 
-	public void setContext(Type context) {
+	public void setContext(SymbolType context) {
 		this.context = context;
 	}
 

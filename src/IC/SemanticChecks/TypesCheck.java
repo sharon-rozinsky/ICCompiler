@@ -1,5 +1,6 @@
 package IC.SemanticChecks;
 
+import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
 import IC.AST.Break;
@@ -24,6 +25,7 @@ import IC.AST.NewClass;
 import IC.AST.PrimitiveType;
 import IC.AST.Program;
 import IC.AST.Return;
+import IC.AST.Statement;
 import IC.AST.StatementsBlock;
 import IC.AST.StaticCall;
 import IC.AST.StaticMethod;
@@ -35,68 +37,78 @@ import IC.AST.VirtualMethod;
 import IC.AST.Visitor;
 import IC.AST.While;
 import IC.Symbols.ClassSymbolTable;
+import IC.Symbols.MethodSymbolTable;
 
 public class TypesCheck implements Visitor{
 
+    protected void stepIn(ASTNode node) {
+        if (node != null) {
+            node.accept(this);
+        }
+    }
+    
+    @SuppressWarnings("rawtypes")
+    protected void stepIn(Iterable iterable) {
+        if (iterable != null) {
+            for (Object node : iterable) {
+            	stepIn((ASTNode)node);
+            }
+        }
+    }
+    
 	@Override
 	public Object visit(Program program) {
-		for(ICClass icClass : program.getClasses())
-		{
-			if(icClass != null)
-			{
-				icClass.accept(this);
-			}
-		}
+		stepIn(program.getClasses());
 		return null;
 	}
 
 	@Override
 	public Object visit(ICClass icClass) {
-		for(Field field : icClass.getFields())
-		{
-			if(field != null)
-			{
-				field.accept(this);
-			}
-		}
-		for(Method method : icClass.getMethods())
-		{
-			if(method != null)
-			{
-				method.accept(this);
-			}
-		}
+		stepIn(icClass.getFields());
+		stepIn(icClass.getMethods());
 		return null;
 	}
 
 	@Override
 	public Object visit(Field field) {
-		if(field != null)
-		{
-			field.accept(this);
-		}
-		
+		stepIn(field);
 		ClassSymbolTable classSymbolTable = (ClassSymbolTable)  field.getEnclosingScopeSymTable();
 		field.setSymbolType(classSymbolTable.getMemberVariables().get(field.getName()).getType());
-		
 		return null;
+	}
+	
+	public void visitMethodWraper(Method method) {
+		stepIn(method.getType());
+		stepIn(method.getStatements());
+		stepIn(method.getFormals());
+		
+		method.setSymbolType(((ClassSymbolTable) method.getEnclosingScopeSymTable()).getMethods().get(method.getName()).getType());
 	}
 
 	@Override
 	public Object visit(VirtualMethod method) {
-		// TODO Auto-generated method stub
+		if(method != null)
+		{
+			visitMethodWraper(method);
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(StaticMethod method) {
-		// TODO Auto-generated method stub
+		if(method != null)
+		{
+			visitMethodWraper(method);
+		}
 		return null;
 	}
 
 	@Override
 	public Object visit(LibraryMethod method) {
-		// TODO Auto-generated method stub
+		if(method != null)
+		{
+			visitMethodWraper(method);
+		}
 		return null;
 	}
 

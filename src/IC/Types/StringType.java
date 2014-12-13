@@ -1,6 +1,6 @@
 package IC.Types;
 
-public class StringType extends Type{
+public class StringType extends SymbolType{
 
 	public StringType(int id) {
 		super(id);

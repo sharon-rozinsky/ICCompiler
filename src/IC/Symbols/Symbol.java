@@ -1,14 +1,14 @@
 package IC.Symbols;
 
 import IC.Types.Kind;
-import IC.Types.Type;
+import IC.Types.SymbolType;
 
 public class Symbol {
 	private String id;
-	private Type type;
+	private SymbolType type;
 	private Kind kind;
 	
-	public Symbol(String id, Type type, Kind kind) {
+	public Symbol(String id, SymbolType type, Kind kind) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -19,7 +19,7 @@ public class Symbol {
 		return id;
 	}
 	
-	public Type getType() {
+	public SymbolType getType() {
 		return type;
 	}
 	

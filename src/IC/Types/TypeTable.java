@@ -23,19 +23,19 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 	private static int unique_id = NUM_OF_PREMITIVE_TYPES;
 	
 	// Maps element types to array types
-	private static Map<Type,ArrayType> uniqueArrayTypes;
+	private static Map<SymbolType,ArrayType> uniqueArrayTypes;
 	protected static Map<String,ClassType> uniqueClassTypes;
 	private static Map<MethodContent,MethodType> uniqueMethodTypes;
 
-	public static Type boolType = new BoolType(BOOLEAN_TYPE_ID);
-	public static Type intType = new IntType(INT_TYPE_ID);
-	public static Type strType = new StringType(STRING_TYPE_ID);
-	public static Type nullType = new NullType(NULL_TYPE_ID);
-	public static Type voideType = new VoidType(VOID_TYPE_ID);
+	public static SymbolType boolType = new BoolType(BOOLEAN_TYPE_ID);
+	public static SymbolType intType = new IntType(INT_TYPE_ID);
+	public static SymbolType strType = new StringType(STRING_TYPE_ID);
+	public static SymbolType nullType = new NullType(NULL_TYPE_ID);
+	public static SymbolType voideType = new VoidType(VOID_TYPE_ID);
 	
 
 	// Returns unique array type object
-	public static ArrayType arrayType(Type elemType) {
+	public static ArrayType arrayType(SymbolType elemType) {
 		
 		if (uniqueArrayTypes.containsKey(elemType)) 
 		{
@@ -71,7 +71,7 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 	// Initialize the Table
 	public static void typeTableInit(String sourceFile) {
 		TypeTable.fileName = sourceFile;
-        uniqueArrayTypes = new HashMap<Type,ArrayType>();
+        uniqueArrayTypes = new HashMap<SymbolType,ArrayType>();
         uniqueClassTypes = new HashMap<String, ClassType>();
         uniqueMethodTypes = new HashMap<MethodContent,MethodType>();
 	}

@@ -1,9 +1,9 @@
 package IC.Types;
 
-public abstract class Type implements Comparable<Type>{
+public abstract class SymbolType implements Comparable<SymbolType>{
 	private int typeID;
 	
-	public Type(int id){
+	public SymbolType(int id){
 		this.typeID = id;
 	}
 
@@ -31,14 +31,14 @@ public abstract class Type implements Comparable<Type>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Type other = (Type) obj;
+		SymbolType other = (SymbolType) obj;
 		if (typeID != other.typeID)
 			return false;
 		return true;
 	}
 	
 	@Override
-	public int compareTo(Type o) {
+	public int compareTo(SymbolType o) {
 		if(this.getTypeID() > o.getTypeID())
 		{
 			return 1;

@@ -1,6 +1,7 @@
 package IC.AST;
 
 import IC.Symbols.SymbolTable;
+import IC.Types.SymbolType;
 
 /**
  * Abstract AST node base class.
@@ -10,6 +11,7 @@ import IC.Symbols.SymbolTable;
 public abstract class ASTNode {
 
 	private int line;
+	private SymbolType symbolType;
 	/** reference to symbol table of enclosing scope **/
 	private SymbolTable enclosingScopeSymTable;
 
@@ -49,6 +51,20 @@ public abstract class ASTNode {
 
 	public void setEnclosingScopeSymTable(SymbolTable enclosingScopeSymTable) {
 		this.enclosingScopeSymTable = enclosingScopeSymTable;
+	}
+
+	/**
+	 * @return the symbolType
+	 */
+	public SymbolType getSymbolType() {
+		return symbolType;
+	}
+
+	/**
+	 * @param symbolType the symbolType to set
+	 */
+	public void setSymbolType(SymbolType symbolType) {
+		this.symbolType = symbolType;
 	}
 
 }

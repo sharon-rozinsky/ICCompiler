@@ -1,6 +1,6 @@
 package IC.Types;
 
-public class NullType extends Type{
+public class NullType extends SymbolType{
 
 	public NullType(int id) {
 		super(id);

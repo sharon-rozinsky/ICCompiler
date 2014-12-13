@@ -1,19 +1,19 @@
 package IC.Types;
 
-public class ArrayType extends Type{
+public class ArrayType extends SymbolType{
 
-	private Type elementsType;
+	private SymbolType elementsType;
 	
-	public ArrayType(Type elementsType, int unique_id) {
+	public ArrayType(SymbolType elementsType, int unique_id) {
 		super(unique_id);
 		this.elementsType = elementsType;
 	}
 
-    public Type getElementsType() {
+    public SymbolType getElementsType() {
             return elementsType;
     }
 
-	public void setElementsType(Type elementsType) {
+	public void setElementsType(SymbolType elementsType) {
 		this.elementsType = elementsType;
 	}
 	
