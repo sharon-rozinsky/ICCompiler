@@ -19,6 +19,7 @@ import IC.AST.LogicalBinaryOp;
 import IC.AST.LogicalUnaryOp;
 import IC.AST.MathBinaryOp;
 import IC.AST.MathUnaryOp;
+import IC.AST.Method;
 import IC.AST.NewArray;
 import IC.AST.NewClass;
 import IC.AST.PrimitiveType;
@@ -34,7 +35,13 @@ import IC.AST.VariableLocation;
 import IC.AST.VirtualCall;
 import IC.AST.VirtualMethod;
 import IC.AST.While;
+import IC.Symbols.CodeBlockSymbolTable;
+import IC.Symbols.MethodSymbolTable;
+import IC.Symbols.Symbol;
 import IC.Symbols.SymbolTable;
+import IC.Types.ClassType;
+import IC.Types.Kind;
+import IC.Types.TypeTable;
 
 public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 
@@ -65,194 +72,296 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	
 	@Override
 	public Boolean visit(Program program, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(program.getClasses(), program);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(ICClass icClass, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(icClass, icClass);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Field field, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public Boolean methodVisit(Method method, ASTNode scope){
+		propagate(method.getStatements(), method);
+		return null;
+	}
+	
 	@Override
 	public Boolean visit(VirtualMethod method, ASTNode scope) {
-		// TODO Auto-generated method stub
-		return null;
+		return methodVisit(method, scope);
 	}
 
 	@Override
 	public Boolean visit(StaticMethod method, ASTNode scope) {
-		// TODO Auto-generated method stub
-		return null;
+		return methodVisit(method, scope);
 	}
 
 	@Override
 	public Boolean visit(LibraryMethod method, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Formal formal, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(PrimitiveType type, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(UserType type, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Assignment assignment, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(assignment.getVariable(), scope);
+		propagate(assignment.getAssignment(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(CallStatement callStatement, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(callStatement.getCall(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Return returnStatement, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(If ifStatement, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(ifStatement.getCondition(), scope);
+		propagate(ifStatement.getOperation(), scope);
+		propagate(ifStatement.getElseOperation(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(While whileStatement, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(whileStatement.getCondition(), scope);
+		propagate(whileStatement.getOperation(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Break breakStatement, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Continue continueStatement, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(StatementsBlock statementsBlock, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(statementsBlock.getStatements(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(LocalVariable localVariable, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(localVariable.getInitValue(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(VariableLocation location, ASTNode scope) {
-		// TODO Auto-generated method stub
+		String name = location.getName();
+		SymbolTable locationScope = location.getEnclosingScopeSymTable();
+		
+		if(location.getLocation() != null){
+			Symbol symbol = locationScope.getSymbol(name);
+			Kind symbolKind = symbol.getKind();
+			
+			if(symbolKind != Kind.Parameter && symbolKind != Kind.MemberVariable && symbolKind != Kind.MethodVariable){
+				//TODO: error - referencing a non variable
+				return false;
+			}
+			if(scope instanceof StaticMethod && symbolKind == Kind.MethodVariable){
+				//TODO: error - referencing a member variable from static method
+				return false;
+			}
+			if(!locationScope.symbolContained(name)){
+				//TODO: error - referencing an undefined variable
+				return false;
+			}
+			
+			//TODO: check for unresolved references. This requires saving unresolved variables from
+			//the symbolTableBuilder stage
+		} else if(location.getLocation() instanceof This){
+			SymbolTable classScope = getClassScope(locationScope);
+			
+			if(classScope == null)
+				return false;
+			
+			if(!classScope.symbolContained(name)){
+				//TODO: error - reference to undefined variable
+				return false;
+			}
+			if(scope instanceof StaticMethod){
+				//TODO: error - referencing a member variable from static method
+				return false;
+			}
+			Symbol symbol = classScope.getSymbol(name);
+			if(symbol.getKind() != Kind.MemberVariable){
+				//TODO: error - MemberVariable referencing a non member variable
+				return false;
+			}
+		}
+		
+		propagate(location.getLocation(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(ArrayLocation location, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(location.getArray(), scope);
+		propagate(location.getIndex(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(StaticCall call, ASTNode scope) {
-		// TODO Auto-generated method stub
+		ClassType classType = TypeTable.classType(call.getClassName(), null, null);
+		ICClass icClass = classType.getClassNode();
+		SymbolTable classScope = icClass.getEnclosingScopeSymTable();
+		Symbol symbol = classScope.getSymbol(call.getName());
+		
+		if(symbol.getKind() != Kind.StaticMethod){
+			//TODO: error - calling an undefined static method
+			return false;
+		}
+		
+		if(classScope.symbolContained(call.getName())){
+			//TODO: error - calling a static method that is not in scope.
+			return false;
+		}
+		
+		propagate(call.getArguments(), scope);
+		
 		return null;
 	}
 
 	@Override
 	public Boolean visit(VirtualCall call, ASTNode scope) {
-		// TODO Auto-generated method stub
+		String callName = call.getName();
+		SymbolTable callScope = call.getEnclosingScopeSymTable();
+		SymbolTable classScope = getClassScope(callScope);
+		
+		if(call.getLocation() == null){
+			if(!classScope.symbolContained(callName)){
+				//TODO: error - calling an undefined method
+				return false;
+			}
+			
+			Symbol callSymbol = classScope.getSymbol(callName);
+			if(scope instanceof StaticMethod && callSymbol.getKind() == Kind.Method){
+				//TODO: error - calling a non static method from a static scope
+				return false;
+			}
+			
+			if(callSymbol.getKind() != Kind.Method){
+				//TODO: error - calling undefined method
+				return false;
+			}
+		} else if(call.getLocation() instanceof This){
+			if(!classScope.symbolContained(callName)){
+				//TODO: error - calling an undefined method
+				return false;
+			}
+			
+			Symbol callSymbol = classScope.getSymbol(callName);
+			if(scope instanceof StaticMethod){
+				//TODO: error - calling a non static method from a this expression
+				return false;
+			}
+			
+			if(callSymbol.getKind() != Kind.Method){
+				//TODO: error - calling undefined method
+				return false;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public Boolean visit(This thisExpression, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(NewClass newClass, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(NewArray newArray, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(newArray.getSize(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Length length, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(length.getArray(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(MathBinaryOp binaryOp, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(binaryOp.getFirstOperand(), scope);
+		propagate(binaryOp.getSecondOperand(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(LogicalBinaryOp binaryOp, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(binaryOp.getFirstOperand(), scope);
+		propagate(binaryOp.getSecondOperand(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(MathUnaryOp unaryOp, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(unaryOp.getOperand(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(LogicalUnaryOp unaryOp, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(unaryOp.getOperand(), scope);
 		return null;
 	}
 
 	@Override
 	public Boolean visit(Literal literal, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean visit(ExpressionBlock expressionBlock, ASTNode scope) {
-		// TODO Auto-generated method stub
+		propagate(expressionBlock.getExpression(), scope);
 		return null;
 	}
 
+	private SymbolTable getClassScope(SymbolTable locationScope) {
+		SymbolTable classScope = null;
+		if(locationScope instanceof MethodSymbolTable)
+			classScope = locationScope.getParentSymbolTable();
+		else if(locationScope instanceof CodeBlockSymbolTable)
+			classScope = locationScope.getParentSymbolTable().getParentSymbolTable();
+		return classScope;
+	}
 }
