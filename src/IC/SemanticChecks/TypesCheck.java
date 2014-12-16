@@ -1,7 +1,5 @@
 package IC.SemanticChecks;
 
-import com.sun.org.apache.bcel.internal.generic.Type;
-
 import IC.BinaryOps;
 import IC.LiteralTypes;
 import IC.UnaryOps;

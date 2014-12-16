@@ -17,6 +17,7 @@ import IC.SemanticChecks.SymbolTableBuilder;
 import IC.SemanticChecks.SymbolTableChecker;
 import IC.SemanticChecks.TypesCheck;
 import IC.Symbols.SymbolTable;
+import IC.Symbols.SymbolTablePrinter;
 import IC.SemanticChecks.TypeTableBuilder;
 import IC.Types.TypeTable;
 
@@ -48,17 +49,22 @@ public class Compiler {
 				System.out.println(output);
 				reader.close();
 				
-				//testing symbol table
+//				//testing symbol table
 				SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
 		        root.accept(symbolBuilder, null);  
-	        
-				//testing symbol scope
-		        SymbolTableChecker scopeCheck = new SymbolTableChecker();
-		        scopeCheck.visit((Program) root, null);
+//	        
+//				//testing symbol scope
+//		        SymbolTableChecker scopeCheck = new SymbolTableChecker();
+//		        scopeCheck.visit((Program) root, null);
+		        
+		        //print Symbol Table
+		        //SymbolTablePrinter symTablePrinter = new SymbolTablePrinter();
+		        //String printedSymbolTables = (String)symTablePrinter.visit((Program) root);
+		        //System.out.println(printedSymbolTables);
 		        
 		        //testing type check
-		        TypesCheck typeCheck = new TypesCheck();
-		        typeCheck.visit((Program) root);
+		        //TypesCheck typeCheck = new TypesCheck();
+		        //typeCheck.visit((Program) root);
 //		        
 //		        //testing breakCont
 //		        BreakContinueChecker breakCont = new BreakContinueChecker();
