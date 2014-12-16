@@ -81,6 +81,11 @@ public class ClassType extends SymbolType {
             return true;
         }
         
+        if(type == null)
+        {
+        	return true;
+        }
+        
         if (!(type instanceof ClassType) || superClassName == null) {
             return false;
         }
