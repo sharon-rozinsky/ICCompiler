@@ -1,5 +1,7 @@
 package IC.SemanticChecks;
 
+import java.util.List;
+
 import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
@@ -25,37 +27,32 @@ import IC.AST.NewClass;
 import IC.AST.PrimitiveType;
 import IC.AST.Program;
 import IC.AST.Return;
+import IC.AST.Statement;
 import IC.AST.StatementsBlock;
 import IC.AST.StaticCall;
 import IC.AST.StaticMethod;
 import IC.AST.This;
+import IC.AST.Type;
 import IC.AST.UserType;
 import IC.AST.VariableLocation;
 import IC.AST.VirtualCall;
 import IC.AST.VirtualMethod;
 import IC.AST.Visitor;
 import IC.AST.While;
+import IC.Types.ArrayType;
+import IC.Types.MethodContent;
 import IC.Types.SymbolType;
 import IC.Types.TypeTable;
-
+import IC.Types.VoidType;
+ 
 public class TypeTableBuilder implements Visitor{
-	
-	private boolean state = true;
-    
-	
-    public boolean isState() {
-		return state;
-	}
-
-	public void setState(boolean state) {
-		this.state = state;
-	}
+ 
 
 	public TypeTableBuilder(String fileName) {
         TypeTable.typeTableInit(fileName);
     }
     
-    protected void stepIn(ASTNode node) throws SemanticError {
+    public void stepIn(ASTNode node) throws SemanticError {
         if (node != null) {
             node.accept(this);
         }
@@ -70,42 +67,41 @@ public class TypeTableBuilder implements Visitor{
         }
     }
     
-    private SymbolType type(IC.AST.Type nodeType) {
+    private SymbolType type(IC.AST.Type nodeType) throws SemanticError {
     	SymbolType type = SemanticUtils.convertNodeTypeToSymType(nodeType);
         if (type == null) {
-           state = false;
+        	//throw new SemanticError(0, "A reference to an undefined type - FIX"); //TODO: FIX - line number?!?!
         }      
         return type;
     }
     
     private SymbolType type(Method method) {
-        if (state) {
-            return SemanticUtils.convertNodeMethodToSymType(method);
-        } 
-        else 
-        {
-            return null;
-        }
+    	return SemanticUtils.convertNodeMethodToSymType(method);
     }
     
 	@Override
 	public Object visit(Program program) throws SemanticError {
+		TypeTable.arrayType(TypeTable.strType);
+		SymbolType[] sTarr = new SymbolType[1];
+		sTarr[0] = (SymbolType) new ArrayType(TypeTable.strType, 6);
+		MethodContent mC = new MethodContent("main", new VoidType(5), sTarr, true);
+		TypeTable.methodType(mC);
+		
 		for (ICClass icClass : program.getClasses()) {
-            
+						
             String className = icClass.getName();
             String superClassName = icClass.getSuperClassName();
             
-            if (!TypeTable.classTypeExists(className)) { // make sure there are no classes redefinition
+            if (!TypeTable.classTypeExists(className)) { // make sure there are no classes redefinition          	
                 TypeTable.classType(className, superClassName, icClass);
+                stepIn(icClass); 	// start of "recursive" run
             } 
             else 
             {
-            	state = false;
-                return null;
+            	throw new SemanticError(program.getLine(), "Redifinition of a Class");
             }
-        }      
-        stepIn(program.getClasses()); 	// start of "recursive" run
-        return isState(); 				//returns true at the end of the recursive run if successes
+        }    
+        return true; 				//returns true at the end of the recursive run if successes
 	}
 
 	@Override
@@ -123,38 +119,40 @@ public class TypeTableBuilder implements Visitor{
 
 	@Override
 	public Object visit(VirtualMethod method) throws SemanticError {
+		type(method);
 		stepIn(method.getType());
 		stepIn(method.getFormals());
 		stepIn(method.getStatements());
-        type(method);
+        
 		return null;
 	}
 
 	@Override
 	public Object visit(StaticMethod method) throws SemanticError {
+		type(method);
 		stepIn(method.getType());
 		stepIn(method.getFormals());
 		stepIn(method.getStatements());
-        type(method);
+        
 		return null;
 	}
 
 	@Override
 	public Object visit(LibraryMethod method) throws SemanticError {
+		type(method);
 		stepIn(method.getType());
-		stepIn(method.getFormals());
-        type(method);
+		stepIn(method.getFormals()); 
 		return null;
 	}
 
 	@Override
-	public Object visit(PrimitiveType type) {
+	public Object visit(PrimitiveType type) throws SemanticError {
 		type(type);
 		return null;
 	}
 
 	@Override
-	public Object visit(UserType type) {
+	public Object visit(UserType type) throws SemanticError {
 		type(type);
 		return null;
 	}
@@ -217,8 +215,8 @@ public class TypeTableBuilder implements Visitor{
 
 	@Override
 	public Object visit(LocalVariable localVariable) throws SemanticError {
-		stepIn(localVariable.getType());
 		stepIn(localVariable.getInitValue());
+		stepIn(localVariable.getType());
 		return null;
 	}
 
@@ -238,7 +236,7 @@ public class TypeTableBuilder implements Visitor{
 	@Override
 	public Object visit(StaticCall call) throws SemanticError {
 		if (!TypeTable.classTypeExists(call.getClassName())) {
-            state = false;
+			//throw new SemanticError(call.getLine(), "A reference to an undefined Class type");
         } else {
             stepIn(call.getArguments());
         }
@@ -247,8 +245,8 @@ public class TypeTableBuilder implements Visitor{
 
 	@Override
 	public Object visit(VirtualCall call) throws SemanticError {
-		stepIn(call.getLocation());
 		stepIn(call.getArguments());
+		stepIn(call.getLocation());
 		return null;
 	}
 
@@ -258,9 +256,9 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(NewClass newClass) {
+	public Object visit(NewClass newClass) throws SemanticError {
 		if (!TypeTable.classTypeExists(newClass.getName())) {
-            state = false;
+			//throw new SemanticError(newClass.getLine(), "An Instantiation of undefined Class type"); //TODO : is it right?!
         }
 		return null;
 	}

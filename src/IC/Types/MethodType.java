@@ -21,12 +21,24 @@ public class MethodType extends SymbolType {
 	public String toString() {
 		StringBuilder methodStr = new StringBuilder();
 		methodStr.append("{");
-		for(SymbolType t:method.getParams())
+		if (method!=null)
 		{
-			methodStr.append(t.toString());
-		}
-		methodStr.append(" -> " + method.getRetType().toString() + "\n");
+			int numP = method.getParams().length;
+			for (int i=0; i<numP; i++)
+			{
+				methodStr.append(method.getParams()[i].toString());
+				if (i!= numP-1)
+				{
+					methodStr.append(", ");
+				}
+			}
 		
+//		for(SymbolType t:method.getParams())
+//		{
+//			methodStr.append(t.toString()+", ");
+//		}
+			methodStr.append(" -> " + method.getRetType().toString() + "}");
+		}
 		return methodStr.toString();
 	}
 	

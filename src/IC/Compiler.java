@@ -9,9 +9,12 @@ import java.io.Reader;
 import java_cup.runtime.Symbol;
 import IC.AST.ASTNode;
 import IC.AST.PrettyPrinter;
+import IC.AST.Program;
 import IC.Parser.*;
 import IC.SemanticChecks.SymbolTableBuilder;
 import IC.Symbols.SymbolTable;
+import IC.SemanticChecks.TypeTableBuilder;
+import IC.Types.TypeTable;
 
 public class Compiler {
 	
@@ -33,6 +36,10 @@ public class Compiler {
 				// print the AST of the program
 				PrettyPrinter printer = new PrettyPrinter(args[0]);
 				ASTNode root = (ASTNode) parseSymbol.value;
+				TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
+				ttb.visit((Program) root);
+				String typeT = TypeTable.printTable();
+				System.out.println(typeT);
 				String output = (String) root.accept(printer);
 				System.out.println(output);
 				reader.close();

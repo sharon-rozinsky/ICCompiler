@@ -31,7 +31,15 @@ public class ClassType extends SymbolType {
 	}
 
 	public String toString() {
-		return classUniqueName+", Superclass ID: "+ TypeTable.uniqueClassTypes.get(superClassName).getTypeID();
+		String ret;
+		if (superClassName != null){
+			ret = classUniqueName+", Superclass ID: "+ TypeTable.uniqueClassTypes.get(superClassName).getTypeID();
+		}
+		else
+		{
+			ret = classUniqueName;
+		}
+		return ret;
 	}
 
 	@Override

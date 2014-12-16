@@ -10,13 +10,13 @@ import IC.AST.ICClass;
 import IC.AST.Method;
 import IC.SemanticChecks.SemanticUtils;
 
-public class TypeTable { //TODO this is a class template from recitation 7....need to complet.
+public class TypeTable {
 	
 	private static String fileName = "";
 
 	private static final int NULL_TYPE_ID 				= 3;
 	private static final int INT_TYPE_ID 				= 1;
-	private static final int STRING_TYPE_ID 			= 4;
+	public static final int STRING_TYPE_ID 				= 4;
 	private static final int BOOLEAN_TYPE_ID 			= 2;
 	private static final int VOID_TYPE_ID				= 5;
 	private static final int NUM_OF_PREMITIVE_TYPES		= 6;
@@ -107,8 +107,7 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 		return null;
 	}
 	
-	@Override
-	public String toString() {
+	public static String printTable() {
 		StringBuilder typeTableStr = new StringBuilder();
 		typeTableStr.append("Type Table: " + fileName + "\n");
 		typeTableStr.append("\t" + INT_TYPE_ID + ": " + "Primitive type: " + intType.toString() + "\n");
@@ -122,6 +121,8 @@ public class TypeTable { //TODO this is a class template from recitation 7....ne
 		
 		for(ClassType classType : classTypesList)
 		{
+			int tId = classType.getTypeID();
+			String Ctype = classType.toString();
 			typeTableStr.append("\t" + classType.getTypeID() + ": " + "Class: " + classType.toString() + "\n");
 		}
 		
