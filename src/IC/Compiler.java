@@ -52,27 +52,27 @@ public class Compiler {
 //				//testing symbol table
 				SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
 		        root.accept(symbolBuilder, null);  
-//	        
+	        
 //				//testing symbol scope
-//		        SymbolTableChecker scopeCheck = new SymbolTableChecker();
-//		        scopeCheck.visit((Program) root, null);
+		        SymbolTableChecker scopeCheck = new SymbolTableChecker();
+		        scopeCheck.visit((Program) root, null);
 		        
 		        //print Symbol Table
-		        //SymbolTablePrinter symTablePrinter = new SymbolTablePrinter();
-		        //String printedSymbolTables = (String)symTablePrinter.visit((Program) root);
-		        //System.out.println(printedSymbolTables);
+		        SymbolTablePrinter symTablePrinter = new SymbolTablePrinter();
+		        String printedSymbolTables = (String)symTablePrinter.visit((Program) root);
+		        System.out.println(printedSymbolTables);
 		        
 		        //testing type check
-		        //TypesCheck typeCheck = new TypesCheck();
-		        //typeCheck.visit((Program) root);
-//		        
-//		        //testing breakCont
-//		        BreakContinueChecker breakCont = new BreakContinueChecker();
-//		        breakCont.visit((Program) root, null);
-//		        
-//		        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
-//		        SpecialSemanticChecks.validateMainFunction((Program) root);
-//		        
+		        TypesCheck typeCheck = new TypesCheck();
+		        typeCheck.visit((Program) root);
+		        
+		        //testing breakCont
+		        BreakContinueChecker breakCont = new BreakContinueChecker();
+		        breakCont.visit((Program) root, null);
+		        
+		        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
+		        SpecialSemanticChecks.validateMainFunction((Program) root);
+		        
 				System.out.println("good till here !!");
 				
 				// Check if there is a library file and parse it

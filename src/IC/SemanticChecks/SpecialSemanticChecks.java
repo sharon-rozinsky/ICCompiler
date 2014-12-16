@@ -2,6 +2,7 @@ package IC.SemanticChecks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import IC.AST.ICClass;
 import IC.AST.If;
@@ -14,6 +15,7 @@ import IC.AST.StatementsBlock;
 import IC.Symbols.ClassSymbolTable;
 import IC.Symbols.Symbol;
 import IC.Types.Kind;
+import IC.Types.MethodContent;
 import IC.Types.MethodType;
 import IC.Types.SymbolType;
 import IC.Types.TypeTable;
@@ -49,9 +51,9 @@ public class SpecialSemanticChecks {
 				else if(mainSymbol.getKind() == Kind.StaticMethod)
 				{
 					MethodType mainType = (MethodType) mainSymbol.getType();
-					if((mainType.getMethod().getRetType() == TypeTable.voidType)
+					if((mainType.getMethod().getRetType().equals(TypeTable.voidType))
 							&& (mainType.getMethod().getParams().length == 1)
-							&& (mainType.getMethod().getParams()[1] == TypeTable.uniqueArrayTypes.get(TypeTable.strType)))
+							&& (mainType.getMethod().getParams()[0].equals(TypeTable.uniqueArrayTypes.get(TypeTable.strType))))
 					{
 						mainMethodCount++;   
 						if(mainMethodCount >1)
@@ -102,14 +104,14 @@ public class SpecialSemanticChecks {
 				{
 					continue;
 				}
-				
-				SymbolType retType= TypeTable.uniqueMethodTypes.get(m.getName()).getMethod().getRetType();
-				if(retType != TypeTable.voidType)
+
+				SymbolType retType= ((MethodType) m.getSymbolType()).getMethod().getRetType();
+				if(!retType.equals(TypeTable.voidType))
 				{
 					if(!allPathsReturnNoneVoidValue(m.getStatements()))
 					{
 						throw new SemanticError(m.getLine(), 
-								String.format("Library class name must be \"Library\""));
+								String.format("Not all paths returns values in None void method"));
 					}
 				}
 			}
@@ -130,7 +132,10 @@ public class SpecialSemanticChecks {
 			
 			if(stmnt instanceof StatementsBlock)
 			{
-				allPathsReturnNoneVoidValue(((StatementsBlock) stmnt).getStatements());
+				 if(allPathsReturnNoneVoidValue(((StatementsBlock) stmnt).getStatements()))
+				 {
+					 return true;
+				 }
 			}
 			
 		}

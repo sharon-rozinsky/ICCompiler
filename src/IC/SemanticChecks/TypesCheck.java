@@ -267,13 +267,14 @@ public class TypesCheck implements Visitor{
 		SymbolType initType = null;
 		
 		if(localVariable.hasInitValue())
+		{
 			initType = localVariable.getInitValue().getSymbolType();
 			if(!initType.isSubClass(varType))
 			{
 				throw new SemanticError(localVariable.getLine(), 
 						String.format("Variable initialization with wrong type. got %s, expected %s.",initType.toString(),varType.toString()));
 			}
-		
+		}
 		return null;
 	}
 
