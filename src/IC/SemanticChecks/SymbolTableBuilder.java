@@ -243,6 +243,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 
 	@Override
 	public Boolean visit(If ifStatement, SymbolTable scope) throws SemanticError {
+		propagate(ifStatement.getCondition(),scope);
 		ifStatement.setEnclosingScopeSymTable(scope);
 		propagate(ifStatement.getOperation(), new CodeBlockSymbolTable(scope));
 		if(ifStatement.hasElse()){

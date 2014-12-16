@@ -48,6 +48,7 @@ import IC.AST.While;
 import IC.Symbols.ClassSymbolTable;
 import IC.Symbols.MethodSymbolTable;
 import IC.Symbols.Symbol;
+import IC.Symbols.SymbolTable;
 import IC.Types.ArrayType;
 import IC.Types.ClassType;
 import IC.Types.Kind;
@@ -56,7 +57,23 @@ import IC.Types.SymbolType;
 import IC.Types.TypeTable;
 
 public class TypesCheck implements Visitor{
-
+	
+	private ClassSymbolTable getClassSymbolTable(ASTNode node){
+		SymbolTable currentSymbolTable = node.getEnclosingScopeSymTable();
+		while (!(currentSymbolTable instanceof ClassSymbolTable)){
+			currentSymbolTable = currentSymbolTable.getParentSymbolTable();
+		}
+		return (ClassSymbolTable) currentSymbolTable;
+	}
+	
+	private MethodSymbolTable getMethodSymbolTable(ASTNode node){
+		SymbolTable currentSymbolTable = node.getEnclosingScopeSymTable();
+		while (!(currentSymbolTable instanceof MethodSymbolTable)){
+			currentSymbolTable = currentSymbolTable.getParentSymbolTable();
+		}
+		return (MethodSymbolTable) currentSymbolTable;
+	}
+	
 	protected void stepIn(ASTNode node) throws SemanticError {
 		if (node != null) {
 			node.accept(this);
@@ -87,7 +104,7 @@ public class TypesCheck implements Visitor{
 
 	@Override
 	public Object visit(Field field) throws SemanticError {
-		stepIn(field);
+		stepIn(field.getType());
 		ClassSymbolTable classSymbolTable = (ClassSymbolTable)  field.getEnclosingScopeSymTable();
 		field.setSymbolType(classSymbolTable.getMemberVariables().get(field.getName()).getType());
 		return null;

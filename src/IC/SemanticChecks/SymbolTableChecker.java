@@ -80,7 +80,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 
 	@Override
 	public Boolean visit(ICClass icClass, ASTNode scope) throws SemanticError {
-		propagate(icClass, icClass);
+		propagate(icClass.getMethods(), icClass);
 		return null;
 	}
 

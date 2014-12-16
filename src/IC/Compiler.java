@@ -51,19 +51,22 @@ public class Compiler {
 				//testing symbol table
 				SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
 		        root.accept(symbolBuilder, null);  
+	        
 				//testing symbol scope
 		        SymbolTableChecker scopeCheck = new SymbolTableChecker();
 		        scopeCheck.visit((Program) root, null);
+		        
 		        //testing type check
 		        TypesCheck typeCheck = new TypesCheck();
 		        typeCheck.visit((Program) root);
-		        //testing breakCont
-		        BreakContinueChecker breakCont = new BreakContinueChecker();
-		        breakCont.visit((Program) root, null);
-		        
-		        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
-		        SpecialSemanticChecks.validateMainFunction((Program) root);
-		        
+//		        
+//		        //testing breakCont
+//		        BreakContinueChecker breakCont = new BreakContinueChecker();
+//		        breakCont.visit((Program) root, null);
+//		        
+//		        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
+//		        SpecialSemanticChecks.validateMainFunction((Program) root);
+//		        
 				System.out.println("good till here !!");
 				
 				// Check if there is a library file and parse it
