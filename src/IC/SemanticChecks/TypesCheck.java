@@ -38,17 +38,18 @@ import IC.AST.Visitor;
 import IC.AST.While;
 import IC.Symbols.ClassSymbolTable;
 import IC.Symbols.MethodSymbolTable;
+import IC.Types.SymbolType;
 
 public class TypesCheck implements Visitor{
 
-    protected void stepIn(ASTNode node) {
+    protected void stepIn(ASTNode node) throws SemanticError {
         if (node != null) {
             node.accept(this);
         }
     }
     
     @SuppressWarnings("rawtypes")
-    protected void stepIn(Iterable iterable) {
+    protected void stepIn(Iterable iterable) throws SemanticError {
         if (iterable != null) {
             for (Object node : iterable) {
             	stepIn((ASTNode)node);
@@ -57,27 +58,27 @@ public class TypesCheck implements Visitor{
     }
     
 	@Override
-	public Object visit(Program program) {
+	public Object visit(Program program) throws SemanticError {
 		stepIn(program.getClasses());
 		return null;
 	}
 
 	@Override
-	public Object visit(ICClass icClass) {
+	public Object visit(ICClass icClass) throws SemanticError {
 		stepIn(icClass.getFields());
 		stepIn(icClass.getMethods());
 		return null;
 	}
 
 	@Override
-	public Object visit(Field field) {
+	public Object visit(Field field) throws SemanticError {
 		stepIn(field);
 		ClassSymbolTable classSymbolTable = (ClassSymbolTable)  field.getEnclosingScopeSymTable();
 		field.setSymbolType(classSymbolTable.getMemberVariables().get(field.getName()).getType());
 		return null;
 	}
 	
-	public void visitMethodWraper(Method method) {
+	public void visitMethodWraper(Method method) throws SemanticError {
 		stepIn(method.getType());
 		stepIn(method.getStatements());
 		stepIn(method.getFormals());
@@ -86,7 +87,7 @@ public class TypesCheck implements Visitor{
 	}
 
 	@Override
-	public Object visit(VirtualMethod method) {
+	public Object visit(VirtualMethod method) throws SemanticError {
 		if(method != null)
 		{
 			visitMethodWraper(method);
@@ -95,7 +96,7 @@ public class TypesCheck implements Visitor{
 	}
 
 	@Override
-	public Object visit(StaticMethod method) {
+	public Object visit(StaticMethod method) throws SemanticError {
 		if(method != null)
 		{
 			visitMethodWraper(method);
@@ -104,7 +105,7 @@ public class TypesCheck implements Visitor{
 	}
 
 	@Override
-	public Object visit(LibraryMethod method) {
+	public Object visit(LibraryMethod method) throws SemanticError {
 		if(method != null)
 		{
 			visitMethodWraper(method);
@@ -113,28 +114,41 @@ public class TypesCheck implements Visitor{
 	}
 
 	@Override
-	public Object visit(Formal formal) {
-		// TODO Auto-generated method stub
+	public Object visit(Formal formal) throws SemanticError {
+		stepIn(formal.getType());
+		
+		formal.setSymbolType(((MethodSymbolTable) formal.getEnclosingScopeSymTable()).getParameters().get(formal.getName()).getType());
 		return null;
 	}
 
 	@Override
 	public Object visit(PrimitiveType type) {
-		// TODO Auto-generated method stub
+		type.setSymbolType(SemanticUtils.convertNodeTypeToSymType(type));
 		return null;
 	}
 
 	@Override
 	public Object visit(UserType type) {
-		// TODO Auto-generated method stub
+		type.setSymbolType(SemanticUtils.convertNodeTypeToSymType(type));
 		return null;
 	}
 
 	@Override
-	public Object visit(Assignment assignment) {
-		// TODO Auto-generated method stub
+	public Object visit(Assignment assignment) throws SemanticError {
+		stepIn(assignment.getAssignment());
+		stepIn(assignment.getVariable());
+		
+		SymbolType t1 = assignment.getAssignment().getSymbolType();
+		SymbolType t2 = assignment.getVariable().getSymbolType();
+		
+		if(!t1.isSubClass(t2))
+		{
+			throw new SemanticError(assignment.getLine(),String.format("Can't assign variable from type %S to type %S", t2.toString(),t1.toString()));
+		}
+		
 		return null;
 	}
+
 
 	@Override
 	public Object visit(CallStatement callStatement) {

@@ -1,5 +1,7 @@
 package IC.AST;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Local variable declaration statement AST node.
  * 
@@ -13,7 +15,7 @@ public class LocalVariable extends Statement {
 
 	private Expression initValue = null;
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

@@ -1,5 +1,7 @@
 package IC.AST;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Class instance creation AST node.
  * 
@@ -9,7 +11,7 @@ public class NewClass extends New {
 
 	private String name;
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

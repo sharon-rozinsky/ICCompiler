@@ -3,6 +3,8 @@ package IC.AST;
 import java.util.ArrayList;
 import java.util.List;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Library method declaration AST node.
  * 
@@ -10,7 +12,7 @@ import java.util.List;
  */
 public class LibraryMethod extends Method {
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

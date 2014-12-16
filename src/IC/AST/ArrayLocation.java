@@ -1,5 +1,7 @@
 package IC.AST;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Array reference AST node.
  * 
@@ -11,7 +13,7 @@ public class ArrayLocation extends Location {
 
 	private Expression index;
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

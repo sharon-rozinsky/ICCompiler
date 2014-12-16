@@ -1,5 +1,7 @@
 package IC.AST;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Break statement AST node.
  * 
@@ -7,7 +9,7 @@ package IC.AST;
  */
 public class Break extends Statement {
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

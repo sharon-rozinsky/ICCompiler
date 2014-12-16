@@ -1,5 +1,6 @@
 package IC.AST;
 
+import IC.SemanticChecks.SemanticError;
 import IC.Symbols.SymbolTable;
 import IC.Types.SymbolType;
 
@@ -21,8 +22,9 @@ public abstract class ASTNode {
 	 * @param visitor
 	 *            The visitor.
 	 * @return A value propagated by the visitor.
+	 * @throws SemanticError 
 	 */
-	public abstract Object accept(Visitor visitor);
+	public abstract Object accept(Visitor visitor) throws SemanticError;
 
 	public abstract <D,U> U accept(PropagatingVisitor<D,U> v,D context);
 

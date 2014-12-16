@@ -1,6 +1,7 @@
 package IC.AST;
 
 import IC.LiteralTypes;
+import IC.SemanticChecks.SemanticError;
 
 
 /**
@@ -14,7 +15,7 @@ public class Literal extends Expression {
 
 	private Object value;
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

@@ -55,14 +55,14 @@ public class TypeTableBuilder implements Visitor{
         TypeTable.typeTableInit(fileName);
     }
     
-    protected void stepIn(ASTNode node) {
+    protected void stepIn(ASTNode node) throws SemanticError {
         if (node != null) {
             node.accept(this);
         }
     }
     
     @SuppressWarnings("rawtypes")
-    protected void stepIn(Iterable iterable) {
+    protected void stepIn(Iterable iterable) throws SemanticError {
         if (iterable != null) {
             for (Object node : iterable) {
             	stepIn((ASTNode)node);
@@ -89,7 +89,7 @@ public class TypeTableBuilder implements Visitor{
     }
     
 	@Override
-	public Object visit(Program program) {
+	public Object visit(Program program) throws SemanticError {
 		for (ICClass icClass : program.getClasses()) {
             
             String className = icClass.getName();
@@ -109,20 +109,20 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(ICClass icClass) {
+	public Object visit(ICClass icClass) throws SemanticError {
 		stepIn(icClass.getFields());
 		stepIn(icClass.getMethods());
 		return null;
 	}
 
 	@Override
-	public Object visit(Field field) {
+	public Object visit(Field field) throws SemanticError {
 		stepIn(field.getType());
 		return null;
 	}
 
 	@Override
-	public Object visit(VirtualMethod method) {
+	public Object visit(VirtualMethod method) throws SemanticError {
 		stepIn(method.getType());
 		stepIn(method.getFormals());
 		stepIn(method.getStatements());
@@ -131,7 +131,7 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(StaticMethod method) {
+	public Object visit(StaticMethod method) throws SemanticError {
 		stepIn(method.getType());
 		stepIn(method.getFormals());
 		stepIn(method.getStatements());
@@ -140,7 +140,7 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(LibraryMethod method) {
+	public Object visit(LibraryMethod method) throws SemanticError {
 		stepIn(method.getType());
 		stepIn(method.getFormals());
         type(method);
@@ -160,32 +160,32 @@ public class TypeTableBuilder implements Visitor{
 	}
 	
 	@Override
-	public Object visit(Formal formal) {
+	public Object visit(Formal formal) throws SemanticError {
 		stepIn(formal.getType());
 		return null;
 	}
 
 	@Override
-	public Object visit(Assignment assignment) {
+	public Object visit(Assignment assignment) throws SemanticError {
 		stepIn(assignment.getAssignment());
 		stepIn(assignment.getVariable());
 		return null;
 	}
 
 	@Override
-	public Object visit(CallStatement callStatement) {
+	public Object visit(CallStatement callStatement) throws SemanticError {
 		stepIn(callStatement.getCall());
 		return null;
 	}
 
 	@Override
-	public Object visit(Return returnStatement) {
+	public Object visit(Return returnStatement) throws SemanticError {
 		stepIn(returnStatement.getValue());
 		return null;
 	}
 
 	@Override
-	public Object visit(If ifStatement) {
+	public Object visit(If ifStatement) throws SemanticError {
 		stepIn(ifStatement.getCondition());
 		stepIn(ifStatement.getOperation());
 		stepIn(ifStatement.getElseOperation());
@@ -193,7 +193,7 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(While whileStatement) {
+	public Object visit(While whileStatement) throws SemanticError {
 		stepIn(whileStatement.getCondition());
 		stepIn(whileStatement.getOperation());
 		return null;
@@ -210,33 +210,33 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(StatementsBlock statementsBlock) {
+	public Object visit(StatementsBlock statementsBlock) throws SemanticError {
 		stepIn(statementsBlock.getStatements());
 		return null;
 	}
 
 	@Override
-	public Object visit(LocalVariable localVariable) {
+	public Object visit(LocalVariable localVariable) throws SemanticError {
 		stepIn(localVariable.getType());
 		stepIn(localVariable.getInitValue());
 		return null;
 	}
 
 	@Override
-	public Object visit(VariableLocation location) {
+	public Object visit(VariableLocation location) throws SemanticError {
 		stepIn(location.getLocation());
 		return null;
 	}
 
 	@Override
-	public Object visit(ArrayLocation location) {
+	public Object visit(ArrayLocation location) throws SemanticError {
 		stepIn(location.getArray());
 		stepIn(location.getIndex());
 		return null;
 	}
 
 	@Override
-	public Object visit(StaticCall call) {
+	public Object visit(StaticCall call) throws SemanticError {
 		if (!TypeTable.classTypeExists(call.getClassName())) {
             state = false;
         } else {
@@ -246,7 +246,7 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(VirtualCall call) {
+	public Object visit(VirtualCall call) throws SemanticError {
 		stepIn(call.getLocation());
 		stepIn(call.getArguments());
 		return null;
@@ -266,40 +266,40 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(NewArray arr) {
+	public Object visit(NewArray arr) throws SemanticError {
 		stepIn(arr.getType());
 		stepIn(arr.getSize());
 		return null;
 	}
 
 	@Override
-	public Object visit(Length length) {
+	public Object visit(Length length) throws SemanticError {
 		stepIn(length.getArray());
 		return null;
 	}
 
 	@Override
-	public Object visit(MathBinaryOp binaryOp) {
+	public Object visit(MathBinaryOp binaryOp) throws SemanticError {
 		stepIn(binaryOp.getFirstOperand());
 		stepIn(binaryOp.getSecondOperand());
 		return null;
 	}
 
 	@Override
-	public Object visit(LogicalBinaryOp binaryOp) {
+	public Object visit(LogicalBinaryOp binaryOp) throws SemanticError {
 		stepIn(binaryOp.getFirstOperand());
 		stepIn(binaryOp.getSecondOperand());
 		return null;
 	}
 
 	@Override
-	public Object visit(MathUnaryOp unaryOp) {
+	public Object visit(MathUnaryOp unaryOp) throws SemanticError {
 		stepIn(unaryOp.getOperand());
 		return null;
 	}
 
 	@Override
-	public Object visit(LogicalUnaryOp unaryOp) {
+	public Object visit(LogicalUnaryOp unaryOp) throws SemanticError {
 		stepIn(unaryOp.getOperand());
 		return null;
 	}
@@ -310,7 +310,7 @@ public class TypeTableBuilder implements Visitor{
 	}
 
 	@Override
-	public Object visit(ExpressionBlock expressionBlock) {
+	public Object visit(ExpressionBlock expressionBlock) throws SemanticError {
 		stepIn(expressionBlock.getExpression());		
 		return null;
 	}

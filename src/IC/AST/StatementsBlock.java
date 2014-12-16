@@ -2,6 +2,8 @@ package IC.AST;
 
 import java.util.List;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Statements block AST node.
  * 
@@ -11,7 +13,7 @@ public class StatementsBlock extends Statement {
 
 	private List<Statement> statements;
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

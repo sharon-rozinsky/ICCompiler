@@ -3,6 +3,8 @@ package IC.AST;
 import java.util.ArrayList;
 import java.util.List;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Root AST node for an IC program.
  * 
@@ -12,7 +14,7 @@ public class Program extends ASTNode {
 
 	private List<ICClass> classes;
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

@@ -1,5 +1,7 @@
 package IC.AST;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * 'This' expression AST node.
  * 
@@ -7,7 +9,7 @@ package IC.AST;
  */
 public class This extends Expression {
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

@@ -2,6 +2,8 @@ package IC.AST;
 
 import java.util.List;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Virtual method AST node.
  * 
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public class VirtualMethod extends Method {
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

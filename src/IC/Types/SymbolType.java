@@ -37,6 +37,13 @@ public abstract class SymbolType implements Comparable<SymbolType>{
 		return true;
 	}
 	
+	public boolean isSubClass(SymbolType type) {
+        if (this == type) {
+            return true;
+        }
+        return false;
+    }
+	
 	@Override
 	public int compareTo(SymbolType o) {
 		if(this.getTypeID() > o.getTypeID())

@@ -1,5 +1,7 @@
 package IC.AST;
 
+import IC.SemanticChecks.SemanticError;
+
 /**
  * Assignment statement AST node.
  * 
@@ -11,7 +13,7 @@ public class Assignment extends Statement {
 
 	private Expression assignment;
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 

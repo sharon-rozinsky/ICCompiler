@@ -1,6 +1,7 @@
 package IC.AST;
 
 import IC.UnaryOps;
+import IC.SemanticChecks.SemanticError;
 
 
 /**
@@ -10,7 +11,7 @@ import IC.UnaryOps;
  */
 public class MathUnaryOp extends UnaryOp {
 
-	public Object accept(Visitor visitor) {
+	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
 
