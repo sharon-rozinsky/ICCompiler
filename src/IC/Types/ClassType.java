@@ -77,10 +77,9 @@ public class ClassType extends SymbolType {
 	
 	@Override
     public boolean isSubClass(SymbolType type) {
-        if (this.equals(type)) {
+        if (this.equals(type)||(type==null)) {
             return true;
         }
-        
         if (!(type instanceof ClassType) || superClassName == null) {
             return false;
         }
