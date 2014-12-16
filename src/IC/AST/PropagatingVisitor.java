@@ -39,9 +39,9 @@ public interface PropagatingVisitor <D, U>{
 
 	public U visit(While whileStatement, D scope) throws SemanticError;
 
-	public U visit(Break breakStatement, D scope);
+	public U visit(Break breakStatement, D scope) throws SemanticError;
 
-	public U visit(Continue continueStatement, D scope);
+	public U visit(Continue continueStatement, D scope) throws SemanticError;
 
 	public U visit(StatementsBlock statementsBlock, D scope) throws SemanticError;
 
@@ -71,7 +71,7 @@ public interface PropagatingVisitor <D, U>{
 
 	public U visit(LogicalUnaryOp unaryOp, D scope) throws SemanticError;
 
-	public U visit(Literal literal, D scope);
+	public U visit(Literal literal, D scope) throws SemanticError;
 
 	public U visit(ExpressionBlock expressionBlock, D scope) throws SemanticError;
 }
