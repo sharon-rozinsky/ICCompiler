@@ -11,7 +11,11 @@ import IC.AST.ASTNode;
 import IC.AST.PrettyPrinter;
 import IC.AST.Program;
 import IC.Parser.*;
+import IC.SemanticChecks.BreakContinueChecker;
+import IC.SemanticChecks.SpecialSemanticChecks;
 import IC.SemanticChecks.SymbolTableBuilder;
+import IC.SemanticChecks.SymbolTableChecker;
+import IC.SemanticChecks.TypesCheck;
 import IC.Symbols.SymbolTable;
 import IC.SemanticChecks.TypeTableBuilder;
 import IC.Types.TypeTable;
@@ -44,11 +48,23 @@ public class Compiler {
 				System.out.println(output);
 				reader.close();
 				
-				//testing symbol table - delete
+				//testing symbol table
 				SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
-		        root.accept(symbolBuilder, null);
+		        root.accept(symbolBuilder, null);  
+				//testing symbol scope
+		        SymbolTableChecker scopeCheck = new SymbolTableChecker();
+		        scopeCheck.visit((Program) root, null);
+		        //testing type check
+		        TypesCheck typeCheck = new TypesCheck();
+		        typeCheck.visit((Program) root);
+		        //testing breakCont
+		        BreakContinueChecker breakCont = new BreakContinueChecker();
+		        breakCont.visit((Program) root, null);
 		        
-				//////////////////////////////
+		        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
+		        SpecialSemanticChecks.validateMainFunction((Program) root);
+		        
+				System.out.println("good till here !!");
 				
 				// Check if there is a library file and parse it
 				if(args.length == 2){
