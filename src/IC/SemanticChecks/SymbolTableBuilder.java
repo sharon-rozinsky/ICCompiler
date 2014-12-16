@@ -64,8 +64,9 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	 * This method will be called by a parent node on it's child nodes.
 	 * @param node
 	 * @param symbolTable
+	 * @throws SemanticError 
 	 */
-	private void propagate(ASTNode node, SymbolTable symbolTable){
+	private void propagate(ASTNode node, SymbolTable symbolTable) throws SemanticError{
 		if(node != null){
 			node.accept(this, symbolTable);
 		}
@@ -75,8 +76,9 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	 * Propagate over a list of nodes.
 	 * @param nodeList
 	 * @param symbolTable
+	 * @throws SemanticError 
 	 */
-	private void propagate(Iterable nodeList, SymbolTable symbolTable){
+	private void propagate(Iterable nodeList, SymbolTable symbolTable) throws SemanticError{
 		if(nodeList != null){
 			for(Object node : nodeList){
 				propagate((ASTNode)node, symbolTable);
@@ -85,7 +87,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 	
 	@Override
-	public Boolean visit(Program program, SymbolTable scope) {
+	public Boolean visit(Program program, SymbolTable scope) throws SemanticError {
 		GlobalSymbolTable globalSymbolTable = new GlobalSymbolTable(fileName);
 		program.setEnclosingScopeSymTable(globalSymbolTable);
 		propagate(program.getClasses(), globalSymbolTable);
@@ -93,7 +95,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(ICClass icClass, SymbolTable scope) {
+	public Boolean visit(ICClass icClass, SymbolTable scope) throws SemanticError {
 		String className = icClass.getName();
 		String superClassName = "";
 		SymbolTable parentSymbolTable = scope;
@@ -102,11 +104,9 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		if(icClass.hasSuperClass()){
 			superClassName = icClass.getSuperClassName();
 			if(className.equals(superClassName)){
-				//TODO: error handling
-				return false;
+				throw new SemanticError(icClass.getLine(), "Class name cannot be identical to super class name");
 			} else if(scope.symbolContained(className)){
-				//TODO: error handling
-				return false;
+				throw new SemanticError(icClass.getLine(), "Another class with the same name already exist");
 			} else {
 				//if a super class exists, the scope of the current class is
 				//nested in the scope of the super class
@@ -128,10 +128,9 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(Field field, SymbolTable scope) {
+	public Boolean visit(Field field, SymbolTable scope) throws SemanticError {
 		if(scope.symbolContained(field.getName())){
-			//TODO: error handling
-			return false;
+			throw new SemanticError(field.getLine(), "Variable with the same name already defined");
 		} else {
 			SymbolType type = SemanticUtils.convertNodeTypeToSymType(field.getType()); 
 			Symbol symbol = new Symbol(field.getName(), type, Kind.MemberVariable);
@@ -142,7 +141,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		return null;
 	}
 
-	public Boolean methodVisit(Method method, SymbolTable scope, boolean isStaticMethod){
+	public Boolean methodVisit(Method method, SymbolTable scope, boolean isStaticMethod) throws SemanticError{
 		
 		String methodName = method.getName();
 		SymbolType methodType = TypeTable.methodType(method);
@@ -153,17 +152,15 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			methodKind = Kind.Method;
 		}
 		
-		if(scope.symbolContainedInCurrentScope(methodName)){ //method overloading is not supported
-			//TODO: error handling
-			return false;
+		if(scope.symbolContainedInCurrentScope(methodName)){
+			throw new SemanticError(method.getLine(), "Method overloading is not supported");
 		} else if(scope.symbolContained(methodName)){
 			Symbol methodInstanceSymbol = scope.getSymbol(methodName);
 			Kind methodInstanceKind = methodInstanceSymbol.getKind();
 			SymbolType methodInstanceType = methodInstanceSymbol.getType();
 			
 			if(methodType != methodInstanceType && methodKind != methodInstanceKind){
-				//TODO: error handling. method name found in another scope with another kind or type
-				return false;
+				throw new SemanticError(method.getLine(), "Method with the same name already defined");
 			}
 		}
 		
@@ -181,26 +178,25 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 	
 	@Override
-	public Boolean visit(VirtualMethod method, SymbolTable scope) {
+	public Boolean visit(VirtualMethod method, SymbolTable scope) throws SemanticError {
 		return methodVisit(method, scope, false);
 	}
 
 	@Override
-	public Boolean visit(StaticMethod method, SymbolTable scope) {
+	public Boolean visit(StaticMethod method, SymbolTable scope) throws SemanticError {
 		return methodVisit(method, scope, true);
 	}
 
 	@Override
-	public Boolean visit(LibraryMethod method, SymbolTable scope) {
+	public Boolean visit(LibraryMethod method, SymbolTable scope) throws SemanticError {
 		return methodVisit(method, scope, true);
 	}
 
 	@Override
-	public Boolean visit(Formal formal, SymbolTable scope) {
+	public Boolean visit(Formal formal, SymbolTable scope) throws SemanticError {
 		String formalName = formal.getName();
 		if(scope.symbolContainedInCurrentScope(formal.getName())){
-			//TODO: error handling
-			return false;
+			throw new SemanticError(formal.getLine(), "Parameter with the same name already defined");
 		} else {
 			formal.setEnclosingScopeSymTable(scope);
 			SymbolType type = SemanticUtils.convertNodeTypeToSymType(formal.getType());
@@ -224,7 +220,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(Assignment assignment, SymbolTable scope) {
+	public Boolean visit(Assignment assignment, SymbolTable scope) throws SemanticError {
 		assignment.setEnclosingScopeSymTable(scope);
 		propagate(assignment.getVariable(), scope);
 		propagate(assignment.getAssignment(), scope);
@@ -232,21 +228,21 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(CallStatement callStatement, SymbolTable scope) {
+	public Boolean visit(CallStatement callStatement, SymbolTable scope) throws SemanticError {
 		callStatement.setEnclosingScopeSymTable(scope);
 		propagate(callStatement.getCall(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(Return returnStatement, SymbolTable scope) {
+	public Boolean visit(Return returnStatement, SymbolTable scope) throws SemanticError {
 		returnStatement.setEnclosingScopeSymTable(scope);
 		propagate(returnStatement.getValue(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(If ifStatement, SymbolTable scope) {
+	public Boolean visit(If ifStatement, SymbolTable scope) throws SemanticError {
 		ifStatement.setEnclosingScopeSymTable(scope);
 		propagate(ifStatement.getOperation(), new CodeBlockSymbolTable(scope));
 		if(ifStatement.hasElse()){
@@ -256,7 +252,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(While whileStatement, SymbolTable scope) {
+	public Boolean visit(While whileStatement, SymbolTable scope) throws SemanticError {
 		whileStatement.setEnclosingScopeSymTable(scope);
 		propagate(whileStatement.getCondition(), scope);
 		propagate(whileStatement.getOperation(), new CodeBlockSymbolTable(scope));
@@ -276,7 +272,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(StatementsBlock statementsBlock, SymbolTable scope) {
+	public Boolean visit(StatementsBlock statementsBlock, SymbolTable scope) throws SemanticError {
 		CodeBlockSymbolTable symbolTable = new CodeBlockSymbolTable(scope);
 		statementsBlock.setEnclosingScopeSymTable(symbolTable);
 		propagate(statementsBlock.getStatements(), symbolTable);
@@ -284,13 +280,12 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(LocalVariable localVariable, SymbolTable scope) {
+	public Boolean visit(LocalVariable localVariable, SymbolTable scope) throws SemanticError {
 		
 		localVariable.setEnclosingScopeSymTable(scope);
 		propagate(localVariable.getInitValue(), scope);
 		if(scope.symbolContainedInCurrentScope(localVariable.getName())){
-			//TODO: error handling
-			return false;
+			throw new SemanticError(localVariable.getLine(), "Variable with the same name already defined");
 		} else {
 			SymbolType type = SemanticUtils.convertNodeTypeToSymType(localVariable.getType());
 			Symbol symbol = new Symbol(localVariable.getName(), type, Kind.MethodVariable);
@@ -300,11 +295,11 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(VariableLocation location, SymbolTable scope) {
+	public Boolean visit(VariableLocation location, SymbolTable scope) throws SemanticError {
 		location.setEnclosingScopeSymTable(scope);
 		if(location.getLocation() == null){
 			if(!scope.symbolContainedInCurrentScope(location.getName())){
-				//TODO: error handling - unresolved reference
+				//TODO: Save unresolved references?
 			} else {
 				//TODO: should i set the actual scope of location to scope of the
 				//actuall variable? if so need to add method to get SymbolTable by id
@@ -316,7 +311,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(ArrayLocation location, SymbolTable scope) {
+	public Boolean visit(ArrayLocation location, SymbolTable scope) throws SemanticError {
 		location.setEnclosingScopeSymTable(scope);
 		propagate(location.getArray(), scope);
 		propagate(location.getIndex(), scope);
@@ -324,14 +319,14 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(StaticCall call, SymbolTable scope) {
+	public Boolean visit(StaticCall call, SymbolTable scope) throws SemanticError {
 		call.setEnclosingScopeSymTable(scope);
 		propagate(call.getArguments(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(VirtualCall call, SymbolTable scope) {
+	public Boolean visit(VirtualCall call, SymbolTable scope) throws SemanticError {
 		call.setEnclosingScopeSymTable(scope);
 		propagate(call.getArguments(), scope);
 		propagate(call.getLocation(), scope);
@@ -351,7 +346,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(NewArray newArray, SymbolTable scope) {
+	public Boolean visit(NewArray newArray, SymbolTable scope) throws SemanticError {
 		newArray.setEnclosingScopeSymTable(scope);
 		propagate(newArray.getType(), scope);
 		propagate(newArray.getSize(), scope);
@@ -359,14 +354,14 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(Length length, SymbolTable scope) {
+	public Boolean visit(Length length, SymbolTable scope) throws SemanticError {
 		length.setEnclosingScopeSymTable(scope);
 		propagate(length.getArray(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(MathBinaryOp binaryOp, SymbolTable scope) {
+	public Boolean visit(MathBinaryOp binaryOp, SymbolTable scope) throws SemanticError {
 		binaryOp.setEnclosingScopeSymTable(scope);
 		propagate(binaryOp.getFirstOperand(), scope);
 		propagate(binaryOp.getSecondOperand(), scope);
@@ -374,7 +369,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(LogicalBinaryOp binaryOp, SymbolTable scope) {
+	public Boolean visit(LogicalBinaryOp binaryOp, SymbolTable scope) throws SemanticError {
 		binaryOp.setEnclosingScopeSymTable(scope);
 		propagate(binaryOp.getFirstOperand(), scope);
 		propagate(binaryOp.getSecondOperand(), scope);
@@ -382,14 +377,14 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(MathUnaryOp unaryOp, SymbolTable scope) {
+	public Boolean visit(MathUnaryOp unaryOp, SymbolTable scope) throws SemanticError {
 		unaryOp.setEnclosingScopeSymTable(scope);
 		propagate(unaryOp.getOperand(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(LogicalUnaryOp unaryOp, SymbolTable scope) {
+	public Boolean visit(LogicalUnaryOp unaryOp, SymbolTable scope) throws SemanticError {
 		unaryOp.setEnclosingScopeSymTable(scope);
 		propagate(unaryOp.getOperand(), scope);
 		return null;
@@ -402,7 +397,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	}
 
 	@Override
-	public Boolean visit(ExpressionBlock expressionBlock, SymbolTable scope) {
+	public Boolean visit(ExpressionBlock expressionBlock, SymbolTable scope) throws SemanticError {
 		expressionBlock.setEnclosingScopeSymTable(scope);
 		propagate(expressionBlock.getExpression(), scope);
 		return null;

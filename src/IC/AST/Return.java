@@ -47,7 +47,7 @@ public class Return extends Statement {
 	}
 
 	@Override
-	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
+	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) throws SemanticError {
 		return v.visit(this, context);
 	}
 }

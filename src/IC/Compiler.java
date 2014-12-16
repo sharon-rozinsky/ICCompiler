@@ -10,6 +10,8 @@ import java_cup.runtime.Symbol;
 import IC.AST.ASTNode;
 import IC.AST.PrettyPrinter;
 import IC.Parser.*;
+import IC.SemanticChecks.SymbolTableBuilder;
+import IC.Symbols.SymbolTable;
 
 public class Compiler {
 	
@@ -34,6 +36,12 @@ public class Compiler {
 				String output = (String) root.accept(printer);
 				System.out.println(output);
 				reader.close();
+				
+				//testing symbol table - delete
+				SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
+		        root.accept(symbolBuilder, null);
+		        
+				//////////////////////////////
 				
 				// Check if there is a library file and parse it
 				if(args.length == 2){

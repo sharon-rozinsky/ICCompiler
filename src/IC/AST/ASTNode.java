@@ -26,7 +26,7 @@ public abstract class ASTNode {
 	 */
 	public abstract Object accept(Visitor visitor) throws SemanticError;
 
-	public abstract <D,U> U accept(PropagatingVisitor<D,U> v,D context);
+	public abstract <D,U> U accept(PropagatingVisitor<D,U> v,D context) throws SemanticError;
 
 	/**
 	 * Constructs an AST node corresponding to a line number in the original

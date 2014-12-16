@@ -50,8 +50,9 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	 * This method will be called by a parent node on it's child nodes.
 	 * @param node
 	 * @param symbolTable
+	 * @throws SemanticError 
 	 */
-	private void propagate(ASTNode node, ASTNode scopeNode){
+	private void propagate(ASTNode node, ASTNode scopeNode) throws SemanticError{
 		if(node != null){
 			node.accept(this, scopeNode);
 		}
@@ -61,8 +62,9 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	 * Propagate over a list of nodes.
 	 * @param nodeList
 	 * @param symbolTable
+	 * @throws SemanticError 
 	 */
-	private void propagate(Iterable nodeList, ASTNode scopeNode){
+	private void propagate(Iterable nodeList, ASTNode scopeNode) throws SemanticError{
 		if(nodeList != null){
 			for(Object node : nodeList){
 				propagate((ASTNode)node, scopeNode);
@@ -71,13 +73,13 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 	
 	@Override
-	public Boolean visit(Program program, ASTNode scope) {
+	public Boolean visit(Program program, ASTNode scope) throws SemanticError {
 		propagate(program.getClasses(), program);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(ICClass icClass, ASTNode scope) {
+	public Boolean visit(ICClass icClass, ASTNode scope) throws SemanticError {
 		propagate(icClass, icClass);
 		return null;
 	}
@@ -87,18 +89,18 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 		return null;
 	}
 
-	public Boolean methodVisit(Method method, ASTNode scope){
+	public Boolean methodVisit(Method method, ASTNode scope) throws SemanticError{
 		propagate(method.getStatements(), method);
 		return null;
 	}
 	
 	@Override
-	public Boolean visit(VirtualMethod method, ASTNode scope) {
+	public Boolean visit(VirtualMethod method, ASTNode scope) throws SemanticError {
 		return methodVisit(method, scope);
 	}
 
 	@Override
-	public Boolean visit(StaticMethod method, ASTNode scope) {
+	public Boolean visit(StaticMethod method, ASTNode scope) throws SemanticError {
 		return methodVisit(method, scope);
 	}
 
@@ -123,14 +125,14 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(Assignment assignment, ASTNode scope) {
+	public Boolean visit(Assignment assignment, ASTNode scope) throws SemanticError {
 		propagate(assignment.getVariable(), scope);
 		propagate(assignment.getAssignment(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(CallStatement callStatement, ASTNode scope) {
+	public Boolean visit(CallStatement callStatement, ASTNode scope) throws SemanticError {
 		propagate(callStatement.getCall(), scope);
 		return null;
 	}
@@ -141,7 +143,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(If ifStatement, ASTNode scope) {
+	public Boolean visit(If ifStatement, ASTNode scope) throws SemanticError {
 		propagate(ifStatement.getCondition(), scope);
 		propagate(ifStatement.getOperation(), scope);
 		propagate(ifStatement.getElseOperation(), scope);
@@ -149,7 +151,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(While whileStatement, ASTNode scope) {
+	public Boolean visit(While whileStatement, ASTNode scope) throws SemanticError {
 		propagate(whileStatement.getCondition(), scope);
 		propagate(whileStatement.getOperation(), scope);
 		return null;
@@ -166,19 +168,19 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(StatementsBlock statementsBlock, ASTNode scope) {
+	public Boolean visit(StatementsBlock statementsBlock, ASTNode scope) throws SemanticError {
 		propagate(statementsBlock.getStatements(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(LocalVariable localVariable, ASTNode scope) {
+	public Boolean visit(LocalVariable localVariable, ASTNode scope) throws SemanticError {
 		propagate(localVariable.getInitValue(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(VariableLocation location, ASTNode scope) {
+	public Boolean visit(VariableLocation location, ASTNode scope) throws SemanticError {
 		String name = location.getName();
 		SymbolTable locationScope = location.getEnclosingScopeSymTable();
 		
@@ -187,16 +189,13 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 			Kind symbolKind = symbol.getKind();
 			
 			if(symbolKind != Kind.Parameter && symbolKind != Kind.MemberVariable && symbolKind != Kind.MethodVariable){
-				//TODO: error - referencing a non variable
-				return false;
+				throw new SemanticError(location.getLine(), "referencing a non variable");
 			}
 			if(scope instanceof StaticMethod && symbolKind == Kind.MethodVariable){
-				//TODO: error - referencing a member variable from static method
-				return false;
+				throw new SemanticError(location.getLine(), "referencing a member variable from static method");
 			}
 			if(!locationScope.symbolContained(name)){
-				//TODO: error - referencing an undefined variable
-				return false;
+				throw new SemanticError(location.getLine(), "referencing an undefined variable");
 			}
 			
 			//TODO: check for unresolved references. This requires saving unresolved variables from
@@ -208,17 +207,14 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 				return false;
 			
 			if(!classScope.symbolContained(name)){
-				//TODO: error - reference to undefined variable
-				return false;
+				throw new SemanticError(location.getLine(), "referencing an undefined variable");
 			}
 			if(scope instanceof StaticMethod){
-				//TODO: error - referencing a member variable from static method
-				return false;
+				throw new SemanticError(location.getLine(), "referencing a non static member variable from static method");
 			}
 			Symbol symbol = classScope.getSymbol(name);
 			if(symbol.getKind() != Kind.MemberVariable){
-				//TODO: error - MemberVariable referencing a non member variable
-				return false;
+				throw new SemanticError(location.getLine(), "Member variable referencing a non member variable");
 			}
 		}
 		
@@ -227,27 +223,25 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(ArrayLocation location, ASTNode scope) {
+	public Boolean visit(ArrayLocation location, ASTNode scope) throws SemanticError {
 		propagate(location.getArray(), scope);
 		propagate(location.getIndex(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(StaticCall call, ASTNode scope) {
+	public Boolean visit(StaticCall call, ASTNode scope) throws SemanticError {
 		ClassType classType = TypeTable.classType(call.getClassName(), null, null);
 		ICClass icClass = classType.getClassNode();
 		SymbolTable classScope = icClass.getEnclosingScopeSymTable();
 		Symbol symbol = classScope.getSymbol(call.getName());
 		
 		if(symbol.getKind() != Kind.StaticMethod){
-			//TODO: error - calling an undefined static method
-			return false;
+			throw new SemanticError(call.getLine(), "calling an undefined static method");
 		}
 		
 		if(classScope.symbolContained(call.getName())){
-			//TODO: error - calling a static method that is not in scope.
-			return false;
+			throw new SemanticError(call.getLine(), "calling a static method that is not in scope");
 		}
 		
 		propagate(call.getArguments(), scope);
@@ -256,42 +250,36 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(VirtualCall call, ASTNode scope) {
+	public Boolean visit(VirtualCall call, ASTNode scope) throws SemanticError {
 		String callName = call.getName();
 		SymbolTable callScope = call.getEnclosingScopeSymTable();
 		SymbolTable classScope = getClassScope(callScope);
 		
 		if(call.getLocation() == null){
 			if(!classScope.symbolContained(callName)){
-				//TODO: error - calling an undefined method
-				return false;
+				throw new SemanticError(call.getLine(), "calling an undefined method");
 			}
 			
 			Symbol callSymbol = classScope.getSymbol(callName);
 			if(scope instanceof StaticMethod && callSymbol.getKind() == Kind.Method){
-				//TODO: error - calling a non static method from a static scope
-				return false;
+				throw new SemanticError(call.getLine(), "calling a non static method from a static scope");
 			}
 			
 			if(callSymbol.getKind() != Kind.Method){
-				//TODO: error - calling undefined method
-				return false;
+				throw new SemanticError(call.getLine(), "calling an undefined method");
 			}
 		} else if(call.getLocation() instanceof This){
 			if(!classScope.symbolContained(callName)){
-				//TODO: error - calling an undefined method
-				return false;
+				throw new SemanticError(call.getLine(), "calling an undefined method");
 			}
 			
 			Symbol callSymbol = classScope.getSymbol(callName);
 			if(scope instanceof StaticMethod){
-				//TODO: error - calling a non static method from a this expression
-				return false;
+				throw new SemanticError(call.getLine(), "calling a non static method from a this expression");
 			}
 			
 			if(callSymbol.getKind() != Kind.Method){
-				//TODO: error - calling undefined method
-				return false;
+				throw new SemanticError(call.getLine(), "calling an undefined method");
 			}
 		}
 		return null;
@@ -308,39 +296,39 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(NewArray newArray, ASTNode scope) {
+	public Boolean visit(NewArray newArray, ASTNode scope) throws SemanticError {
 		propagate(newArray.getSize(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(Length length, ASTNode scope) {
+	public Boolean visit(Length length, ASTNode scope) throws SemanticError {
 		propagate(length.getArray(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(MathBinaryOp binaryOp, ASTNode scope) {
+	public Boolean visit(MathBinaryOp binaryOp, ASTNode scope) throws SemanticError {
 		propagate(binaryOp.getFirstOperand(), scope);
 		propagate(binaryOp.getSecondOperand(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(LogicalBinaryOp binaryOp, ASTNode scope) {
+	public Boolean visit(LogicalBinaryOp binaryOp, ASTNode scope) throws SemanticError {
 		propagate(binaryOp.getFirstOperand(), scope);
 		propagate(binaryOp.getSecondOperand(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(MathUnaryOp unaryOp, ASTNode scope) {
+	public Boolean visit(MathUnaryOp unaryOp, ASTNode scope) throws SemanticError {
 		propagate(unaryOp.getOperand(), scope);
 		return null;
 	}
 
 	@Override
-	public Boolean visit(LogicalUnaryOp unaryOp, ASTNode scope) {
+	public Boolean visit(LogicalUnaryOp unaryOp, ASTNode scope) throws SemanticError {
 		propagate(unaryOp.getOperand(), scope);
 		return null;
 	}
@@ -351,7 +339,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(ExpressionBlock expressionBlock, ASTNode scope) {
+	public Boolean visit(ExpressionBlock expressionBlock, ASTNode scope) throws SemanticError {
 		propagate(expressionBlock.getExpression(), scope);
 		return null;
 	}
