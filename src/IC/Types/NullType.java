@@ -11,9 +11,5 @@ public class NullType extends SymbolType{
 	public String toString(){
 		return "null";  	
     }
-	
-	public boolean isSubClass(SymbolType type) {
-        return true;
-    }
         
 }
