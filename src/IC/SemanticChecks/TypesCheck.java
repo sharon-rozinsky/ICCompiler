@@ -113,7 +113,7 @@ public class TypesCheck implements Visitor{
 		stepIn(method.getStatements());
 		stepIn(method.getFormals());
 
-		method.setSymbolType(((ClassSymbolTable) method.getEnclosingScopeSymTable()).getMethods().get(method.getName()).getType());
+		method.setSymbolType((getClassSymbolTable(method)).getMethods().get(method.getName()).getType());
 	}
 
 	@Override
@@ -188,9 +188,10 @@ public class TypesCheck implements Visitor{
 
 	@Override
 	public Object visit(Return returnStatement) throws SemanticError {
-		ClassSymbolTable classSymTbl = (ClassSymbolTable) returnStatement.getEnclosingScopeSymTable().getParentSymbolTable();
-		MethodSymbolTable methodSymTbl = (MethodSymbolTable) returnStatement.getEnclosingScopeSymTable();
-
+		stepIn(returnStatement.getValue());
+		ClassSymbolTable classSymTbl = getClassSymbolTable(returnStatement);
+		MethodSymbolTable methodSymTbl = getMethodSymbolTable(returnStatement);
+		
 		MethodType methodType = (MethodType) classSymTbl.getMethods().get(methodSymTbl.getId()).getType();
 		SymbolType methodRetType = methodType.getMethod().getRetType();
 		SymbolType retType = returnStatement.getValue().getSymbolType();
@@ -297,13 +298,13 @@ public class TypesCheck implements Visitor{
 				ClassType cType = (ClassType) eType;
 				ClassSymbolTable classSymTbl = (ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable();
 				
-				if(classSymTbl.getMemberVariables().containsValue(locationId))
+				if(classSymTbl.getMemberVariables().containsKey(locationId))
 				{
 					location.setSymbolType(classSymTbl.getMemberVariables().get(locationId).getType());
 				}
 				else
 				{
-					if(classSymTbl.getMethods().containsValue(locationId))
+					if(classSymTbl.getMethods().containsKey(locationId))
 					{
 						throw new SemanticError(location.getLine(), 
 								String.format("None field location Identifier. %s.",locationId));
@@ -311,7 +312,7 @@ public class TypesCheck implements Visitor{
 					else
 					{
 						throw new SemanticError(location.getLine(), 
-								String.format("Identifier is not defind in location %s.",locationId));
+								String.format("Identifier is not defined in location %s.",locationId));
 					}
 				}
 			}
@@ -410,7 +411,7 @@ public class TypesCheck implements Visitor{
 				ClassType cType = (ClassType) eType;
 				ClassSymbolTable classSymTbl = (ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable();
 				
-				if(classSymTbl.getMethods().containsValue(call.getName()))
+				if(classSymTbl.getMethods().containsKey(call.getName()))
 				{
 					visitCallWraper(call,(MethodType) classSymTbl.getMethods().get(call.getName()).getType());
 				}
@@ -452,7 +453,7 @@ public class TypesCheck implements Visitor{
 		}
 		else
 		{
-			newArray.setSymbolType(newArray.getType().getSymbolType());
+			newArray.setSymbolType(TypeTable.uniqueArrayTypes.get(newArray.getType().getSymbolType()));
 		}
 			
 		return null;

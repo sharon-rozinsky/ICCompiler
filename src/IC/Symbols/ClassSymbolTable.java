@@ -20,7 +20,7 @@ public class ClassSymbolTable extends SymbolTable {
 	public void addSymbol(Symbol symbol) {
 		Kind symbolKind = symbol.getKind();
 		
-		if(symbolKind == Kind.Method){
+		if((symbolKind == Kind.Method) || (symbolKind == Kind.StaticMethod)){
 			methods.put(symbol.getId(), symbol);
 		} else if(symbolKind == Kind.MemberVariable){
 			memberVariables.put(symbol.getId(), symbol);
