@@ -593,7 +593,7 @@ public class TypesCheck implements Visitor{
 		}
 		else if((literalType == LiteralTypes.FALSE) || (literalType == LiteralTypes.TRUE)) 
 		{
-			literal.setSymbolType(_string);
+			literal.setSymbolType(_boolean);
 		}
 		else
 		{
