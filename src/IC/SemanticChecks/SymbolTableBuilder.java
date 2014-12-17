@@ -1,5 +1,8 @@
 package IC.SemanticChecks;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
@@ -54,9 +57,14 @@ import IC.Types.TypeTable;
 public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boolean> {
 
 	private String fileName; 
+	private Set<VariableLocation> unresolvedReferences = new HashSet<VariableLocation>();
 	
 	public SymbolTableBuilder(String fileName) {
 		this.fileName = fileName;
+	}
+	
+	public Set<VariableLocation> getUnresolvedReferences(){
+		return unresolvedReferences;
 	}
 	
 	/**
@@ -319,15 +327,11 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	public Boolean visit(VariableLocation location, SymbolTable scope) throws SemanticError {
 		location.setEnclosingScopeSymTable(scope);
 		if(location.getLocation() == null){
-			if(!scope.symbolContainedInCurrentScope(location.getName())){
-				//TODO: Save unresolved references?
-			} else {
-				//TODO: should i set the actual scope of location to scope of the
-				//actuall variable? if so need to add method to get SymbolTable by id
+			if(!scope.symbolContained(location.getName())){
+				unresolvedReferences.add(location);
 			}
-		} else {
-			propagate(location.getLocation(), scope);
-		}
+		} 
+		propagate(location.getLocation(), scope);
 		return null;
 	}
 

@@ -1,5 +1,7 @@
 package IC.SemanticChecks;
 
+import java.util.Set;
+
 import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
@@ -45,6 +47,12 @@ import IC.Types.TypeTable;
 
 public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 
+	private Set<VariableLocation> unresolvedRefrences;
+    
+    public SymbolTableChecker(Set<VariableLocation> unresolvedRefrences) {
+        this.unresolvedRefrences = unresolvedRefrences;
+    }
+	
 	/**
 	 * Given an AST node, call it's accept method.
 	 * This method will be called by a parent node on it's child nodes.
@@ -186,6 +194,10 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 		
 		if(location.getLocation() != null){
 			Symbol symbol = locationScope.getSymbol(name);
+			if(symbol == null){
+				propagate(location.getLocation(), scope);
+				return null;
+			}
 			Kind symbolKind = symbol.getKind();
 			
 			if(symbolKind != Kind.Parameter && symbolKind != Kind.MemberVariable && symbolKind != Kind.MethodVariable){
@@ -197,9 +209,6 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 			if(!locationScope.symbolContained(name)){
 				throw new SemanticError(location.getLine(), "referencing an undefined variable");
 			}
-			
-			//TODO: check for unresolved references. This requires saving unresolved variables from
-			//the symbolTableBuilder stage
 		} else if(location.getLocation() instanceof This){
 			SymbolTable classScope = getClassScope(locationScope);
 			
@@ -216,6 +225,10 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 			if(symbol.getKind() != Kind.MemberVariable){
 				throw new SemanticError(location.getLine(), "Member variable referencing a non member variable");
 			}
+		} else if(location.getLocation() == null){
+			if (unresolvedRefrences.contains(location)) {
+            	throw new SemanticError(location.getLine(), "referencing an undefined variable");
+            }
 		}
 		
 		propagate(location.getLocation(), scope);

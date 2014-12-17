@@ -1,0 +1,34 @@
+
+// error should be:
+// semantic error at line 27: Illegal local var init type (Type check)
+// i dont this it's right: it should be 28 like what we get
+
+
+class A {
+    D e;
+    
+    D retE() {
+        return new E();
+    }
+}
+
+class B extends A {}
+
+class C extends B {}
+
+class D {
+    A c;
+}
+
+class E extends D {
+
+     static void main(string[] args){}
+     
+     void complexAssignment() {
+         c = new C();
+         E d = c.retE();
+        
+
+     }
+    
+}

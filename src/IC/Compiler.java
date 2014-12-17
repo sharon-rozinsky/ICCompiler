@@ -26,60 +26,36 @@ import IC.Types.TypeTable;
 public class Compiler {
 	
 	private static boolean printtokens = true;
-
+	private static final String PRINT_AST_OPTION = "-print-ast";
+	private static final String PRINT_SYMTAB_OPTION = "-dump-symtab";
+	
 	public static void main(String[] args) throws LexicalError {
-		Reader reader;
 		try {
 			if(args.length != 0) {
-				//parser.isDebugMode = printtokens;
 				// read the program file and parse it
 				Utils.initSymbolToSignMap();
-				reader = new FileReader(new File(args[0]));
-				Lexer lexer = new Lexer(reader);
-				Parser parser = new Parser(lexer);
-				Symbol parseSymbol = parser.parse();
-				ASTNode root = (ASTNode) parseSymbol.value;
-				System.out.println("The file: " + args[0] + " was successfully parsed");
-				
-				// Check if there is a library file and parse it
-				if(args.length == 2){
-					if(!args[1].startsWith("-L")){
-						System.out.println("The second parameter should start with -L");
-					} else{
-						String fileName = args[1].substring(2);
-						reader = new FileReader(new File(fileName));
-						Lexer libLexer = new Lexer(reader);
-						LibraryParser libParser = new LibraryParser(libLexer);
-						Symbol libParseSymbol = libParser.parse();
-						System.out.println("The file: " + args[1] + " was successfully parsed");
-						reader.close();
-						
-						((Program)root).getClasses().add(0, (ICClass)libParseSymbol.value);
-					}
+				Program root = Utils.parseProgram(args[0]);
+				if(args.length >= 2){
+					Utils.parseLibrary(args[1], root);
 				}
 				
-				// print the AST of the program
-				PrettyPrinter printer = new PrettyPrinter(args[0]);
 				TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
 				ttb.visit((Program) root);
-				String typeT = TypeTable.printTable();
-				System.out.println(typeT);
-				String output = (String) root.accept(printer);
-				System.out.println(output);
-				reader.close();
 				
-//				//testing symbol table
 				SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
 		        root.accept(symbolBuilder, null);  
+
+				if(args[2].equals(PRINT_AST_OPTION)){
+					Utils.printAST(args[0], root);
+				}
+				if(args[2].equals(PRINT_SYMTAB_OPTION)){
+					Utils.printSymbolTable(root);
+					Utils.printTypeTable();
+				} 
 	        
-//				//testing symbol scope
-		        SymbolTableChecker scopeCheck = new SymbolTableChecker();
+				//testing symbol scope
+		        SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
 		        scopeCheck.visit((Program) root, null);
-		        
-		        //print Symbol Table
-		        SymbolTablePrinter symTablePrinter = new SymbolTablePrinter();
-		        String printedSymbolTables = (String)symTablePrinter.visit((Program) root);
-		        System.out.println(printedSymbolTables);
 		        
 		        //testing type check
 		        TypesCheck typeCheck = new TypesCheck();
@@ -111,7 +87,6 @@ public class Compiler {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	public static void PrintToken(String token, String tag, int line, int column){
 		System.out.println(token + "\t" + tag + "\t" + line + ":" + column);

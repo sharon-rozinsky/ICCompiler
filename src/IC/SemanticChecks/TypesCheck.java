@@ -173,7 +173,7 @@ public class TypesCheck implements Visitor{
 
 		if(!t1.isSubClass(t2))
 		{
-			throw new SemanticError(assignment.getLine(),String.format("Can't assign variable from type %s to type %s", t2.toString(),t1.toString()));
+			throw new SemanticError(assignment.getLine(),String.format("Can't assign variable from type %s a value of type %s", t2.toString(),t1.toString()));
 		}
 
 		return null;

@@ -52,4 +52,14 @@ public abstract class SymbolTable {
 		
 		return "tom";
 	}
+	
+	 public SymbolTable findSymbolTable(String id) {
+	        if (symbolContainedInCurrentScope(id)) {
+	            return this;
+	        } else if (parentSymbolTable != null) {
+	            return parentSymbolTable.findSymbolTable(id);
+	        } else {
+	            return null;
+	        }
+	    }
 }

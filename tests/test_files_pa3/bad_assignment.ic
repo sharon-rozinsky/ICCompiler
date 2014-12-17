@@ -1,5 +1,5 @@
 // error should be:
-// semantic error at line 21: Illegal assignment (Type check)
+// semantic error at line 22: Illegal assignment (Type check)
 
 class A {
     D e;
@@ -10,7 +10,7 @@ class B extends A {}
 class C extends B {}
 
 class D {
-    B c;
+    A c;
 }
 
 class E extends D {
@@ -18,8 +18,10 @@ class E extends D {
      static void main(string[] args){}
      
      void complexAssignment() {
-         c = new A();
-     
+         B[] b = new B[10];
+         b[3] = new A();
+         b[3].e = new E();
+
      }
     
 }
