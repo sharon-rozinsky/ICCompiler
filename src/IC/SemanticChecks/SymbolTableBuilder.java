@@ -117,7 +117,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		
 		ClassType type = TypeTable.classType(className, null, null);
 		Symbol symbol = new Symbol(className, type, Kind.Class); 
-		parentSymbolTable.addSymbol(symbol);
+		scope.addSymbol(symbol);
 		
 		ClassSymbolTable classSymbolTable = new ClassSymbolTable(className, parentSymbolTable);
 		icClass.setEnclosingScopeSymTable(classSymbolTable);
@@ -243,20 +243,40 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 
 	@Override
 	public Boolean visit(If ifStatement, SymbolTable scope) throws SemanticError {
-		propagate(ifStatement.getCondition(),scope);
+		
 		ifStatement.setEnclosingScopeSymTable(scope);
-		propagate(ifStatement.getOperation(), new CodeBlockSymbolTable(scope));
+		propagate(ifStatement.getCondition(),scope);
+		
+		propagate(ifStatement.getOperation(), scope);
+		/*if(ifStatement.getOperation() instanceof StatementsBlock){
+			propagate(ifStatement.getOperation(), scope);
+		} else{
+			propagate(ifStatement.getOperation(), new CodeBlockSymbolTable(scope));
+		}*/
+		
 		if(ifStatement.hasElse()){
-			propagate(ifStatement.getElseOperation(), new CodeBlockSymbolTable(scope));
+			propagate(ifStatement.getElseOperation(), scope);
+			/*if(ifStatement.getElseOperation() instanceof StatementsBlock){
+				propagate(ifStatement.getElseOperation(), scope);
+			} else{
+				propagate(ifStatement.getElseOperation(), new CodeBlockSymbolTable(scope));
+			}*/
 		}
 		return null;
 	}
 
 	@Override
 	public Boolean visit(While whileStatement, SymbolTable scope) throws SemanticError {
+		
 		whileStatement.setEnclosingScopeSymTable(scope);
 		propagate(whileStatement.getCondition(), scope);
-		propagate(whileStatement.getOperation(), new CodeBlockSymbolTable(scope));
+		
+		propagate(whileStatement.getOperation(), scope);
+		/*if(whileStatement.getOperation() instanceof StatementsBlock){
+			propagate(whileStatement.getOperation(), scope);	
+		} else {
+			propagate(whileStatement.getOperation(), new CodeBlockSymbolTable(scope));
+		}*/
 		return null;
 	}
 

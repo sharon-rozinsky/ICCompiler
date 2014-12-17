@@ -3,6 +3,7 @@ package IC.Symbols;
 import java.util.HashMap;
 import java.util.Map;
 
+import IC.SemanticChecks.SemanticUtils;
 import IC.Types.Kind;
 
 public class MethodSymbolTable extends SymbolTable {
@@ -57,5 +58,14 @@ public class MethodSymbolTable extends SymbolTable {
 
 	public void setVariables(Map<String, Symbol> variables) {
 		this.variables = variables;
+	}
+	
+	@Override
+	public String toString() {
+		return "Method Symbol Table: "
+				+ id
+				+ "\n"
+				+ SemanticUtils.getSymbolTableDescription(this,
+						parameters.values(), variables.values());
 	}
 }

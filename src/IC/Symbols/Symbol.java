@@ -26,4 +26,27 @@ public class Symbol {
 	public Kind getKind() {
 		return kind;
 	}
+
+	@Override
+	public String toString() {
+		switch (kind) {
+		case Class:
+			return "Class: " + id;
+		case MemberVariable:
+			return "Field: " + type.toString() + " " + id;
+		case Method:
+			return "Virtual method: " + id + " " + type.toString();
+		case MethodVariable:
+			return "Local variable: " + type.toString()  + " " + id;
+		case Parameter:
+			return "Parameter: " + type.toString() + " " + id;
+		case StaticMethod:
+			return "Static method: " + id + " " + type.toString();
+
+		default:
+			return null;
+		}
+	}
+	
+	
 }

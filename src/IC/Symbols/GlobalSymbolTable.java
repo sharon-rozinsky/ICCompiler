@@ -3,6 +3,8 @@ package IC.Symbols;
 import java.util.HashMap;
 import java.util.Map;
 
+import IC.SemanticChecks.SemanticUtils;
+
 public class GlobalSymbolTable extends SymbolTable{
 	private Map<String, Symbol> classes;
 
@@ -40,4 +42,13 @@ public class GlobalSymbolTable extends SymbolTable{
 	public void setClasses(Map<String, Symbol> classes) {
 		this.classes = classes;
 	}
+
+	@Override
+	public String toString() {
+		return "Global Symbol Table: "
+				+ id
+				+ "\n"
+				+ SemanticUtils.getSymbolTableDescription(this,
+						classes.values());
+	}	
 }

@@ -3,6 +3,7 @@ package IC.Symbols;
 import java.util.HashMap;
 import java.util.Map;
 
+import IC.SemanticChecks.SemanticUtils;
 import IC.Types.Kind;
 
 public class ClassSymbolTable extends SymbolTable {
@@ -61,4 +62,12 @@ public class ClassSymbolTable extends SymbolTable {
 		this.memberVariables = memberVariables;
 	}
 
+	@Override
+	public String toString() {
+		return "Class Symbol Table: "
+				+ id
+				+ "\n"
+				+ SemanticUtils.getSymbolTableDescription(this,
+						memberVariables.values(), methods.values());
+	}
 }

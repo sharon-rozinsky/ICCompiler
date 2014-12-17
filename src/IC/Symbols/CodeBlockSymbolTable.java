@@ -3,6 +3,8 @@ package IC.Symbols;
 import java.util.HashMap;
 import java.util.Map;
 
+import IC.SemanticChecks.SemanticUtils;
+
 public class CodeBlockSymbolTable extends SymbolTable {
 	public static int codeBlockNumber = 1;
 	private Map<String, Symbol> variables;
@@ -39,5 +41,18 @@ public class CodeBlockSymbolTable extends SymbolTable {
 
 	public void setVariables(Map<String, Symbol> variables) {
 		this.variables = variables;
+	}
+	
+	@Override
+	public String toString() {
+		return "Statement Block Symbol Table ( located in " + getParentSymbolTable().getId() + " )"
+				+ "\n"
+				+ SemanticUtils.getSymbolTableDescription(this,
+						variables.values());
+	}
+	
+	//@Override
+	public String getId() {
+		return "statement block in " + getParentSymbolTable().getId();
 	}
 }

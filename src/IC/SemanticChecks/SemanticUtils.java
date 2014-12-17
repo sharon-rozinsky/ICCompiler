@@ -1,9 +1,12 @@
 package IC.SemanticChecks;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import IC.AST.Method;
 import IC.AST.StaticMethod;
+import IC.Symbols.Symbol;
+import IC.Symbols.SymbolTable;
 import IC.Types.MethodContent;
 import IC.Types.SymbolType;
 import IC.Types.TypeTable;
@@ -79,4 +82,24 @@ public class SemanticUtils {
         return TypeTable.methodType(methd);
 	}
 	
+	public static String getSymbolTableDescription(SymbolTable symbolTable, Collection<Symbol>... symbolCollections){
+		StringBuilder result = new StringBuilder();
+		for(Collection<Symbol> symbolCollection : symbolCollections){
+			for(Symbol symbol : symbolCollection){
+				result.append("\t");
+				result.append(symbol.toString());
+				result.append("\n");
+			}
+		}
+		
+		Collection<SymbolTable> childSymbolTables = symbolTable.getChildSymbolTables().values();
+		if(childSymbolTables != null && childSymbolTables.size() > 0){
+			result.append("Children tables: ");
+			for(SymbolTable childSymbolTable : childSymbolTables){
+				result.append(childSymbolTable.getId() + ", ");
+			}
+			result.setLength(result.length() - 2); //remove last ','
+		}
+		return result.toString();
+	}
 }

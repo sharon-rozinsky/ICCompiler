@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class SymbolTable {
-	private String id;
-	private SymbolTable parentSymbolTable;
-	private Map<String, SymbolTable> childSymbolTables;
+	protected String id;
+	protected SymbolTable parentSymbolTable;
+	protected Map<String, SymbolTable> childSymbolTables;
 
 	public SymbolTable(String id, SymbolTable parentSymbolTable) {
 		childSymbolTables = new HashMap<String, SymbolTable>();
 		this.id = id;
 		if(parentSymbolTable != null){
 			this.parentSymbolTable = parentSymbolTable;
-			addChildTable(id, this);
+			addChildTable(id, parentSymbolTable);
 		}
 	}
 	
@@ -30,7 +30,7 @@ public abstract class SymbolTable {
 	}
 
 	public void addChildTable(String id, SymbolTable symTable){
-		childSymbolTables.put(id, symTable);
+		symTable.getChildSymbolTables().put(id, this);
 	}
 	
 	public boolean symbolContained(String id){
