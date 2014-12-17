@@ -240,7 +240,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 			throw new SemanticError(call.getLine(), "calling an undefined static method");
 		}
 		
-		if(classScope.symbolContained(call.getName())){
+		if(!classScope.symbolContained(call.getName())){
 			throw new SemanticError(call.getLine(), "calling a static method that is not in scope");
 		}
 		

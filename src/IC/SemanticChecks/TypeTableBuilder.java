@@ -1,7 +1,5 @@
 package IC.SemanticChecks;
 
-import java.util.List;
-
 import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
@@ -27,12 +25,10 @@ import IC.AST.NewClass;
 import IC.AST.PrimitiveType;
 import IC.AST.Program;
 import IC.AST.Return;
-import IC.AST.Statement;
 import IC.AST.StatementsBlock;
 import IC.AST.StaticCall;
 import IC.AST.StaticMethod;
 import IC.AST.This;
-import IC.AST.Type;
 import IC.AST.UserType;
 import IC.AST.VariableLocation;
 import IC.AST.VirtualCall;

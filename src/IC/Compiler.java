@@ -8,10 +8,12 @@ import java.io.Reader;
 
 import java_cup.runtime.Symbol;
 import IC.AST.ASTNode;
+import IC.AST.ICClass;
 import IC.AST.PrettyPrinter;
 import IC.AST.Program;
 import IC.Parser.*;
 import IC.SemanticChecks.BreakContinueChecker;
+import IC.SemanticChecks.SemanticError;
 import IC.SemanticChecks.SpecialSemanticChecks;
 import IC.SemanticChecks.SymbolTableBuilder;
 import IC.SemanticChecks.SymbolTableChecker;
@@ -36,11 +38,28 @@ public class Compiler {
 				Lexer lexer = new Lexer(reader);
 				Parser parser = new Parser(lexer);
 				Symbol parseSymbol = parser.parse();
+				ASTNode root = (ASTNode) parseSymbol.value;
 				System.out.println("The file: " + args[0] + " was successfully parsed");
+				
+				// Check if there is a library file and parse it
+				if(args.length == 2){
+					if(!args[1].startsWith("-L")){
+						System.out.println("The second parameter should start with -L");
+					} else{
+						String fileName = args[1].substring(2);
+						reader = new FileReader(new File(fileName));
+						Lexer libLexer = new Lexer(reader);
+						LibraryParser libParser = new LibraryParser(libLexer);
+						Symbol libParseSymbol = libParser.parse();
+						System.out.println("The file: " + args[1] + " was successfully parsed");
+						reader.close();
+						
+						((Program)root).getClasses().add(0, (ICClass)libParseSymbol.value);
+					}
+				}
 				
 				// print the AST of the program
 				PrettyPrinter printer = new PrettyPrinter(args[0]);
-				ASTNode root = (ASTNode) parseSymbol.value;
 				TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
 				ttb.visit((Program) root);
 				String typeT = TypeTable.printTable();
@@ -74,21 +93,6 @@ public class Compiler {
 		        SpecialSemanticChecks.validateMainFunction((Program) root);
 		        
 				System.out.println("good till here !!");
-				
-				// Check if there is a library file and parse it
-				if(args.length == 2){
-					if(!args[1].startsWith("-L")){
-						System.out.println("The second parameter should start with -L");
-					} else{
-						String fileName = args[1].substring(2);
-						reader = new FileReader(new File(fileName));
-						Lexer libLexer = new Lexer(reader);
-						LibraryParser libParser = new LibraryParser(libLexer);
-						Symbol libParseSymbol = libParser.parse();
-						System.out.println("The file: " + args[1] + " was successfully parsed");
-						reader.close();
-					}
-				}
 			} else{
 				System.out.println("No file was given, please run again and insert which file do you want to parse!");
 			}
@@ -100,6 +104,9 @@ public class Compiler {
 			PrintTokenError(e.getMessage());
 		} catch(SyntaxError e){
 			System.out.println(e.getMessage());
+		} catch(SemanticError e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

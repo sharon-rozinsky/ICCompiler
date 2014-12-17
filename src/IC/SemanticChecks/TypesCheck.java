@@ -372,7 +372,7 @@ public class TypesCheck implements Visitor{
 			if(!call.getArguments().get(i).getSymbolType().isSubClass(s))
 			{
 				throw new SemanticError(call.getLine(), 
-						String.format("Type mismatch in atgument #%d (zero based). got %s, expected %s.",i,call.getArguments().get(i).getSymbolType().toString(),s.toString()));
+						String.format("Type mismatch in argument #%d (zero based). got %s, expected %s.",i,call.getArguments().get(i).getSymbolType().toString(),s.toString()));
 			}
 			i++;
 		}
@@ -399,7 +399,7 @@ public class TypesCheck implements Visitor{
 		
 		if(call.getLocation() == null)  //assign symbol type to VariableLocation. 
 		{
-			MethodType methodType = (MethodType) ((ClassSymbolTable) call.getEnclosingScopeSymTable()).getMethods().get(call.getName()).getType();
+			MethodType methodType = (MethodType) getClassSymbolTable(call).getMethods().get(call.getName()).getType();
 			
 			visitCallWraper(call, methodType);
 		}

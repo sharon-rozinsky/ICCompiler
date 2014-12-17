@@ -35,7 +35,9 @@ public class ClassSymbolTable extends SymbolTable {
 		} else if (memberVariables.containsKey(id)){
 			return memberVariables.get(id);
 		} else {
-			return getParentSymbolTable().getSymbol(id);
+			if(getParentSymbolTable() != null)
+				return getParentSymbolTable().getSymbol(id);
+			return null;
 		}
 	}
 
