@@ -45,21 +45,13 @@ public abstract class SymbolTable {
 	public abstract Symbol getSymbol(String id);
 	public abstract boolean symbolContainedInCurrentScope(String id);
 	
-	public String scopeToString(String filename){
-		StringBuilder scope = new StringBuilder();
-		scope.append(id+": "+ filename + "\n");
-		//TODO : Shronnnnnn
-		
-		return "tom";
+	public SymbolTable findSymbolTable(String id) {
+		if (symbolContainedInCurrentScope(id)) {
+			return this;
+		} else if (parentSymbolTable != null) {
+			return parentSymbolTable.findSymbolTable(id);
+		} else {
+			return null;
+		}
 	}
-	
-	 public SymbolTable findSymbolTable(String id) {
-	        if (symbolContainedInCurrentScope(id)) {
-	            return this;
-	        } else if (parentSymbolTable != null) {
-	            return parentSymbolTable.findSymbolTable(id);
-	        } else {
-	            return null;
-	        }
-	    }
 }

@@ -329,6 +329,9 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		if(location.getLocation() == null){
 			if(!scope.symbolContained(location.getName())){
 				unresolvedReferences.add(location);
+			} else {
+				SymbolTable locationScope = scope.findSymbolTable(location.getName());
+				location.setLocationScope(locationScope);
 			}
 		} 
 		propagate(location.getLocation(), scope);

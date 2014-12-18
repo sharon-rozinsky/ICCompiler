@@ -286,8 +286,8 @@ public class TypesCheck implements Visitor{
 		
 		if(location.getLocation() == null)  //assign symbol type to VariableLocation. 
 		{
-			SymbolType locationType = location.getEnclosingScopeSymTable().getSymbol(locationId).getType();
-			
+			//SymbolType locationType = location.getEnclosingScopeSymTable().getSymbol(locationId).getType();
+			SymbolType locationType = location.getLocationScope().getSymbol(locationId).getType();
 			location.setSymbolType(locationType);
 		}
 		else //need to check that the types match.
