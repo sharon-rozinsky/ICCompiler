@@ -1,6 +1,7 @@
 package IC.AST;
 
 import IC.SemanticChecks.SemanticError;
+import IC.Symbols.SymbolTable;
 
 /**
  * Variable reference AST node.
@@ -10,8 +11,8 @@ import IC.SemanticChecks.SemanticError;
 public class VariableLocation extends Location {
 
 	private Expression location = null;
-
 	private String name;
+	private SymbolTable locationScope;
 
 	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
@@ -55,6 +56,14 @@ public class VariableLocation extends Location {
 
 	public String getName() {
 		return name;
+	}
+	
+	public SymbolTable getLocationScope() {
+		return locationScope;
+	}
+
+	public void setLocationScope(SymbolTable locationScope) {
+		this.locationScope = locationScope;
 	}
 
 	@Override
