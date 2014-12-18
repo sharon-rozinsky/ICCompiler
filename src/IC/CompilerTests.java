@@ -206,6 +206,7 @@ public class CompilerTests {
 		} catch (SemanticError e)
 		{
 			TypeTable.typeTableInit("bad_assignment3.ic");
+			e.printStackTrace();
 			Assert.assertTrue("semantic error at line 27".equals(e.getMessage().split(":")[0]));
 		}
 	}
@@ -1228,7 +1229,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 20".equals(e.getMessage().split(":")[0]));
 		}
 	}
 

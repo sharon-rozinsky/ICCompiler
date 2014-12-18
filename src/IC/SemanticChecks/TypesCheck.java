@@ -327,6 +327,11 @@ public class TypesCheck implements Visitor{
 					}
 				}
 			}
+			else
+			{
+				throw new SemanticError(location.getLine(), 
+						String.format("Undefined location %s.",location.getName()));
+			}
 		}
 		return null;
 	}
