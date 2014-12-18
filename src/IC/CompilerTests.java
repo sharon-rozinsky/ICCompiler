@@ -1000,7 +1000,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -1019,7 +1019,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
