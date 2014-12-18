@@ -394,7 +394,6 @@ public class CompilerTests {
 	@Test
 	/**
 	 * Test number 16.
-	 *  TODO check why this one suppose to fail...
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_16() throws Exception {
@@ -454,7 +453,7 @@ public class CompilerTests {
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_19() throws Exception {
+	public void SemanticCheck_Test_19() throws Exception {//TODO: Bonus - Initialize
 		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use.ic";
 		Compiler.Compile(args);
 		Assert.assertTrue(false); //Compile should fail
@@ -892,7 +891,7 @@ public class CompilerTests {
 	 * Test number 44.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_44() throws Exception {
+	public void SemanticCheck_Test_44() throws Exception { //TODO : Graph check !!
 		try 
 		{
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ClassGraphError.ic";
@@ -970,7 +969,7 @@ public class CompilerTests {
 	 * Test number 48.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_48() throws Exception { //TODO : why fail ?!
+	public void SemanticCheck_Test_48() throws Exception { //TODO : Bonus - Initialize !!
 		try 
 		{
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ComplexInitError.ic";
@@ -1132,7 +1131,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 9".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line _9_".equals(e.getMessage().split(":")[0]));
 		} //TODO : make sure why..
 	}
 
@@ -1178,10 +1177,9 @@ public class CompilerTests {
 	@Test
 	/**
 	 * Test number 59.
-	 * BonusCheck!!
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_59() throws Exception {
+	public void SemanticCheck_Test_59() throws Exception {//TODO : Bonus
 		try 
 		{
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"VarNotInitError.ic";
