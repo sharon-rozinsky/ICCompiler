@@ -381,12 +381,16 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_16() throws Exception {
-
-		args[0] = "tests\\test_files_pa3\\errors\\IfElseWhileScope.ic";
-		Compiler.Compile(args);
-		Assert.assertTrue(false); //Compile should fail
-		//Init type table for next test.
-		TypeTable.typeTableInit("IfElseWhileScope.ic");
+		try
+		{
+			args[0] = "tests\\test_files_pa3\\errors\\IfElseWhileScope.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 
