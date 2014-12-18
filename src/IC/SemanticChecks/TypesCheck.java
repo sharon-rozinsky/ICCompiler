@@ -194,7 +194,15 @@ public class TypesCheck implements Visitor{
 		
 		MethodType methodType = (MethodType) classSymTbl.getMethods().get(methodSymTbl.getId()).getType();
 		SymbolType methodRetType = methodType.getMethod().getRetType();
-		SymbolType retType = returnStatement.getValue().getSymbolType();
+		SymbolType retType;
+		if(returnStatement.getValue() != null)
+		{
+			retType = returnStatement.getValue().getSymbolType();
+		}
+		else
+		{
+			retType = TypeTable.voidType;
+		}
 
 		if(returnStatement.hasValue() && !(retType.isSubClass(methodRetType)))
 		{

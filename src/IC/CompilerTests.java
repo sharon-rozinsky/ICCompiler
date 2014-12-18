@@ -1083,11 +1083,16 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_55() throws Exception {
-
-		args[0] = "tests\\test_files_pa3\\external\\errors\\SomeSemanticErrors.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("SomeSemanticErrors.ic");
+		try 
+		{
+			args[0] = "tests\\test_files_pa3\\external\\errors\\SomeSemanticErrors.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 14".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 
