@@ -94,7 +94,7 @@ public class TypeTableBuilder implements Visitor{
             } 
             else 
             {
-            	throw new SemanticError(program.getLine(), "Redifinition of a Class");
+            	throw new SemanticError(icClass.getLine(), "Redifinition of a Class");
             }
         }    
         return true; 				//returns true at the end of the recursive run if successes
