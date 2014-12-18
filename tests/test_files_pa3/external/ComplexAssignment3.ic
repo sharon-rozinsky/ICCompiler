@@ -1,0 +1,28 @@
+class A {
+    D e;
+    
+    D retE() {
+        return new E();
+    }
+}
+
+class B extends A {}
+
+class C extends B {}
+
+class D {
+    A c;
+}
+
+class E extends D {
+
+     static void main(string[] args){}
+     
+     void complexAssignment() {
+         c = new C();
+         D d = c.retE();
+        
+
+     }
+    
+}

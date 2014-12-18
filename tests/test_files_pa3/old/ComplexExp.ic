@@ -1,0 +1,12 @@
+class ComplexExp {
+
+	static void main(string[] args) { }
+
+    void f() {
+        int a = - 3 + 4 * 4 + 5 / 6 - 7 + - 7 % 9;
+        boolean b = (- 3 + 4 * 4 + 5 >= 6 - 7 % - 7 * 9) == (- 3 + 4 / 4 + - 5 <= 6 * 7 + - 7 % 9);
+        int[][][] arr = new int[][][3];
+        arr[- 3 + 4 * 4 + 5][- 3 + 4 % 4 + 5 / 6 - 7 + - 7 * 9][3 * 4 + 3 - 2 % 4] = 9 - 3 * 8;
+    }
+
+}

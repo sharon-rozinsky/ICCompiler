@@ -1,0 +1,51 @@
+class A {
+
+	int a;
+	int a;
+	int bar;
+	
+	void foo() {
+		
+		int a;
+		
+		string a;
+	
+		return;
+	}
+
+	void foo(int n) {
+		return;
+	}
+	
+	void bar() {
+		return;
+	}
+	
+	static int one() {
+		return 1;
+	}
+}
+
+class AA extends A {
+	
+	void foo(int n) {
+	
+	}
+	
+	int one() {
+		return 1;
+	}
+	
+	void two(int a, string a) {
+		return;
+	}
+	
+}
+
+class B extends B {
+
+}
+
+class C extends D {
+
+}

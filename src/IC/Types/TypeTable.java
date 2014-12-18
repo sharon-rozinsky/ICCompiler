@@ -22,7 +22,7 @@ public class TypeTable {
 	private static final int NUM_OF_PREMITIVE_TYPES		= 6;
 
 
-	private static int unique_id = NUM_OF_PREMITIVE_TYPES;
+	private static int unique_id; 
 	
 	// Maps element types to array types
 	public static Map<SymbolType,ArrayType> uniqueArrayTypes;
@@ -80,6 +80,7 @@ public class TypeTable {
         uniqueArrayTypes = new HashMap<SymbolType,ArrayType>();
         uniqueClassTypes = new HashMap<String, ClassType>();
         uniqueMethodTypes = new HashMap<MethodContent,MethodType>();
+        unique_id = NUM_OF_PREMITIVE_TYPES;
 	}
 	
 	// Returns unique method type object

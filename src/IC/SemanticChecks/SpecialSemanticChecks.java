@@ -59,7 +59,7 @@ public class SpecialSemanticChecks {
 						if(mainMethodCount >1)
 						{
 							throw new SemanticError(getMethodFromClass(icClass, "main").getLine(), 
-									String.format("more the single main function is not allowed"));
+									String.format("more than one main function is not allowed"));
 						}
 					}
 					else
@@ -69,6 +69,12 @@ public class SpecialSemanticChecks {
 					}
 				}
 			}
+		}
+		
+		if(mainMethodCount < 1)
+		{
+			throw new SemanticError(program.getLine(), 
+					String.format("program miss main method"));
 		}
 	}
 	/**  @return Method

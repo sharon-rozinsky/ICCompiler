@@ -1,0 +1,15 @@
+class A {
+
+	void main(string[] args) {
+	
+	}
+
+}
+
+class B {
+
+	static void main() {
+	
+	}
+
+}

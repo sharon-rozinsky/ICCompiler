@@ -1,0 +1,5 @@
+class Suffo{
+int j;
+void func(int a){}
+static void main(string[] args) { }
+}

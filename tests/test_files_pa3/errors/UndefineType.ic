@@ -1,0 +1,15 @@
+class A {
+	
+	void foo() {
+		B b;
+	}
+	
+	
+	void bar() {
+		A a = new C();
+	}
+	
+	void one() {
+		C.doesntExist(3);
+	}
+}

@@ -1,0 +1,27 @@
+// error should be:
+// semantic error at line 22: Illegal assignment (Type check)
+
+class A {
+    D e;
+}
+
+class B extends A {}
+
+class C extends B {}
+
+class D {
+    A c;
+}
+
+class E extends D {
+
+     static void main(string[] args){}
+     
+     void complexAssignment() {
+         B[] b = new B[10];
+         b[3] = new A();
+         b[3].e = new E();
+
+     }
+    
+}

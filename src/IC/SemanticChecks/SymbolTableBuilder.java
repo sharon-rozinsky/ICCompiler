@@ -168,7 +168,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			SymbolType methodInstanceType = methodInstanceSymbol.getType();
 			
 			if(methodType != methodInstanceType && methodKind != methodInstanceKind){
-				throw new SemanticError(method.getLine(), "Method with the same name already defined");
+				throw new SemanticError(method.getLine(), "Method or variable with the same name already defined");
 			}
 		}
 		

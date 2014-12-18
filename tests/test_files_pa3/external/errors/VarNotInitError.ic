@@ -1,0 +1,17 @@
+
+class VarNotInitError{
+
+    static void do_something(int n){
+        n = n*3 + n*2 + n + 1 ;
+    }
+	
+	static void wow(){
+		int k;
+		VarNotInitError.do_something(k);	
+	}
+	
+	
+	static void main(string[] args){
+		VarNotInitError.wow();
+}
+}

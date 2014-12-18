@@ -27,51 +27,11 @@ public class Compiler {
 	
 	private static boolean printtokens = true;
 	private static final String PRINT_AST_OPTION = "-print-ast";
-	private static final String PRINT_SYMTAB_OPTION = "-dump-symtab";
+	protected static final String PRINT_SYMTAB_OPTION = "-dump-symtab";
 	
 	public static void main(String[] args) throws LexicalError {
 		try {
-			if(args.length != 0) {
-				// read the program file and parse it
-				Utils.initSymbolToSignMap();
-				Program root = Utils.parseProgram(args[0]);
-				if(args.length >= 2){
-					Utils.parseLibrary(args[1], root);
-				}
-				
-				TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
-				ttb.visit((Program) root);
-				
-				SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
-		        root.accept(symbolBuilder, null);  
-
-				if(args[2].equals(PRINT_AST_OPTION)){
-					Utils.printAST(args[0], root);
-				}
-				if(args[2].equals(PRINT_SYMTAB_OPTION)){
-					Utils.printSymbolTable(root);
-					Utils.printTypeTable();
-				} 
-	        
-				//testing symbol scope
-		        SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
-		        scopeCheck.visit((Program) root, null);
-		        
-		        //testing type check
-		        TypesCheck typeCheck = new TypesCheck();
-		        typeCheck.visit((Program) root);
-		        
-		        //testing breakCont
-		        BreakContinueChecker breakCont = new BreakContinueChecker();
-		        breakCont.visit((Program) root, null);
-		        
-		        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
-		        SpecialSemanticChecks.validateMainFunction((Program) root);
-		        
-				System.out.println("good till here !!");
-			} else{
-				System.out.println("No file was given, please run again and insert which file do you want to parse!");
-			}
+			Compile(args);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e){
@@ -82,9 +42,56 @@ public class Compiler {
 			System.out.println(e.getMessage());
 		} catch(SemanticError e){
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void Compile(String [] args) throws Exception { 
+		if(args.length != 0) {
+			// read the program file and parse it
+			Utils.initSymbolToSignMap();
+			Program root = Utils.parseProgram(args[0]);
+			if(args.length >= 2){
+				Utils.parseLibrary(args[1], root);
+			}
+			
+			TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
+			ttb.visit((Program) root);
+			
+			SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
+	        root.accept(symbolBuilder, null);  
+	        
+	        if(args.length > 2)
+	        {
+	        	if(args[2].equals(PRINT_AST_OPTION)){
+					Utils.printAST(args[0], root);
+				}
+				if(args[2].equals(PRINT_SYMTAB_OPTION)){
+					Utils.printSymbolTable(root);
+					Utils.printTypeTable();
+				}
+	        }
+			 
+			//testing symbol scope
+	        SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
+	        scopeCheck.visit((Program) root, null);
+	        
+	        //testing type check
+	        TypesCheck typeCheck = new TypesCheck();
+	        typeCheck.visit((Program) root);
+	        
+	        //testing breakCont
+	        BreakContinueChecker breakCont = new BreakContinueChecker();
+	        breakCont.visit((Program) root, null);
+	        
+	        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
+	        SpecialSemanticChecks.validateMainFunction((Program) root);
+	        
+			System.out.println("good till here !!");
+		} else{
+			System.out.println("No file was given, please run again and insert which file do you want to parse!");
 		}
 	}
 	

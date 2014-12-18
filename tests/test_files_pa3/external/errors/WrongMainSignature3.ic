@@ -1,0 +1,12 @@
+class WrongMainSignature3{
+	
+	static string jojo(){
+		return "jojo";
+	}
+	
+	//Error: argument should be of type string[] 
+	static void main (string args){
+		WrongMainSignature3.jojo();
+	} 
+	
+}

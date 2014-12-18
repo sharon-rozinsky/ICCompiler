@@ -1,0 +1,37 @@
+class A
+{
+	int[] arr;
+	
+	void foo(int x){
+		arr = new int[x];
+		arr[0] = x;
+	}
+}
+
+class B
+{
+	A a;
+	
+	void boo(){
+		a = new A();
+	}
+}
+
+class C
+{
+
+	static void main(string[] args) { }
+	
+	void goo(int y)
+	{
+		int x;
+		string s;
+		B b = new B();
+		
+		b.boo();
+		b.a.foo(y);
+		
+		x = b.a.arr[0];
+		s = b.a.arr[0];
+	}
+}

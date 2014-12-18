@@ -1,0 +1,25 @@
+class A
+{
+	
+	static void main(string[] args) { }
+
+	int ints(int x)
+	{
+		int z;
+		z = -x;
+		
+		return z;
+	}
+}
+
+class B
+{
+
+	boolean booleans(boolean x)
+	{
+		boolean z;
+		z = !x;
+		
+		return z;
+	}
+}

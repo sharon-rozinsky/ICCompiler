@@ -1,0 +1,25 @@
+class A {
+    D e;
+}
+
+class B extends A {}
+
+class C extends B {}
+
+class D {
+    A c;
+}
+
+class E extends D {
+
+     static void main(string[] args){}
+     
+     void wierdExp() {
+         A[] a = new A[3];
+         
+         D d = (3+3).e;
+        
+
+     }
+    
+}

@@ -1,0 +1,42 @@
+class A {}
+
+class B
+{
+
+	int a;
+	string b;
+	boolean c;
+	A d;
+	
+}
+
+class C extends B
+{
+
+	static void main(string[] args) { }
+	
+	string foo(int x, string y, boolean z)
+	{
+		B bClass = new B();
+		int aa;
+		string bb;
+		boolean cc;
+		A dd;
+		
+		aa = x;
+		bb = y;
+		cc = z;
+		dd = new A();
+		
+		bClass.a = aa;
+		bClass.b = bb;
+		bClass.c = cc;
+		bClass.d = dd;
+		a = aa;
+		b = bb;
+		c = cc;
+		d = dd;
+		
+		return bClass.b;	
+	}
+}

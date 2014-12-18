@@ -1,0 +1,33 @@
+
+class A {
+
+     static void main(string[] args){}
+     
+     int complexReturn() {
+     
+            if (true) {
+            
+                return 1;
+                
+            } else {
+            
+                    if (true) {
+                    
+                        return 2;
+                    
+                    } else {
+                
+                        {
+                    
+                        if (true) {
+                               
+                             return 2;
+                             
+                        } 
+                        
+                        }
+                    }
+             }
+      }   
+        
+}

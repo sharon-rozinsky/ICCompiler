@@ -1,0 +1,37 @@
+class B {}
+
+class A
+{
+	
+	static void main(string[] args) { }
+
+	int foo(int x)
+	{
+		int a;
+		string str;
+		boolean bool;
+		B b = new B();
+		B bb = new B();
+		
+		a = 15;
+		str = "World";
+		
+		string[] strArr = new string[x];
+		int[][] intArr = new int[][a];
+		boolean[] boolArr = new boolean[a+x];
+		B[][][] bArr = new B[][][a%x];
+		
+		strArr[x-1] = ("Hello" + str);
+		intArr[a/2][a/2] = a*x;
+		boolArr[0] = (a<x);
+		bArr[0][0][0] = b;
+		
+		str = strArr[x-1];
+		a = intArr[a/2][a/2];
+		bool = boolArr[0];
+		bb = bArr[0][0][0];
+		
+		return (a + (intArr[2].length * boolArr.length - intArr.length + strArr.length) - bArr[1][2].length);
+		
+	}
+}

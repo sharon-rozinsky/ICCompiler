@@ -1,0 +1,25 @@
+class A {
+    D e;
+}
+
+class B extends A {}
+
+class C extends B {}
+
+class D {
+    A c;
+}
+
+class E extends D {
+
+     static void main(string[] args){}
+     
+     void complexAssignment() {
+         c = new C();
+		 if(true)
+		 {
+			c.e = this;
+		 }
+     }
+    
+}

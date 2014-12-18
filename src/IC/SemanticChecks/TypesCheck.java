@@ -428,8 +428,7 @@ public class TypesCheck implements Visitor{
 
 	@Override
 	public Object visit(This thisExpression) {
-		MethodSymbolTable thisScope =  (MethodSymbolTable) thisExpression.getEnclosingScopeSymTable();
-		ClassSymbolTable thisClassScope = (ClassSymbolTable)  thisScope.getParentSymbolTable();
+		ClassSymbolTable thisClassScope = getClassSymbolTable(thisExpression);
 		
 		thisExpression.setSymbolType(TypeTable.uniqueClassTypes.get(thisClassScope.getId()));
 		

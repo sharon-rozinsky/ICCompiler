@@ -1,0 +1,36 @@
+class A
+{
+	static void main(string[] args) { }
+	
+	int ints(int x, int y)
+	{
+		int z;
+		boolean b;
+		string s;
+		
+		b = x+y;
+		s = x*y;
+		z = 
+			b/y;
+		z = 
+			s-y;
+		z = x%y;
+		
+		return z;
+	}
+	
+	string strings(string x, string y)
+	{
+		string z;
+		int w;
+		boolean b;
+		w = y+y;
+		b = x+y;
+		z = 
+			w+y;
+		z = 
+			x+b;
+		
+		return z;
+	}
+}

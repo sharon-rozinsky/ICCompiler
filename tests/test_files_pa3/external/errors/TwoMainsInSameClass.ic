@@ -1,0 +1,18 @@
+class TwoMains{
+	
+	static void main(string[] args){
+		TwoMains.getSomeOne();
+		TwoMains.getSomeOne();
+		if (true)
+			TwoMains.getSomeOne();
+	}
+	
+	
+	static int getSomeOne(){
+		int someOne = 1;
+		return someOne;
+	}
+	
+	static void main(string[] args){}
+	
+}
