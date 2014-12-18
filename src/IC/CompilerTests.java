@@ -323,12 +323,15 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_12() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ContBreakOutsideWhile.ic";
-		Compiler.Compile(args);
-		Assert.assertTrue(false); //Compile should fail
-		//Init type table for next test.
-		TypeTable.typeTableInit("ContBreakOutsideWhile.ic");
+		try {
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ContBreakOutsideWhile.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); // Compile should fail
+		} catch (SemanticError e) {
+			// Init type table for next test.
+			TypeTable.typeTableInit("ContBreakOutsideWhile.ic");
+			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 
@@ -338,12 +341,15 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_13() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ContBreakOutsideWhile2.ic";
-		Compiler.Compile(args);
-		Assert.assertTrue(false); //Compile should fail
-		//Init type table for next test.
-		TypeTable.typeTableInit("ContBreakOutsideWhile2.ic");
+		try{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ContBreakOutsideWhile2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e){
+			//Init type table for next test.
+			TypeTable.typeTableInit("ContBreakOutsideWhile2.ic");
+			Assert.assertTrue("semantic error at line 9".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 
@@ -353,12 +359,15 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_14() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ContBreakOutsideWhile3.ic";
-		Compiler.Compile(args);
-		Assert.assertTrue(false); //Compile should fail
-		//Init type table for next test.
-		TypeTable.typeTableInit("ContBreakOutsideWhile3.ic");
+		try{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ContBreakOutsideWhile3.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e){
+			//Init type table for next test.
+			TypeTable.typeTableInit("ContBreakOutsideWhile3.ic");
+			Assert.assertTrue("semantic error at line 18".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 

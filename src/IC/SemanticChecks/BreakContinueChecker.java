@@ -38,17 +38,17 @@ import IC.AST.While;
 
 public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean> {
 
-	protected boolean isNull(ASTNode node, ASTNode parentNode) throws SemanticError {
+	protected boolean propagate(ASTNode node, ASTNode parentNode) throws SemanticError {
         if(node == null){
         	return true;
         }
         return node.accept(this,parentNode);
     }
     
-    protected boolean isNull(Iterable iterable, ASTNode parentNode) throws SemanticError {
+    protected boolean propagate(Iterable iterable, ASTNode parentNode) throws SemanticError {
         if (iterable != null)
             for (Object node : iterable) {
-                if (!isNull((ASTNode)node, parentNode)) {
+                if (!propagate((ASTNode)node, parentNode)) {
                     return false;
                 }
             }
@@ -56,28 +56,14 @@ public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean
         return true;
     }   
     
-    protected void propagate(ASTNode node, ASTNode context) throws SemanticError {
-        if (node != null) {
-            node.accept(this, context);
-        }
-    }
-    
-    protected void propagate(Iterable iterable, ASTNode context) throws SemanticError {
-        if (iterable != null) {
-            for (Object node : iterable) {
-                propagate((ASTNode)node, context);
-            }
-        }
-    }
-    
 	@Override
 	public Boolean visit(Program program, ASTNode scope) throws SemanticError {
-		return isNull(program.getClasses(), program);
+		return propagate(program.getClasses(), program);
 	}
 
 	@Override
 	public Boolean visit(ICClass icClass, ASTNode scope) throws SemanticError {
-		return isNull(icClass.getMethods(), icClass);
+		return propagate(icClass.getMethods(), icClass);
 	}
 
 	@Override
@@ -88,13 +74,13 @@ public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean
 	@Override
 	public Boolean visit(VirtualMethod method, ASTNode scope)
 			throws SemanticError {
-		return isNull(method.getStatements(), method);
+		return propagate(method.getStatements(), method);
 	}
 
 	@Override
 	public Boolean visit(StaticMethod method, ASTNode scope)
 			throws SemanticError {
-		return isNull(method.getStatements(), method);
+		return propagate(method.getStatements(), method);
 	}
 
 	@Override
@@ -138,19 +124,19 @@ public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean
 
 	@Override
 	public Boolean visit(If ifStatement, ASTNode scope) throws SemanticError {
-		return isNull(ifStatement.getOperation(), scope)
-				&& isNull(ifStatement.getElseOperation(), scope);
+		return propagate(ifStatement.getOperation(), scope)
+				&& propagate(ifStatement.getElseOperation(), scope);
 	}
 
 	@Override
 	public Boolean visit(While whileStatement, ASTNode scope)
 			throws SemanticError {
-		return isNull(whileStatement.getOperation(), scope);
+		return propagate(whileStatement.getOperation(), whileStatement);
 	}
 
 	@Override
 	public Boolean visit(Break breakStatement, ASTNode scope) throws SemanticError {
-		if(isInLoop(scope)){
+		if(!isInLoop(scope)){
 			throw new SemanticError(breakStatement.getLine(), "break key word used outside of loop");
 		}
 		return true;
@@ -158,7 +144,7 @@ public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean
 
 	@Override
 	public Boolean visit(Continue continueStatement, ASTNode scope) throws SemanticError {
-		if(isInLoop(scope)){
+		if(!isInLoop(scope)){
 			throw new SemanticError(continueStatement.getLine(), "continue key word used outside of loop");
 		}
 		return true;
@@ -174,7 +160,7 @@ public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean
 	@Override
 	public Boolean visit(StatementsBlock statementsBlock, ASTNode scope)
 			throws SemanticError {
-		return isNull(statementsBlock.getStatements(), scope);
+		return propagate(statementsBlock.getStatements(), scope);
 	}
 
 	@Override
