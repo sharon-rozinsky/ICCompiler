@@ -9,7 +9,7 @@ class A {
 		A a = new C();
 	}
 	
-	void one() {
-		C.doesntExist(3);
-	}
+	//void one() {
+	//	C.doesntExist(3);
+	//}
 }
