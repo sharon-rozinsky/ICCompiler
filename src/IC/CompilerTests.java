@@ -1765,6 +1765,7 @@ public class CompilerTests {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
 		} catch (SemanticError e) {
+			e.printStackTrace();
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
 			Assert.assertTrue(false); //Compile should pass

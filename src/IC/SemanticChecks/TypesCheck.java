@@ -308,14 +308,14 @@ public class TypesCheck implements Visitor{
 			{
 				ClassType cType = (ClassType) eType;
 				ClassSymbolTable classSymTbl = (ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable();
-				
-				if(classSymTbl.getMemberVariables().containsKey(locationId))
+				Symbol locationSym = classSymTbl.getSymbol(locationId);
+				if(locationSym.getKind() == Kind.MemberVariable)
 				{
-					location.setSymbolType(classSymTbl.getMemberVariables().get(locationId).getType());
+					location.setSymbolType(locationSym.getType());
 				}
 				else
 				{
-					if(classSymTbl.getMethods().containsKey(locationId))
+					if((locationSym.getKind() == Kind.Method) || (locationSym.getKind() == Kind.Method))
 					{
 						throw new SemanticError(location.getLine(), 
 								String.format("None field location Identifier. %s.",locationId));
@@ -421,10 +421,10 @@ public class TypesCheck implements Visitor{
 			{
 				ClassType cType = (ClassType) eType;
 				ClassSymbolTable classSymTbl = (ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable();
-				
-				if(classSymTbl.getMethods().containsKey(call.getName()))
+				Symbol callSym = classSymTbl.getSymbol(call.getName());
+				if(callSym.getKind() == Kind.Method)
 				{
-					visitCallWraper(call,(MethodType) classSymTbl.getMethods().get(call.getName()).getType());
+					visitCallWraper(call,(MethodType) callSym.getType());
 				}
 				else
 				{
