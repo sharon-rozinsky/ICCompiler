@@ -255,20 +255,18 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		ifStatement.setEnclosingScopeSymTable(scope);
 		propagate(ifStatement.getCondition(),scope);
 		
-		propagate(ifStatement.getOperation(), scope);
-		/*if(ifStatement.getOperation() instanceof StatementsBlock){
+		if(ifStatement.getOperation() instanceof StatementsBlock){
 			propagate(ifStatement.getOperation(), scope);
 		} else{
 			propagate(ifStatement.getOperation(), new CodeBlockSymbolTable(scope));
-		}*/
+		}
 		
 		if(ifStatement.hasElse()){
-			propagate(ifStatement.getElseOperation(), scope);
-			/*if(ifStatement.getElseOperation() instanceof StatementsBlock){
+			if(ifStatement.getElseOperation() instanceof StatementsBlock){
 				propagate(ifStatement.getElseOperation(), scope);
 			} else{
 				propagate(ifStatement.getElseOperation(), new CodeBlockSymbolTable(scope));
-			}*/
+			}
 		}
 		return null;
 	}
@@ -279,12 +277,12 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		whileStatement.setEnclosingScopeSymTable(scope);
 		propagate(whileStatement.getCondition(), scope);
 		
-		propagate(whileStatement.getOperation(), scope);
-		/*if(whileStatement.getOperation() instanceof StatementsBlock){
+		//propagate(whileStatement.getOperation(), scope);
+		if(whileStatement.getOperation() instanceof StatementsBlock){
 			propagate(whileStatement.getOperation(), scope);	
 		} else {
 			propagate(whileStatement.getOperation(), new CodeBlockSymbolTable(scope));
-		}*/
+		}
 		return null;
 	}
 
