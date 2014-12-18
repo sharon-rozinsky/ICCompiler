@@ -67,17 +67,6 @@ public class Compiler {
 	        SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
 	        scopeCheck.visit((Program) root, null);
 	        
-	        if(args.length > 2)
-	        {
-	        	if(args[2].equals(PRINT_AST_OPTION)){
-					Utils.printAST(args[0], root);
-				}
-				if(args[2].equals(PRINT_SYMTAB_OPTION)){
-					Utils.printSymbolTable(root);
-					Utils.printTypeTable();
-				}
-	        }
-	        
 	        //testing type check
 	        TypesCheck typeCheck = new TypesCheck();
 	        typeCheck.visit((Program) root);
@@ -88,6 +77,17 @@ public class Compiler {
 	        
 	        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
 	        SpecialSemanticChecks.validateMainFunction((Program) root);
+	        
+	        if(args.length > 2)
+	        {
+	        	if(args[2].equals(PRINT_AST_OPTION)){
+					Utils.printAST(args[0], root);
+				}
+				if(args[2].equals(PRINT_SYMTAB_OPTION)){
+					Utils.printSymbolTable(root);
+					Utils.printTypeTable();
+				}
+	        }
 	        
 			System.out.println("good till here !!");
 		} else{

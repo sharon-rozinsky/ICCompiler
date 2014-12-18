@@ -33,12 +33,9 @@ class C extends B
 		bClass.c = dd;
 		bClass.d = aa;
 		
-		aa =
-			bb.a;
-		aa =
-			bClass.e;
-		aa =
-			dd.foo;
+		aa = bb.a;
+		aa = bClass.e;
+		aa = dd.foo;
 		
 		return bClass.b;	
 	}
