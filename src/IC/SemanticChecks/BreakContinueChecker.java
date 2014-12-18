@@ -38,95 +38,114 @@ import IC.AST.While;
 
 public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean> {
 
+	protected boolean isNull(ASTNode node, ASTNode parentNode) throws SemanticError {
+        if(node == null){
+        	return true;
+        }
+        return node.accept(this,parentNode);
+    }
+    
+    protected boolean isNull(Iterable iterable, ASTNode parentNode) throws SemanticError {
+        if (iterable != null)
+            for (Object node : iterable) {
+                if (!isNull((ASTNode)node, parentNode)) {
+                    return false;
+                }
+            }
+        
+        return true;
+    }   
+    
+    protected void propagate(ASTNode node, ASTNode context) throws SemanticError {
+        if (node != null) {
+            node.accept(this, context);
+        }
+    }
+    
+    protected void propagate(Iterable iterable, ASTNode context) throws SemanticError {
+        if (iterable != null) {
+            for (Object node : iterable) {
+                propagate((ASTNode)node, context);
+            }
+        }
+    }
+    
 	@Override
 	public Boolean visit(Program program, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
-		return true;
+		return isNull(program.getClasses(), program);
 	}
 
 	@Override
 	public Boolean visit(ICClass icClass, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
-		return true;
+		return isNull(icClass.getMethods(), icClass);
 	}
 
 	@Override
 	public Boolean visit(Field field, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(VirtualMethod method, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
-		return true;
+		return isNull(method.getStatements(), method);
 	}
 
 	@Override
 	public Boolean visit(StaticMethod method, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
-		return true;
+		return isNull(method.getStatements(), method);
 	}
 
 	@Override
 	public Boolean visit(LibraryMethod method, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(Formal formal, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(PrimitiveType type, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(UserType type, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(Assignment assignment, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(CallStatement callStatement, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(Return returnStatement, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(If ifStatement, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
-		return true;
+		return isNull(ifStatement.getOperation(), scope)
+				&& isNull(ifStatement.getElseOperation(), scope);
 	}
 
 	@Override
 	public Boolean visit(While whileStatement, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
-		return true;
+		return isNull(whileStatement.getOperation(), scope);
 	}
 
 	@Override
@@ -155,106 +174,90 @@ public class BreakContinueChecker implements PropagatingVisitor<ASTNode, Boolean
 	@Override
 	public Boolean visit(StatementsBlock statementsBlock, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
-		return true;
+		return isNull(statementsBlock.getStatements(), scope);
 	}
 
 	@Override
 	public Boolean visit(LocalVariable localVariable, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(VariableLocation location, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(ArrayLocation location, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(StaticCall call, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(VirtualCall call, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(This thisExpression, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(NewClass newClass, ASTNode scope) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(NewArray newArray, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(Length length, ASTNode scope) throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(MathBinaryOp binaryOp, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(LogicalBinaryOp binaryOp, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(MathUnaryOp unaryOp, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(LogicalUnaryOp unaryOp, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(Literal literal, ASTNode scope)
 		throws SemanticError {
-			// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public Boolean visit(ExpressionBlock expressionBlock, ASTNode scope)
 			throws SemanticError {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
