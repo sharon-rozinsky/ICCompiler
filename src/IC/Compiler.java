@@ -62,6 +62,10 @@ public class Compiler {
 			
 			SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
 	        root.accept(symbolBuilder, null);  
+			 
+			//testing symbol scope
+	        SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
+	        scopeCheck.visit((Program) root, null);
 	        
 	        if(args.length > 2)
 	        {
@@ -73,10 +77,6 @@ public class Compiler {
 					Utils.printTypeTable();
 				}
 	        }
-			 
-			//testing symbol scope
-	        SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
-	        scopeCheck.visit((Program) root, null);
 	        
 	        //testing type check
 	        TypesCheck typeCheck = new TypesCheck();

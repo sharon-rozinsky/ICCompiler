@@ -3,14 +3,8 @@ package IC;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-
-
-
-
 import org.junit.Assert;
 import org.junit.Test;
-
 import IC.Parser.LexicalError;
 import IC.Parser.SyntaxError;
 import IC.SemanticChecks.SemanticError;
@@ -292,7 +286,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 20".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -311,7 +305,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 5".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -420,12 +414,16 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_18() throws Exception {
-
-		args[0] = "tests\\test_files_pa3\\errors\\LocalVariableAssigmentFromFieldWithBadType.ic";
-		Compiler.Compile(args);
-		Assert.assertTrue(false); //Compile should fail
-		//Init type table for next test.
-		TypeTable.typeTableInit("LocalVariableAssigmentFromFieldWithBadType.ic");
+		try
+		{
+			args[0] = "tests\\test_files_pa3\\errors\\LocalVariableAssigmentFromFieldWithBadType.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 5".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 
@@ -436,7 +434,6 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_19() throws Exception {
-
 		args[0] = "tests\\test_files_pa3\\errors\\LocalVarsNotInitB4Use.ic";
 		Compiler.Compile(args);
 		Assert.assertTrue(false); //Compile should fail
