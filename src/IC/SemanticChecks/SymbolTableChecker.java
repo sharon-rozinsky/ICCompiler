@@ -246,6 +246,10 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	public Boolean visit(StaticCall call, ASTNode scope) throws SemanticError {
 		ClassType classType = TypeTable.classType(call.getClassName(), null, null);
 		ICClass icClass = classType.getClassNode();
+		if(icClass == null)
+		{
+			throw new SemanticError(call.getLine(), "calling an undefined class");
+		}
 		SymbolTable classScope = icClass.getEnclosingScopeSymTable();
 		Symbol symbol = classScope.getSymbol(call.getName());
 		
