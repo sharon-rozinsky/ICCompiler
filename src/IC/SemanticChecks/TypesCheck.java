@@ -275,6 +275,8 @@ public class TypesCheck implements Visitor{
 						String.format("Variable initialization with wrong type. got %s, expected %s.",initType.toString(),varType.toString()));
 			}
 		}
+		
+		localVariable.setSymbolType(localVariable.getType().getSymbolType());
 		return null;
 	}
 
