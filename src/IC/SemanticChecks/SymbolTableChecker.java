@@ -308,7 +308,11 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(NewClass newClass, ASTNode scope) {
+	public Boolean visit(NewClass newClass, ASTNode scope) throws SemanticError {
+		String className = newClass.getName();
+		if(!TypeTable.classTypeExists(className)){
+			throw new SemanticError(newClass.getLine(), "Creating an instance of undeclared class: " + className);
+		}
 		return null;
 	}
 

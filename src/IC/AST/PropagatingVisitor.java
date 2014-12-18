@@ -57,7 +57,7 @@ public interface PropagatingVisitor <D, U>{
 
 	public U visit(This thisExpression, D scope);
 
-	public U visit(NewClass newClass, D scope);
+	public U visit(NewClass newClass, D scope) throws SemanticError;
 
 	public U visit(NewArray newArray, D scope) throws SemanticError;
 
