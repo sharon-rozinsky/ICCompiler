@@ -161,7 +161,9 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		}
 		
 		if(scope.symbolContainedInCurrentScope(methodName)){
-			throw new SemanticError(method.getLine(), "Method overloading is not supported");
+			Symbol symbol = scope.getSymbol(methodName);
+			if(symbol.getKind() == Kind.Method || symbol.getKind() == Kind.StaticMethod)
+				throw new SemanticError(method.getLine(), "Method overloading is not supported");
 		} else if(scope.symbolContained(methodName)){
 			Symbol methodInstanceSymbol = scope.getSymbol(methodName);
 			Kind methodInstanceKind = methodInstanceSymbol.getKind();

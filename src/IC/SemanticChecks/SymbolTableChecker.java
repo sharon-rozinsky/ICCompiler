@@ -246,8 +246,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	public Boolean visit(StaticCall call, ASTNode scope) throws SemanticError {
 		ClassType classType = TypeTable.classType(call.getClassName(), null, null);
 		ICClass icClass = classType.getClassNode();
-		if(icClass == null)
-		{
+		if(icClass == null){
 			throw new SemanticError(call.getLine(), "calling an undefined class");
 		}
 		SymbolTable classScope = icClass.getEnclosingScopeSymTable();
@@ -282,7 +281,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 				throw new SemanticError(call.getLine(), "calling a non static method from a static scope");
 			}
 			
-			if(callSymbol.getKind() != Kind.Method){
+			if(callSymbol.getKind() != Kind.Method && callSymbol.getKind() != Kind.StaticMethod){
 				throw new SemanticError(call.getLine(), "calling an undefined method");
 			}
 		} else if(call.getLocation() instanceof This){

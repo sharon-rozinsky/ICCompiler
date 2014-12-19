@@ -102,6 +102,12 @@ public class TypeTableBuilder implements Visitor{
 
 	@Override
 	public Object visit(ICClass icClass) throws SemanticError {
+		if(icClass.hasSuperClass()){
+			boolean superClassExist = TypeTable.classTypeExists(icClass.getSuperClassName());
+			if(!superClassExist){
+				throw new SemanticError(icClass.getLine(), "Cannot extend a class that has not already been defined: " + icClass.getSuperClassName());
+			}
+		}
 		stepIn(icClass.getFields());
 		stepIn(icClass.getMethods());
 		return null;
