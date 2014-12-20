@@ -13,6 +13,7 @@ import IC.AST.PrettyPrinter;
 import IC.AST.Program;
 import IC.Parser.*;
 import IC.SemanticChecks.BreakContinueChecker;
+import IC.SemanticChecks.MaxIntegerChecker;
 import IC.SemanticChecks.SemanticError;
 import IC.SemanticChecks.SpecialSemanticChecks;
 import IC.SemanticChecks.SymbolTableBuilder;
@@ -79,6 +80,10 @@ public class Compiler {
 	        //testing breakCont
 	        BreakContinueChecker breakCont = new BreakContinueChecker();
 	        breakCont.visit((Program) root, null);
+	        
+	        //testing maxInteger
+	        MaxIntegerChecker maxInt = new MaxIntegerChecker();
+	        maxInt.visit((Program) root, null);
 	        
 	        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
 	        SpecialSemanticChecks.validateMainFunction((Program) root);
