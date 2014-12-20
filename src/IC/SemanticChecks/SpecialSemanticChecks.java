@@ -40,8 +40,8 @@ import IC.Types.TypeTable;
  * this class include all the "none visitor" checks:
  * 1. one main function check.
  * 2. check correctness of library name.
- * 3. check that all local variables are initialized before used. (bonus).
- * 4. check that all none void methods returns values. (bonus).
+ * 3. check that all none void methods returns values. (bonus).
+ * 4. check that all local variables are initialized before used. (bonus).
  */
 public class SpecialSemanticChecks {
 	
@@ -184,32 +184,30 @@ public class SpecialSemanticChecks {
 		return allPathsReturnNoneVoidValue(operationlistWraper);
 	}
 	
-    //This check makes sure all local variables in the program are init before being used
-    public static void areAllLocalVarsInit(Program program) throws SemanticError
+    public static void allLocalVarsInit(Program program) throws SemanticError
     {       
         for (ICClass icClass : program.getClasses())
         {
                 for (Method method : icClass.getMethods())
                 {                       
-                	int ret = areMethodLocalVarsInit(method.getStatements());
+                	int ret = allMethodLocalVarsInit(method.getStatements());
                 	if ((ret != -1) && (ret != -2))
                 	{
-                		throw new SemanticError(ret, String.format("Var Used Before Initialization"));
+                		throw new SemanticError(ret, String.format("using a non initialised variable"));
                 	}
                 		
                 }
         }
         
     }
-    
-    
-    private static int areMethodLocalVarsInit(List<Statement> statements) throws SemanticError
+     
+    private static int allMethodLocalVarsInit(List<Statement> statements) throws SemanticError
     {
-        int stmtCounter = 0;
+        int stmtCnt = 0;
         
         for (Statement statement : statements)
         {
-        	stmtCounter++;
+        	stmtCnt++;
         	if (statement instanceof LocalVariable)
             {       
 	            if (((LocalVariable) statement).hasInitValue())
@@ -218,8 +216,8 @@ public class SpecialSemanticChecks {
 	            }
 	            else
 	            {
-                    List<Statement> varStmts = collectStmtsForSpecificLocalVar(statements, stmtCounter);
-                    int ret = isSpecificLocalVarInit(varStmts, ((LocalVariable)statement).getName());
+                    List<Statement> varStmts = collectStmtsForSpecificLocalVar(statements, stmtCnt);
+                    int ret = isVarInit(varStmts, ((LocalVariable)statement).getName());
                     if ((ret != -1 ) && (ret != -2)){
                 		return ret;
                 	}
@@ -227,7 +225,7 @@ public class SpecialSemanticChecks {
             }
             else if (statement instanceof StatementsBlock)
             {
-            	int ret = areMethodLocalVarsInit(((StatementsBlock)statement).getStatements());
+            	int ret = allMethodLocalVarsInit(((StatementsBlock)statement).getStatements());
             	if ((ret != -1 ) && (ret != -2)){
             		return ret;
             	}
@@ -236,7 +234,7 @@ public class SpecialSemanticChecks {
             {
                     List<Statement> newList = new LinkedList<Statement>();
                     newList.add(((While)statement).getOperation());    
-                    int ret = areMethodLocalVarsInit(newList);
+                    int ret = allMethodLocalVarsInit(newList);
                     if ((ret != -1 ) && (ret != -2)){
                 		return ret;
                 	}
@@ -245,7 +243,7 @@ public class SpecialSemanticChecks {
             {
                     List<Statement> newList = new LinkedList<Statement>();
                     newList.add(((If)statement).getOperation());                               
-                    int ret = areMethodLocalVarsInit(newList);
+                    int ret = allMethodLocalVarsInit(newList);
                     if ((ret != -1 ) && (ret != -2)){
                 		return ret;
                 	}
@@ -253,7 +251,7 @@ public class SpecialSemanticChecks {
                     {
                             newList.clear();
                             newList.add(((If)statement).getElseOperation());                             
-                            ret = areMethodLocalVarsInit(newList);
+                            ret = allMethodLocalVarsInit(newList);
                             if ((ret != -1 ) && (ret != -2)){
                         		return ret;
                         	}
@@ -263,9 +261,9 @@ public class SpecialSemanticChecks {
         return -2;
     }
     
-    //Gathers all statements starting at a specific statement index
+    
     private static List<Statement> collectStmtsForSpecificLocalVar(List<Statement> statements, int startStmtIndex)
-    {
+    {	// Collects all "forward" statements - from the var and forward
         int stmtCounter = 0;
         List<Statement> newList = new LinkedList<Statement>();
     
@@ -282,28 +280,28 @@ public class SpecialSemanticChecks {
     }
     
     
-    //returns line number for Used before Init, -1 for definite init before all uses,
-    //-2 for never used or for when only sometimes the variable gets init, but never gets used without init..
-    private static int isSpecificLocalVarInit(List<Statement> statements, String varName)
+    /**  Returns line number for Error - Used before Init.
+      *  Returns -1 for definite init before all uses,
+      *  Returns -2 for never used or for when only sometimes the variable gets init, but never gets used without init.. 
+      */
+    private static int isVarInit(List<Statement> statements, String varName)
     {   
     	for (Statement statement : statements)
     	{
     		if (statement instanceof Assignment)
     		{
-    			//make sure it's not used at the assignment side
-    			if (!isVarUsedInExp(((Assignment)statement).getAssignment(), varName))
-    			{                               
-    				//check if its the variable we're looking for
-    				Location assignedVar = ((Assignment)statement).getVariable();
+    			if (!isExpContainsVar(((Assignment)statement).getAssignment(), varName)) //make sure it's not used at the right hand side
+    			{                                  				
+    				Location var = ((Assignment)statement).getVariable(); //check if used left hand side - it's the assignment we're looking for
 
-    				if ((assignedVar instanceof VariableLocation) && (varName.equals(((VariableLocation)assignedVar).getName())))                                   
+    				if ((var instanceof VariableLocation) && (varName.equals(((VariableLocation)var).getName())))                                   
     				{
     					return -1; //it's been assigned
     				}                               
-    				else if (assignedVar instanceof ArrayLocation)
+    				else if (var instanceof ArrayLocation)
     				{
-    					if (isVarUsedInExp(((ArrayLocation)assignedVar).getArray(), varName) || 
-    							isVarUsedInExp(((ArrayLocation)assignedVar).getIndex(), varName))
+    					if (isExpContainsVar(((ArrayLocation)var).getArray(), varName) || 
+    							isExpContainsVar(((ArrayLocation)var).getIndex(), varName))
     					{
     						return statement.getLine();
     					}
@@ -317,7 +315,7 @@ public class SpecialSemanticChecks {
 
     		else if (statement instanceof Return)
     		{
-    			if (isVarUsedInExp(((Return)statement).getValue(), varName))
+    			if (isExpContainsVar(((Return)statement).getValue(), varName))
     			{
     				return statement.getLine();
     			}
@@ -325,21 +323,20 @@ public class SpecialSemanticChecks {
 
     		else if (statement instanceof LocalVariable)
     		{       
-    			if (isVarUsedInExp(((LocalVariable)statement).getInitValue(), varName))
+    			if (isExpContainsVar(((LocalVariable)statement).getInitValue(), varName))
     			{
     				return statement.getLine();
     			}
 
     			else if (varName.equals(((LocalVariable)statement).getName()))
-    			{
-    				//we found a "shadowing" local variable. no need to continue checking this section.
-    				return 2;
+    			{   				
+    				return -2; //we found a local variable. no need to continue checking this section.
     			}
     		}
 
     		else if (statement instanceof CallStatement)
     		{
-    			if (isVarUsedInExp(((CallStatement)statement).getCall(), varName))
+    			if (isExpContainsVar(((CallStatement)statement).getCall(), varName))
     			{
     				return statement.getLine();
     			}
@@ -347,16 +344,14 @@ public class SpecialSemanticChecks {
 
     		else if (statement instanceof StatementsBlock)
     		{
-    			int stmtBlockResult = isSpecificLocalVarInit(((StatementsBlock)statement).getStatements(), varName);
-
-    			//only return the result if its not -2. if its -2, we need to continue looking.
-    			if (stmtBlockResult != -2)
+    			int stmtBlockResult = isVarInit(((StatementsBlock)statement).getStatements(), varName);
+    			if (stmtBlockResult != -2)  //only return definitive result, otherwise we should continue checking
     				return stmtBlockResult;
     		}
 
     		else if (statement instanceof While)
     		{
-    			if (isVarUsedInExp(((While)statement).getCondition(), varName))
+    			if (isExpContainsVar(((While)statement).getCondition(), varName))
     			{
     				return statement.getLine();
     			}
@@ -365,7 +360,7 @@ public class SpecialSemanticChecks {
     				List<Statement> whileStatements = new LinkedList<Statement>();
     				whileStatements.add(((While)statement).getOperation());
     				
-    				int ret = isSpecificLocalVarInit(whileStatements, varName);
+    				int ret = isVarInit(whileStatements, varName);
     				if ((ret != -1 ) && (ret != -2)){
                 		return ret;
                 	}
@@ -373,7 +368,7 @@ public class SpecialSemanticChecks {
     		}
     		else if (statement instanceof If)
     		{
-    			if (isVarUsedInExp(((If)statement).getCondition(), varName))
+    			if (isExpContainsVar(((If)statement).getCondition(), varName))
     			{
     				return statement.getLine();
     			}
@@ -382,7 +377,7 @@ public class SpecialSemanticChecks {
     				List<Statement> ifStatements = new LinkedList<Statement>();
     				ifStatements.add(((If)statement).getOperation());
 
-    				int ifsResult = isSpecificLocalVarInit(ifStatements, varName);                                   
+    				int ifsResult = isVarInit(ifStatements, varName);                                   
     				if ((ifsResult != -1 ) && (ifsResult != -2))
     					return ifsResult; //error
 
@@ -391,12 +386,12 @@ public class SpecialSemanticChecks {
     					List<Statement> elseStatements = new LinkedList<Statement>();
     					elseStatements.add(((If)statement).getElseOperation());
 
-    					int elsesResult = isSpecificLocalVarInit(elseStatements, varName);
-    					if ((elsesResult != -1 ) && (elsesResult != -2))
-    						return elsesResult; //error
+    					int elseResult = isVarInit(elseStatements, varName);
+    					if ((elseResult != -1 ) && (elseResult != -2))
+    						return elseResult; //error
 
-    					else if (elsesResult == -1 && ifsResult == -1)
-    						return -1;
+    					else if (elseResult == -1 && ifsResult == -1)
+    						return -1; // defined both in if and in else so defined!!
     				}
     			}
     		}
@@ -404,23 +399,23 @@ public class SpecialSemanticChecks {
     	return -2;
     }
     
-    private static boolean isVarUsedInExp(Expression expression, String id)
+    private static boolean isExpContainsVar(Expression expression, String id)
     {
         if (expression instanceof BinaryOp)
         {
-            return (isVarUsedInExp(((BinaryOp)expression).getFirstOperand(), id) || isVarUsedInExp(((BinaryOp)expression).getSecondOperand(), id));
+            return (isExpContainsVar(((BinaryOp)expression).getFirstOperand(), id) || isExpContainsVar(((BinaryOp)expression).getSecondOperand(), id));
         }
         
         else if (expression instanceof UnaryOp)
         {
-            return isVarUsedInExp(((UnaryOp)expression).getOperand(), id);
+            return isExpContainsVar(((UnaryOp)expression).getOperand(), id);
         }
         
         else if (expression instanceof Call)
         {
 	        for (Expression exp : ((Call)expression).getArguments())
 	        {
-	                if (isVarUsedInExp(exp, id))
+	                if (isExpContainsVar(exp, id))
 	                        return true;
 	        }
 	        
@@ -429,19 +424,19 @@ public class SpecialSemanticChecks {
         
         else if (expression instanceof Length)
         {
-            return isVarUsedInExp(((Length)expression).getArray(), id);
+            return isExpContainsVar(((Length)expression).getArray(), id);
         }
         
         else if (expression instanceof ExpressionBlock)
         {
-            return isVarUsedInExp(((ExpressionBlock)expression).getExpression(), id);
+            return isExpContainsVar(((ExpressionBlock)expression).getExpression(), id);
         }
         
         else if (expression instanceof New)
         {
             if (expression instanceof NewArray)
             {
-                    return isVarUsedInExp(((NewArray)expression).getSize(), id);
+                    return isExpContainsVar(((NewArray)expression).getSize(), id);
             }
         }
         
@@ -449,7 +444,7 @@ public class SpecialSemanticChecks {
         {
             if (expression instanceof ArrayLocation)
             {
-                    return (isVarUsedInExp(((ArrayLocation)expression).getArray(), id) || isVarUsedInExp(((ArrayLocation)expression).getIndex(), id));                            
+                    return (isExpContainsVar(((ArrayLocation)expression).getArray(), id) || isExpContainsVar(((ArrayLocation)expression).getIndex(), id));                            
             }
             
             else

@@ -77,7 +77,7 @@ public class Compiler {
 	        
 	        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
 	        SpecialSemanticChecks.validateMainFunction((Program) root);
-	        SpecialSemanticChecks.areAllLocalVarsInit((Program) root);
+	        SpecialSemanticChecks.allLocalVarsInit((Program) root);
 	        
 	        if(args.length > 2)
 	        {
