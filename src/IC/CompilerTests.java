@@ -153,8 +153,6 @@ public class CompilerTests {
 	@Test
 	/**
 	 * Test number 5.
-	 * 
-	 * Here we got some issues TODO check this again!
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_bad_assignment3() throws Exception {
@@ -170,8 +168,6 @@ public class CompilerTests {
 		}
 	}
 	
-	
-
 
 	@Test
 	/**
@@ -885,7 +881,7 @@ public class CompilerTests {
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0])); //TODO: check!!!!
+			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -973,8 +969,6 @@ public class CompilerTests {
 	@Test
 	/**
 	 * Test number 55.
-	 * 
-	 * Here we got some issues TODO check why we don'y fail on extends of already extended class
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_moreThanOneExtendeSameClass() throws Exception {

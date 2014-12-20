@@ -37,8 +37,9 @@ public class MethodType extends SymbolType {
 //		{
 //			methodStr.append(t.toString()+", ");
 //		}
-			methodStr.append(" -> " + method.getRetType().toString() + "}");
+			methodStr.append(" -> " + method.getRetType().toString());
 		}
+		methodStr.append("}");
 		return methodStr.toString();
 	}
 	
