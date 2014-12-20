@@ -52,18 +52,6 @@ INTEGER = 		[0-9]+
         Min/Max.INT will be handled within the parser.
         Single line Comment can be the last line of the file, without line terminator.
 */
-OUT_OF_RANGE_INTEGER=
-        [1-9][0-9]{10}[0-9]*|
-        [3-9][0-9]{9}[0-9]*|
-        2[2-9][0-9]{8}[0-9]*|
-        21[5-9][0-9]{7}[0-9]*|
-        214[8-9][0-9]{6}[0-9]*|
-        2147[5-9][0-9]{5}[0-9]*|
-        21474[9-9][0-9]{4}[0-9]*|
-        214748[4-9][0-9]{3}[0-9]*|
-        2147483[7-9][0-9]{2}[0-9]*|
-        21474836[5-9][0-9]{1}[0-9]*|
-        214748364[8-9][0-9]*
         
 LITERAL_ERROR={DIGIT}+({LETTER}|_)+
 
@@ -130,7 +118,6 @@ LITERAL_ERROR={DIGIT}+({LETTER}|_)+
   	{ID}         				{ return token(sym.ID, yytext()); }
   	{Class_ID}      			{ return token(sym.CLASS_ID, yytext()); } 	
   	{LITERAL_ERROR}     		{ throw new LexicalError("bad format token: " + yytext());}
-    {OUT_OF_RANGE_INTEGER} 		{ throw new LexicalError("number is out of valid range: " + yytext()); }
   	
   	/* literals */
   	{INTEGER}         			{ return token(sym.INTEGER, yytext()); }

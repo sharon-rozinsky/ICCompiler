@@ -66,7 +66,7 @@ public class TypeTableBuilder implements Visitor{
     private SymbolType type(IC.AST.Type nodeType) throws SemanticError {
     	SymbolType type = SemanticUtils.convertNodeTypeToSymType(nodeType);
         if (type == null) {
-        	//throw new SemanticError(0, "A reference to an undefined type - FIX"); //TODO: FIX - line number?!?!
+        	//throw new SemanticError(nodeType.getLine(), "A reference to an undefined type - FIX"); // solved it in the symbol checker
         }      
         return type;
     }
@@ -260,7 +260,7 @@ public class TypeTableBuilder implements Visitor{
 	@Override
 	public Object visit(NewClass newClass) throws SemanticError {
 		if (!TypeTable.classTypeExists(newClass.getName())) {
-			//throw new SemanticError(newClass.getLine(), "An Instantiation of undefined Class type"); //TODO : is it right?!
+			//throw new SemanticError(newClass.getLine(), "An Instantiation of undefined Class type"); // solved in the symbol table
         }
 		return null;
 	}

@@ -1,6 +1,6 @@
 cmd for jflex:
 
-jflex --nobak /users/tomsivan/Documents/ICCompiler/src/spec.lex
+jflex --nobak /users/tomsivan/Documents/ICCompiler/src/IC.lex
 
 
 cmd for Cup:
