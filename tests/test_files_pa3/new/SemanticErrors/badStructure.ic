@@ -1,0 +1,16 @@
+class A {
+	
+	static void main(string[] args) { }
+	
+	void foo() {
+		
+		if (true)
+			int y = 5;
+			
+		while(true)
+			int y = 5;
+			
+		y = 3;
+		
+	}
+}

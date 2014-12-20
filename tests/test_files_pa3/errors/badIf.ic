@@ -1,0 +1,18 @@
+class A
+{
+	
+	static void main(string[] args) { }
+
+	void badIf()
+	{
+		int x;
+		x = 4;
+		
+		if(x)
+		{
+			boolean b = (x < (x-1));
+		}			
+		return;
+	}
+	
+}
