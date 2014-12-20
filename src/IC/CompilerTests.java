@@ -969,6 +969,25 @@ public class CompilerTests {
 		Compiler.Compile(args);
 	}
 
+	@Test
+	/**
+	 * Test number 55.
+	 * 
+	 * Here we got some issues TODO check why we don'y fail on extends of already extended class
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_moreThanOneExtendeSameClass() throws Exception {
+
+		try {
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new" + DIR_SEPARATOR + "SemanticErrors" + DIR_SEPARATOR + "moreThanOneExtendeSameClass.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail. 
+		} catch (SemanticError e)
+		{
+			e.printStackTrace();
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+		}
+	}
 
 	@Test
 	/**
@@ -2252,24 +2271,5 @@ public class CompilerTests {
 		TypeTable.typeTableInit("VariableLocationTest.ic");
 	}
 	
-	@Test
-	/**
-	 * Test number 103.
-	 * 
-	 * Here we got some issues TODO check why we don'y fail on extends of already extended class
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_103() throws Exception {
-
-		try {
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new" + DIR_SEPARATOR + "SemanticErrors" + DIR_SEPARATOR + "moreThanOneExtendeSameClass.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail. 
-		} catch (SemanticError e)
-		{
-			e.printStackTrace();
-			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
-		}
-	}
 
 }
