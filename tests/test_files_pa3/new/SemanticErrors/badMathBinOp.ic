@@ -1,0 +1,14 @@
+class A
+{
+	static void main(string[] args) { }
+	
+	int ints(int x)
+	{
+		int z;
+		boolean b;
+		string s;
+		
+		b = (((x + z) / (x +s)) > 0);
+		return z;
+	}
+}

@@ -1,0 +1,37 @@
+class A {}
+
+class B extends A {}
+
+class C
+{
+	
+	static void main(string[] args) { }
+
+	static A foo(int x, string y, boolean z, A a)
+	{
+		return a;
+	}
+	
+}
+
+class D
+{
+
+	A bar(int x, string y, boolean z, A a)
+	{
+		return a;
+	}
+	
+}
+
+class E
+{
+	A goo(int x)
+	{
+	    A a = new A();
+		D d = new D();
+		a = d.bar(2, "h", false);
+		
+		return d;
+	}
+}

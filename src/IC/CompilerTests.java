@@ -1615,24 +1615,6 @@ public class CompilerTests {
 	}
 
 
-	@Test
-	/**
-	 * Test number 25.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_25() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"SingleValidMainInvalidSignature.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 3".equals(e.getMessage().split(":")[0]));
-		}
-	}
-
 
 	@Test
 	/**
@@ -2165,5 +2147,118 @@ public class CompilerTests {
 		TypeTable.typeTableInit("VariableLocationTest.ic");
 	}
 	
+	@Test
+	/**
+	 * Test number TODO complete.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ValidMainNumInvalidSignature() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ValidMainNumInvalidSignature.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 3".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number TODO complete.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_moreThanOneValidMain() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"moreThanOneValidMain.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 6".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number TODO complete.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_noMain() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"noMain.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 0".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number TODO complete.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_badLogicalOp() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"badLogicalOp.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 13".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number TODO complete.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_badMathBinOp() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"badMathBinOp.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number TODO complete.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_noReturnedVal() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"noReturnedVal.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 5".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number TODO complete.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_CallTestBad() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"CallTestBad.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 33".equals(e.getMessage().split(":")[0]));
+		}
+	}
 
 }
