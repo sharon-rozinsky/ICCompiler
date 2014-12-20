@@ -481,9 +481,10 @@ public class CompilerTests {
 		try {
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR + "SemanticErrors" +  DIR_SEPARATOR + "invalidBigInt.ic";
 			Compiler.Compile(args);
-		} catch (LexicalError e) {
-		}
-			
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+		}	
 	}
 
 
