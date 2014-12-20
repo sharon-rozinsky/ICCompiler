@@ -55,11 +55,13 @@ public class Compiler {
 			Utils.initSymbolToSignMap();
 			Program root = Utils.parseProgram(args[0]);
 			if(args.length >= 2){
-				ICClass libraryClass =Utils.parseLibrary(args[1], root);
-				//Check correctness of library class name.
-				if(libraryClass != null)
-				{
-					SpecialSemanticChecks.checkLibraryNameCorrectness(libraryClass);
+				if(args[1].startsWith("-L")){
+					ICClass libraryClass =Utils.parseLibrary(args[1], root);
+					//Check correctness of library class name.
+					if(libraryClass != null)
+					{
+						SpecialSemanticChecks.checkLibraryNameCorrectness(libraryClass);
+					}
 				}
 			}
 			
@@ -89,12 +91,12 @@ public class Compiler {
 	        SpecialSemanticChecks.validateMainFunction((Program) root);
 	        SpecialSemanticChecks.allLocalVarsInit((Program) root);
 	        
-	        if(args.length > 2)
+	        if(args.length >= 2)
 	        {
-	        	if(args[2].equals(PRINT_AST_OPTION)){
+	        	if(args[1].equals(PRINT_AST_OPTION)||args[2].equals(PRINT_AST_OPTION)){
 					Utils.printAST(args[0], root);
 				}
-				if(args[2].equals(PRINT_SYMTAB_OPTION)){
+				if(args[1].equals(PRINT_SYMTAB_OPTION)||args[2].equals(PRINT_SYMTAB_OPTION)||args[3].equals(PRINT_SYMTAB_OPTION)){
 					Utils.printSymbolTable(root);
 					Utils.printTypeTable();
 				}
