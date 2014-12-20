@@ -1,0 +1,17 @@
+class A
+{
+	static void main(string[] args) { }
+
+	void a()
+	{
+		int b;
+		int c;
+		b = 5;
+		
+		if (b > 4)
+		{
+			int b;			
+			c = b;
+		}
+	}
+}

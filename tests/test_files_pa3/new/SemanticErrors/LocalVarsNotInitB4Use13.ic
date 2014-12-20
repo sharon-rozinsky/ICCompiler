@@ -1,0 +1,14 @@
+class A
+{
+	
+	int b;
+	
+	static void main(string[] args) { }
+
+	int a()
+	{
+		b = 5;
+		int b;
+		return b;
+	}
+}

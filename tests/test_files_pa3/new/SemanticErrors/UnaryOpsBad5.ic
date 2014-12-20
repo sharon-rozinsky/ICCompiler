@@ -1,0 +1,15 @@
+class B
+{
+
+	boolean booleans(boolean x)
+	{
+		boolean b;
+		string s;
+
+		b = 
+			!x;
+		s = !b;
+		
+		return b;
+	}
+}

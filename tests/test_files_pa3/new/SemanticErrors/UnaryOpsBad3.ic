@@ -1,0 +1,18 @@
+class A
+{
+	
+	static void main(string[] args) { }
+
+	bool ints(int x)
+	{
+		int z;
+		boolean b;
+
+		z = 
+			-x;
+		b = 
+			-z;
+		
+		return b;
+	}
+}

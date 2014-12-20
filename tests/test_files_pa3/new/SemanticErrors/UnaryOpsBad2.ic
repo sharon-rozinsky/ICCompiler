@@ -1,0 +1,13 @@
+class A
+{
+	
+	static void main(string[] args) { }
+
+	void ints(int x)
+	{
+		string s;
+
+		s = -x;
+
+	}
+}

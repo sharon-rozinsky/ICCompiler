@@ -1,0 +1,18 @@
+class A
+{
+
+	static void main(string[] args) { }
+
+	int a()
+	{
+		int b = 0;
+	
+		if (b == 0)
+		{
+			int c;
+			return c;
+		}
+		
+		return b;
+	}
+}

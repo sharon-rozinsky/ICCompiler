@@ -474,10 +474,10 @@ public class CompilerTests {
 	 * Test number 18.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_18() throws Exception {
+	public void SemanticCheck_Test_LocalVariableAssigmentFromFieldWithBadType() throws Exception {
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"LocalVariableAssigmentFromFieldWithBadType.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVariableAssigmentFromFieldWithBadType.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -494,19 +494,254 @@ public class CompilerTests {
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_19() throws Exception {//TODO: Bonus - Initialize
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use1() throws Exception {
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 20".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use2() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
 			Assert.assertTrue("semantic error at line 7".equals(e.getMessage().split(":")[0]));
 		}
 	}
-
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use3() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use3.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 6".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use4() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use4.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 9".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use5() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use5.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 9".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use6() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use6.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 8".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use7() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use7.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 9".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use8() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use8.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 13".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use9() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use9.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 7".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use10() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use10.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 19".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use11() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use11.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 7".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use12() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use12.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 8".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use13() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use13.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use14() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use14.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 13".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 19.
+	 * Bonus test!!!
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsNotInitB4Use15() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use15.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 14".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
 
 	@Test
 	/**
@@ -692,8 +927,6 @@ public class CompilerTests {
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
 			Assert.assertTrue("semantic error at line 6".equals(e.getMessage().split(":")[0]));
 		}
 	}
@@ -704,35 +937,106 @@ public class CompilerTests {
 	 * Test number 30.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_30() throws Exception {
+	public void SemanticCheck_Test_UnaryOpsBad1() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"UnaryOpsBad.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
 		}
 	}
-
+	@Test
+	/**
+	 * Test number 30.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad2() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 30.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad3() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad3.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 13".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 30.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad4() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad4.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 8".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 30.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad5() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad5.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+		}
+	}
 
 	@Test
 	/**
 	 * Test number 31.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_31() throws Exception {
+	public void SemanticCheck_Test_UndefineType1() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"UndefineType.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 9".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 31.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UndefineType2() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0])); //TODO: check!!!!
 		}
 	}
 
@@ -742,16 +1046,30 @@ public class CompilerTests {
 	 * Test number 32.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_32() throws Exception {
+	public void SemanticCheck_Test_VariableLocationTestBad1() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"VariableLocationTestBad.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 38".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 28".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 32.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_VariableLocationTestBad2() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 28".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -761,12 +1079,10 @@ public class CompilerTests {
 	 * Test number 33.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_33() throws Exception {
+	public void SemanticCheck_Test_OurExample1() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"example1.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example1.ic";
 		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("example1.ic");
 	}
 
 
@@ -775,12 +1091,10 @@ public class CompilerTests {
 	 * Test number 34.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_34() throws Exception {
+	public void SemanticCheck_Test_OurExample2() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"example2.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example2.ic";
 		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("example2.ic");
 	}
 
 
@@ -789,12 +1103,10 @@ public class CompilerTests {
 	 * Test number 35.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_35() throws Exception {
+	public void SemanticCheck_Test_Break_Continue() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"Break,Continue.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"Break_Continue.ic";
 		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("Break,Continue.ic");
 	}
 
 
@@ -803,12 +1115,10 @@ public class CompilerTests {
 	 * Test number 36.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_36() throws Exception {
+	public void SemanticCheck_Test_ComplexAssignment1() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment1.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"ComplexAssignment1.ic";
 		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ComplexAssignment1.ic");
 	}
 
 

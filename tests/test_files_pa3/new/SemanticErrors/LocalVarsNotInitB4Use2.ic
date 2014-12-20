@@ -1,0 +1,11 @@
+class A
+{
+	void a()
+	{		
+		int b;
+		int c = 5;
+		b = c + b;
+	}
+
+	static void main(string[] args) { }
+}

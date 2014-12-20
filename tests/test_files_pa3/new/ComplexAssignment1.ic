@@ -16,10 +16,10 @@ class E extends D {
      
      void vfunc() {
          a = new C();
-		 if(true)
-		 {
-			a.d = this;
-		 }
+         if(true)
+         {
+            a.d = this;
+         }
      }
     
 }

@@ -1,0 +1,7 @@
+class A {
+
+	void sfunc() {
+		A b = new B();
+	}
+	
+}

@@ -1,10 +1,9 @@
 class A {
-		
-	string a;
+	
 	void sfunc() {
-		int a = a;
+		B b;
 	}
 	
 	static void main(string[] args) { }
-	
+
 }
