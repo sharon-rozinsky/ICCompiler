@@ -1,0 +1,15 @@
+class IfElseTest {
+
+	static void main(string[] args) { }
+
+	string f() {
+		if (false) return "1";
+		else return "2";
+	}
+
+	string g() {
+		if (true) return "1";
+		return "3";
+	}
+
+}

@@ -991,6 +991,555 @@ public class CompilerTests {
 
 	@Test
 	/**
+	 * Test number 56.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexAssignment2() throws Exception {
+		
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment2.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+		
+	}
+
+
+	@Test
+	/**
+	 * Test number 57.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexAssignment3() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment3.ic";
+		Compiler.Compile(args);
+	}
+	
+	@Test
+	/**
+	 * Test number 58.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexAssignment4() throws Exception {
+
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment4.ic";
+			Compiler.Compile(args);
+			//Init type table for next test.
+			TypeTable.typeTableInit("ComplexAssignment4.ic");
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+
+	}
+
+
+	@Test
+	/**
+	 * Test number 59.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexInit() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexInit.ic";
+		Compiler.Compile(args);
+	}
+	
+	@Test
+	/**
+	 * Test number 60.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexReturn() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexReturn.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 61.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexScope1() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexScope1.ic";
+		Compiler.Compile(args);
+		//Init type table for next test.
+		TypeTable.typeTableInit("ComplexScope1.ic");
+	}
+
+
+	@Test
+	/**
+	 * Test number 62.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexScope2() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexScope2.ic";
+			Compiler.Compile(args);
+			//Init type table for next test.
+			TypeTable.typeTableInit("ComplexScope2.ic");
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 63.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ClassGraphError() throws Exception { 
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ClassGraphError.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 6".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	
+	@Test
+	/**
+	 * Test number 64.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVar_Field_Same_Name() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"LocalVar,FieldWithSameName.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 65.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ThisTest() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ThisTest.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 66.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_IfElseWhile() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"IfElseWhile.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 67.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_Inheritance() throws Exception {
+
+		try{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"inheritance.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e){
+			Assert.assertTrue("semantic error at line 5".equals(e.getMessage().split(":")[0]));
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 68.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarAssigmentFromField() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVariableAssigmentFromFieldWithGoodType.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 69.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVariableShadowsFieldType() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVariableShadowsFieldType.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 70.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocalVarsInitB4Use() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVarsInitB4Use.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 71.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LogicalBinaryOps() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LogicalBinaryOps.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 72.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_MathBinaryOps() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MathBinaryOps.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 73.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_MethodsCallTest() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MethodsCallTest.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 74.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_MethodsReturningValue() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MethodsReturningValue.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 75.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_AllTokensTest() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"AllTokensTest.ic";
+		Compiler.Compile(args);
+	}
+	
+	
+	@Test
+	/**
+	 * Test number 76.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_Break_Continue2() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Break,Continue.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 77.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexExp() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"ComplexExp.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 78.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexIf() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"ComplexIf.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 79.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_CubesTest() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"CubesTest.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 80.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_EmptyMethod() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"EmptyMethod.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 81.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_EmptyThingsAndDifferentOrderTest() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"EmptyThingsAndDifferentOrderTest.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 82.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_Fields_Formals_Ops_This() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Fields,Formals,Ops,This.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 83.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_IfElseTest() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"IfElseTest.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 84.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_LocationsAndArrays() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"LocationsAndArrays.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 85.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ManyClasses() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"ManyClasses.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 86.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_Multi_class() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Multi-class.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 87.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_OpsPresedences() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"OpsPresedences.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 88.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_PrecedenceUMINUS() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"PrecedenceUMINUS.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 89.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_Quicksort() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Quicksort.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 90.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_Sieve() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Sieve.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 91.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_SynTest1() throws Exception {
+
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"SynTest1.ic";
+			Compiler.Compile(args);
+		} catch (SemanticError e) {
+			Assert.assertTrue(false); //Compile should pass
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 92.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_SynTest2() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"SynTest2.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 93.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryBinaryOpTest() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"UnaryBinaryOpTest.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 94.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_WhileWithinWhile() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"WhileWithinWhile.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 95.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ThisInVirtualMethods() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ThisInVirtualMethods.ic";
+		Compiler.Compile(args);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	@Test
+	/**
 	 * Test number 21.
 	 * @throws Exception
 	 */
@@ -1007,7 +1556,7 @@ public class CompilerTests {
 			Assert.assertTrue("semantic error at line 15".equals(e.getMessage().split(":")[0]));
 		}
 	}
-
+	
 
 	@Test
 	/**
@@ -1157,148 +1706,6 @@ public class CompilerTests {
 			Assert.assertTrue("semantic error at line 6".equals(e.getMessage().split(":")[0]));
 		}
 	}
-
-
-	
-
-	@Test
-	/**
-	 * Test number 37.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_37() throws Exception {
-		
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment2.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("ComplexAssignment2.ic");
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-		
-	}
-
-
-	@Test
-	/**
-	 * Test number 38.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_38() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment3.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ComplexAssignment3.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 39.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_39() throws Exception {
-
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment4.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("ComplexAssignment4.ic");
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-
-	}
-
-
-	@Test
-	/**
-	 * Test number 40.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_40() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexInit.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ComplexInit.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 41.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_41() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexReturn.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ComplexReturn.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 42.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_42() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexScope1.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ComplexScope1.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 43.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_43() throws Exception {
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexScope2.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("ComplexScope2.ic");
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 44.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_44() throws Exception { //TODO : Graph check !!
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ClassGraphError.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 6".equals(e.getMessage().split(":")[0]));
-		}
-	}
-
 
 	@Test
 	/**
@@ -1725,523 +2132,10 @@ public class CompilerTests {
 	}
 
 
-	@Test
-	/**
-	 * Test number 67.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_67() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"example1.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("example1.ic");
-	}
 
 
-	@Test
-	/**
-	 * Test number 68.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_68() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"example2.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("example2.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 69.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_69() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"LocalVar,FieldWithSameName.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("LocalVar,FieldWithSameName.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 70.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_70() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ThisTest.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ThisTest.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 71.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_71() throws Exception {
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"IfElseWhile.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 72.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_72() throws Exception {
-
-		try{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"inheritance.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("inheritance.ic");
-		} catch (SemanticError e){
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 5".equals(e.getMessage().split(":")[0]));
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 73.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_73() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVariableAssigmentFromFieldWithGoodType.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("LocalVariableAssigmentFromFieldWithGoodType.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 74.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_74() throws Exception {
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVariableShadowsFieldType.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 75.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_75() throws Exception {
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVarsInitB4Use.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit(""); 
-		} catch (SemanticError e) {
-			TypeTable.typeTableInit(""); // TODO: as of now falls on line 42 - FIX !!
-			Assert.assertTrue(false); //Compile should pass?
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 76.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_76() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LogicalBinaryOps.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("");
-	}
-
-
-	@Test
-	/**
-	 * Test number 77.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_77() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MathBinaryOps.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("");
-	}
-
-
-	@Test
-	/**
-	 * Test number 78.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_78() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MethodsCallTest.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("");
-	}
-
-
-	@Test
-	/**
-	 * Test number 79.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_79() throws Exception {
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MethodsReturningValue.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 80.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_80() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"AllTokensTest.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("AllTokensTest.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 81.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_81() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Break,Continue.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("Break,Continue.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 82.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_82() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"ComplexExp.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ComplexExp.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 83.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_83() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"ComplexIf.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ComplexIf.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 84.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_84() throws Exception {
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"CubesTest.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-		} catch (SemanticError e) {
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 85.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_85() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"EmptyMethod.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("EmptyMethod.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 86.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_86() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"EmptyThingsAndDifferentOrderTest.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("EmptyThingsAndDifferentOrderTest.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 87.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_87() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Fields,Formals,Ops,This.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("Fields,Formals,Ops,This.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 88.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_88() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"IfElseTest.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("IfElseTest.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 89.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_89() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"LocationsAndArrays.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("LocationsAndArrays.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 90.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_90() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"ManyClasses.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ManyClasses.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 91.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_91() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Multi-class.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("Multi-class.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 92.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_92() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"OpsPresedences.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("OpsPresedences.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 93.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_93() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"PrecedenceUMINUS.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("PrecedenceUMINUS.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 94.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_94() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Quicksort.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("Quicksort.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 95.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_95() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"Sieve.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("Sieve.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 96.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_96() throws Exception {
-
-		try
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"SynTest1.ic";
-			Compiler.Compile(args);
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-		} catch (SemanticError e) {
-			e.printStackTrace();
-			//Init type table for next test.
-			TypeTable.typeTableInit("");
-			Assert.assertTrue(false); //Compile should pass
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 97.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_97() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"SynTest2.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("SynTest2.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 98.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_98() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"UnaryBinaryOpTest.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("UnaryBinaryOpTest.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 99.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_99() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"old"+DIR_SEPARATOR+"WhileWithinWhile.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("WhileWithinWhile.ic");
-	}
-
-
-	@Test
-	/**
-	 * Test number 100.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_100() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ThisInVirtualMethods.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("ThisInVirtualMethods.ic");
-	}
 
 
 	@Test

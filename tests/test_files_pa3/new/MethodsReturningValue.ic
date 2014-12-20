@@ -1,0 +1,93 @@
+class A
+{
+
+	static void main(string[] args) { }
+	
+	void a()
+	{
+	}
+	
+	void b()
+	{
+		return;
+	}
+	
+	int c(int z)
+	{
+		return z;
+	}
+	
+	int d(int z)
+	{
+		{
+			return z;
+		}
+	}
+	
+	int e(int z)
+	{		
+		if (z > 0)
+			return z;
+		else
+			return (-1)*z;
+	}
+	
+	int f(int z)
+	{
+		if (z > 0)
+			return z;
+		else if (z == 0)
+		{
+			return z + 5;
+		}
+		else
+			return z*-1;
+	}
+	
+	int g(int z)
+	{
+		if (z > 0)
+		{
+		}
+		else
+		{
+			z = z + 1;
+		}
+		
+		return z;
+	}
+	
+	int h(int z)
+	{
+		if (z > 0)
+		{
+			return z;
+		}
+		else
+		{
+		}
+		
+		if (z < 0)
+		{
+			return z + 1;
+		}
+		
+		if (z == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	int i(int z)
+	{
+		while (z > 0)
+		{
+		}
+		
+		return z;
+	}
+}
