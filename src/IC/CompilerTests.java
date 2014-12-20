@@ -181,7 +181,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_badScope_1() throws Exception {
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"badScope_1.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"badScope_1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 
@@ -200,7 +200,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_badScope_2() throws Exception {
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"badScope_2.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"badScope_2.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -216,7 +216,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_badScope_3() throws Exception {
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"badScope_3.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"badScope_3.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -788,7 +788,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_UnaryOpsBad1() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad1.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -803,7 +803,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_UnaryOpsBad2() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad2.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad2.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -818,7 +818,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_UnaryOpsBad3() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad3.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad3.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -833,7 +833,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_UnaryOpsBad4() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad4.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad4.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -848,7 +848,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_UnaryOpsBad5() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad5.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad5.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -864,7 +864,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_UndefineType1() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"UndefineType1.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -880,7 +880,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_UndefineType2() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"UndefineType2.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType2.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -897,7 +897,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_VariableLocationTestBad1() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad1.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -913,7 +913,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_VariableLocationTestBad2() throws Exception {
 		try 
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticSemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad2.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad2.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
@@ -929,7 +929,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_OurExample1() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example1.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"example1.ic";
 		Compiler.Compile(args);
 	}
 
@@ -941,7 +941,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_OurExample2() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example2.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"example2.ic";
 		Compiler.Compile(args);
 	}
 
@@ -953,7 +953,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_Break_Continue() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"Break_Continue.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"Break_Continue.ic";
 		Compiler.Compile(args);
 	}
 
@@ -965,7 +965,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_ComplexAssignment1() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"ComplexAssignment1.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ComplexAssignment1.ic";
 		Compiler.Compile(args);
 	}
 
@@ -979,7 +979,7 @@ public class CompilerTests {
 	public void SemanticCheck_Test_moreThanOneExtendeSameClass() throws Exception {
 
 		try {
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new" + DIR_SEPARATOR + "SemanticSemanticErrors" + DIR_SEPARATOR + "moreThanOneExtendeSameClass.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new" + DIR_SEPARATOR + "SemanticErrors" + DIR_SEPARATOR + "moreThanOneExtendeSameClass.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail. 
 		} catch (SemanticError e)
@@ -998,7 +998,7 @@ public class CompilerTests {
 		
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment2.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ComplexAssignment2.ic";
 			Compiler.Compile(args);
 		} catch (SemanticError e) {
 			Assert.assertTrue(false); //Compile should pass
@@ -1014,7 +1014,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_ComplexAssignment3() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment3.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ComplexAssignment3.ic";
 		Compiler.Compile(args);
 	}
 	
@@ -1027,7 +1027,7 @@ public class CompilerTests {
 
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexAssignment4.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ComplexAssignment4.ic";
 			Compiler.Compile(args);
 			//Init type table for next test.
 			TypeTable.typeTableInit("ComplexAssignment4.ic");
@@ -1045,7 +1045,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_ComplexInit() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexInit.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ComplexInit.ic";
 		Compiler.Compile(args);
 	}
 	
@@ -1056,7 +1056,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_ComplexReturn() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexReturn.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ComplexReturn.ic";
 		Compiler.Compile(args);
 	}
 
@@ -1068,7 +1068,7 @@ public class CompilerTests {
 	 */
 	public void SemanticCheck_Test_ComplexScope1() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"external"+DIR_SEPARATOR+"ComplexScope1.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ComplexScope1.ic";
 		Compiler.Compile(args);
 		//Init type table for next test.
 		TypeTable.typeTableInit("ComplexScope1.ic");
