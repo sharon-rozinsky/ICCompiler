@@ -489,7 +489,7 @@ public class CompilerTests {
 
 	@Test
 	/**
-	 * Test number 18.
+	 * Test number 25.
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_LocalVariableAssigmentFromFieldWithBadType() throws Exception {
@@ -508,7 +508,7 @@ public class CompilerTests {
 
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 26.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -525,7 +525,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 27.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -542,7 +542,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 28.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -559,7 +559,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 29.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -576,7 +576,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 30.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -593,7 +593,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 31.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -610,7 +610,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 32.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -626,7 +626,7 @@ public class CompilerTests {
 	}
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 33.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -643,7 +643,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 34.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -660,7 +660,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 35.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -677,7 +677,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 36.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -694,7 +694,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 37.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -711,7 +711,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 38.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -728,7 +728,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 39.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -745,7 +745,7 @@ public class CompilerTests {
 	
 	@Test
 	/**
-	 * Test number 19.
+	 * Test number 40.
 	 * Bonus test!!!
 	 * @throws Exception
 	 */
@@ -763,10 +763,10 @@ public class CompilerTests {
 
 	@Test
 	/**
-	 * Test number 20.
+	 * Test number 41.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_20() throws Exception {
+	public void SemanticCheck_Test_LocationsTest() throws Exception {
 		try 
 		{
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"LocationsTest.ic";
@@ -777,6 +777,196 @@ public class CompilerTests {
 			TypeTable.typeTableInit("");
 			Assert.assertTrue("semantic error at line 35".equals(e.getMessage().split(":")[0]));
 		}
+	}
+	
+	
+	@Test
+	/**
+	 * Test number 42.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad1() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad1.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 43.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad2() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 44.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad3() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad3.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 13".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 45.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad4() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad4.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 8".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	@Test
+	/**
+	 * Test number 46.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UnaryOpsBad5() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad5.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+		}
+	}
+
+	@Test
+	/**
+	 * Test number 47.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UndefineType1() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType1.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 48.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_UndefineType2() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0])); //TODO: check!!!!
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 49.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_VariableLocationTestBad1() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad1.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 28".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 50.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_VariableLocationTestBad2() throws Exception {
+		try 
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			Assert.assertTrue("semantic error at line 28".equals(e.getMessage().split(":")[0]));
+		}
+	}
+
+
+	@Test
+	/**
+	 * Test number 51.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_OurExample1() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example1.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 52.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_OurExample2() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example2.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 53.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_Break_Continue() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"Break_Continue.ic";
+		Compiler.Compile(args);
+	}
+
+
+	@Test
+	/**
+	 * Test number 54.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ComplexAssignment1() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"ComplexAssignment1.ic";
+		Compiler.Compile(args);
 	}
 
 
@@ -950,195 +1140,7 @@ public class CompilerTests {
 	}
 
 
-	@Test
-	/**
-	 * Test number 30.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_UnaryOpsBad1() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad1.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
-		}
-	}
-	@Test
-	/**
-	 * Test number 30.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_UnaryOpsBad2() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad2.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
-		}
-	}
-	@Test
-	/**
-	 * Test number 30.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_UnaryOpsBad3() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad3.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 13".equals(e.getMessage().split(":")[0]));
-		}
-	}
-	@Test
-	/**
-	 * Test number 30.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_UnaryOpsBad4() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad4.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 8".equals(e.getMessage().split(":")[0]));
-		}
-	}
-	@Test
-	/**
-	 * Test number 30.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_UnaryOpsBad5() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UnaryOpsBad5.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
-		}
-	}
-
-	@Test
-	/**
-	 * Test number 31.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_UndefineType1() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType1.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0]));
-		}
-	}
 	
-	@Test
-	/**
-	 * Test number 31.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_UndefineType2() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"UndefineType2.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 4".equals(e.getMessage().split(":")[0])); //TODO: check!!!!
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 32.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_VariableLocationTestBad1() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad1.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 28".equals(e.getMessage().split(":")[0]));
-		}
-	}
-	
-	@Test
-	/**
-	 * Test number 32.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_VariableLocationTestBad2() throws Exception {
-		try 
-		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"SemanticErrors"+DIR_SEPARATOR+"VariableLocationTestBad2.ic";
-			Compiler.Compile(args);
-			Assert.assertTrue(false); //Compile should fail
-		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 28".equals(e.getMessage().split(":")[0]));
-		}
-	}
-
-
-	@Test
-	/**
-	 * Test number 33.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_OurExample1() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example1.ic";
-		Compiler.Compile(args);
-	}
-
-
-	@Test
-	/**
-	 * Test number 34.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_OurExample2() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"example2.ic";
-		Compiler.Compile(args);
-	}
-
-
-	@Test
-	/**
-	 * Test number 35.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_Break_Continue() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"Break_Continue.ic";
-		Compiler.Compile(args);
-	}
-
-
-	@Test
-	/**
-	 * Test number 36.
-	 * @throws Exception
-	 */
-	public void SemanticCheck_Test_ComplexAssignment1() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new"+DIR_SEPARATOR+"ComplexAssignment1.ic";
-		Compiler.Compile(args);
-	}
-
 
 	@Test
 	/**
