@@ -454,11 +454,16 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_19() throws Exception {//TODO: Bonus - Initialize
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use.ic";
-		Compiler.Compile(args);
-		Assert.assertTrue(false); //Compile should fail
-		//Init type table for next test.
-		TypeTable.typeTableInit("LocalVarsNotInitB4Use.ic");
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"LocalVarsNotInitB4Use.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 7".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 
@@ -978,7 +983,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 34".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -1189,7 +1194,7 @@ public class CompilerTests {
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -1466,11 +1471,16 @@ public class CompilerTests {
 	 * @throws Exception
 	 */
 	public void SemanticCheck_Test_75() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVarsInitB4Use.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("LocalVarsInitB4Use.ic");
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LocalVarsInitB4Use.ic";
+			Compiler.Compile(args);
+			//Init type table for next test.
+			TypeTable.typeTableInit(""); 
+		} catch (SemanticError e) {
+			TypeTable.typeTableInit(""); // TODO: as of now falls on line 42 - FIX !!
+			Assert.assertTrue(false); //Compile should pass?
+		}
 	}
 
 
@@ -1484,7 +1494,7 @@ public class CompilerTests {
 		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"LogicalBinaryOps.ic";
 		Compiler.Compile(args);
 		//Init type table for next test.
-		TypeTable.typeTableInit("LogicalBinaryOps.ic");
+		TypeTable.typeTableInit("");
 	}
 
 
@@ -1498,7 +1508,7 @@ public class CompilerTests {
 		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MathBinaryOps.ic";
 		Compiler.Compile(args);
 		//Init type table for next test.
-		TypeTable.typeTableInit("MathBinaryOps.ic");
+		TypeTable.typeTableInit("");
 	}
 
 
@@ -1512,7 +1522,7 @@ public class CompilerTests {
 		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MethodsCallTest.ic";
 		Compiler.Compile(args);
 		//Init type table for next test.
-		TypeTable.typeTableInit("MethodsCallTest.ic");
+		TypeTable.typeTableInit("");
 	}
 
 
