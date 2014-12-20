@@ -261,7 +261,7 @@ public class CompilerTests {
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 30".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 34".equals(e.getMessage().split(":")[0]));
 		}
 	}
 	
@@ -278,7 +278,7 @@ public class CompilerTests {
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 32".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 34".equals(e.getMessage().split(":")[0]));
 		}
 	}
 	
@@ -295,7 +295,7 @@ public class CompilerTests {
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 25".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 34".equals(e.getMessage().split(":")[0]));
 		}
 	}
 	
@@ -312,7 +312,7 @@ public class CompilerTests {
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 19".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 34".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -986,7 +986,7 @@ public class CompilerTests {
 		} catch (SemanticError e)
 		{
 			e.printStackTrace();
-			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 22".equals(e.getMessage().split(":")[0]));
 		}
 	}
 

@@ -146,7 +146,10 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	}
 
 	@Override
-	public Boolean visit(Return returnStatement, ASTNode scope) {
+	public Boolean visit(Return returnStatement, ASTNode scope) throws SemanticError {
+		if(returnStatement.getValue() != null){
+			propagate(returnStatement.getValue(), scope);
+		}
 		return null;
 	}
 

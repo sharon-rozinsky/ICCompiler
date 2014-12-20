@@ -27,6 +27,6 @@ class C extends B
 
 		a = b.a;
 		
-		return bClass.b;	
+		return b;	
 	}
 }
