@@ -96,9 +96,10 @@ public class Utils {
 		return (Program)root;
 	}
 	
-	public static void parseLibrary(String filePath, Program program) throws Exception{
+	public static ICClass parseLibrary(String filePath, Program program) throws Exception{
 		if(!filePath.startsWith("-L")){
 			System.out.println("The second parameter should start with -L");
+			return null;
 		} else{
 			String fileName = filePath.substring(2);
 			Reader reader = new FileReader(new File(fileName));
@@ -109,6 +110,7 @@ public class Utils {
 			reader.close();
 			
 			((Program)program).getClasses().add(0, (ICClass)libParseSymbol.value);
+			return (ICClass)libParseSymbol.value;
 		}
 	}
 	

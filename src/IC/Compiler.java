@@ -54,7 +54,12 @@ public class Compiler {
 			Utils.initSymbolToSignMap();
 			Program root = Utils.parseProgram(args[0]);
 			if(args.length >= 2){
-				Utils.parseLibrary(args[1], root);
+				ICClass libraryClass =Utils.parseLibrary(args[1], root);
+				//Check correctness of library class name.
+				if(libraryClass != null)
+				{
+					SpecialSemanticChecks.checkLibraryNameCorrectness(libraryClass);
+				}
 			}
 			
 			TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
