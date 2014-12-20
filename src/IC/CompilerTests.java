@@ -24,42 +24,6 @@ public class CompilerTests {
 	private static String testsPath = "tests"+DIR_SEPARATOR+"test_files_pa3";
 	private static String[] args = {"",libraryPath,Compiler.PRINT_SYMTAB_OPTION};
 
-	//	public void runICFIle(String filePath, String libraryPath) throws Exception{
-	//		Program root = Utils.parseProgram(filePath);
-	//		if(!libraryPath.equals("")){
-	//			Utils.parseLibrary(libraryPath, root);
-	//		}
-	//		TypeTableBuilder ttb = new TypeTableBuilder(filePath);				
-	//		ttb.visit((Program) root);
-	//
-	//		SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(filePath);
-	//		root.accept(symbolBuilder, null);
-	//
-	//		Utils.printSymbolTable(root);
-	//		Utils.printTypeTable();
-	//
-	//		//testing symbol scope
-	//		SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
-	//		scopeCheck.visit((Program) root, null);
-	//
-	//		//testing type check
-	//		TypesCheck typeCheck = new TypesCheck();
-	//		typeCheck.visit((Program) root);
-	//
-	//		//testing breakCont
-	//		BreakContinueChecker breakCont = new BreakContinueChecker();
-	//		breakCont.visit((Program) root, null);
-	//
-	//		SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
-	//		SpecialSemanticChecks.validateMainFunction((Program) root);
-	//	}
-	//
-	//	@Test
-	//	public void checkParser() throws Exception {
-	//		runICFIle("tests/test_files_pa3/example1.ic", "libic.sig.txt");
-	//		//runICFIle("tests/test_files_pa3/example2.ic");
-	//	}
-
 
 	/**
 	 * Thsi function create Junit tests code for all IC files under the specified path.
@@ -129,9 +93,9 @@ public class CompilerTests {
 	 * Test number 1.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_1() throws Exception {
+	public void SemanticCheck_Test_MethodAllPathReturnValueTest() throws Exception {
 
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"AnotherMethodReturnValueTest.ic";
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"MethodAllPathReturnValueTest.ic";
 		Compiler.Compile(args);
 		//Init type table for next test.
 		TypeTable.typeTableInit("AnotherMethodReturnValueTest.ic");
@@ -143,7 +107,7 @@ public class CompilerTests {
 	 * Test number 2.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_2() throws Exception {
+	public void SemanticCheck_Test_ArrayTest() throws Exception {
 
 		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ArrayTest.ic";
 		Compiler.Compile(args);
@@ -157,7 +121,7 @@ public class CompilerTests {
 	 * Test number 3.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_3() throws Exception {
+	public void SemanticCheck_Test_bad_assignment() throws Exception {
 		try {
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"bad_assignment.ic";
 			Compiler.Compile(args);
@@ -166,7 +130,7 @@ public class CompilerTests {
 		{
 			TypeTable.typeTableInit("bad_assignment.ic");
 			String lineErorr = e.getMessage().split(":")[0];
-			Assert.assertTrue("semantic error at line 22".equals(lineErorr));
+			Assert.assertTrue("semantic error at line 19".equals(lineErorr));
 		}
 	}
 
@@ -176,7 +140,7 @@ public class CompilerTests {
 	 * Test number 4.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_4() throws Exception {
+	public void SemanticCheck_Test_bad_assignment2() throws Exception {
 
 		try {
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"bad_assignment2.ic";
@@ -197,7 +161,7 @@ public class CompilerTests {
 	 * Here we got some issues TODO check this again!
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_5() throws Exception {
+	public void SemanticCheck_Test_bad_assignment3() throws Exception {
 
 		try {
 			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"bad_assignment3.ic";
@@ -205,11 +169,12 @@ public class CompilerTests {
 			Assert.assertTrue(false); //Compile should fail. 
 		} catch (SemanticError e)
 		{
-			TypeTable.typeTableInit("bad_assignment3.ic");
 			e.printStackTrace();
-			Assert.assertTrue("semantic error at line 27".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 22".equals(e.getMessage().split(":")[0]));
 		}
 	}
+	
+	
 
 
 	@Test
@@ -217,17 +182,17 @@ public class CompilerTests {
 	 * Test number 6.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_6() throws Exception {
+	public void SemanticCheck_Test_badScope_1() throws Exception {
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"bad_scope1.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"badScope_1.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("bad_scope1.ic");
-			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
 		}
 
 	}
@@ -238,31 +203,36 @@ public class CompilerTests {
 	 * Test number 7.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_7() throws Exception {
+	public void SemanticCheck_Test_badScope_2() throws Exception {
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"bad_scope2.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"badScope_2.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 12".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
 		}
 	}
-
-
+	
 	@Test
 	/**
 	 * Test number 8.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_8() throws Exception {
-
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"CallStatement.ic";
-		Compiler.Compile(args);
-		//Init type table for next test.
-		TypeTable.typeTableInit("");
+	public void SemanticCheck_Test_badScope_3() throws Exception {
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"badScope_3.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			e.printStackTrace();
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
+		}
 	}
 
 
@@ -271,8 +241,9 @@ public class CompilerTests {
 	 * Test number 9.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_9() throws Exception {
-		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ContBreakInWhile.ic";
+	public void SemanticCheck_Test_CallsTest() throws Exception {
+
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"CallsTest.ic";
 		Compiler.Compile(args);
 		//Init type table for next test.
 		TypeTable.typeTableInit("");
@@ -284,17 +255,87 @@ public class CompilerTests {
 	 * Test number 10.
 	 * @throws Exception
 	 */
-	public void SemanticCheck_Test_10() throws Exception {
+	public void SemanticCheck_Test_ContinueBreakLegalTest() throws Exception {
+		args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"ContinueBreakLegalTest.ic";
+		Compiler.Compile(args);
+		//Init type table for next test.
+		TypeTable.typeTableInit("");
+	}
+
+
+	@Test
+	/**
+	 * Test number 11.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ArrayTestError() throws Exception {
 
 		try
 		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ArrayTestBad.ic";
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ArrayTestError.ic";
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
 			//Init type table for next test.
 			TypeTable.typeTableInit("");
-			Assert.assertTrue("semantic error at line 20".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 30".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 12.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ArrayTestError1() throws Exception {
+
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ArrayTestError1.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 32".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 13.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ArrayTestError2() throws Exception {
+
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ArrayTestError2.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 25".equals(e.getMessage().split(":")[0]));
+		}
+	}
+	
+	@Test
+	/**
+	 * Test number 14.
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_ArrayTestError3() throws Exception {
+
+		try
+		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"errors"+DIR_SEPARATOR+"ArrayTestError3.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail
+		} catch (SemanticError e) {
+			//Init type table for next test.
+			TypeTable.typeTableInit("");
+			Assert.assertTrue("semantic error at line 19".equals(e.getMessage().split(":")[0]));
 		}
 	}
 
@@ -1880,8 +1921,25 @@ public class CompilerTests {
 		//Init type table for next test.
 		TypeTable.typeTableInit("VariableLocationTest.ic");
 	}
+	
+	@Test
+	/**
+	 * Test number 103.
+	 * 
+	 * Here we got some issues TODO check why we don'y fail on extends of already extended class
+	 * @throws Exception
+	 */
+	public void SemanticCheck_Test_103() throws Exception {
 
-
-
+		try {
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"new" + DIR_SEPARATOR + "SemanticErrors" + DIR_SEPARATOR + "moreThanOneExtendeSameClass.ic";
+			Compiler.Compile(args);
+			Assert.assertTrue(false); //Compile should fail. 
+		} catch (SemanticError e)
+		{
+			e.printStackTrace();
+			Assert.assertTrue("semantic error at line 11".equals(e.getMessage().split(":")[0]));
+		}
+	}
 
 }

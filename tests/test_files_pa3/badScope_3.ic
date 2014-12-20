@@ -1,10 +1,8 @@
-//semantic error at line 12: Illegal local var init type (Type check)
-
 class A {
 
      static void main(string[] args){}
      
-     void complexScope() {
+     void badScope_3(String s) {
             
            int x;
             

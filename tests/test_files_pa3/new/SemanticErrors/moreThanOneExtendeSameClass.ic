@@ -1,22 +1,25 @@
 class A {
     D e;
+    
+    D fooe() {
+        return new E();
+    }
 }
 
 class B extends A {}
 
-class C extends B {}
+class C extends A {}
 
 class D {
-    A c;
+    B c;
 }
 
 class E extends D {
 
      static void main(string[] args){}
      
-     void bad_assignmebt() {
-         B[] b_1 = new B[10];
-         b_1[0] = new A();
+     void bad_assignment3() {
+         c_1 = new C();
      }
     
 }

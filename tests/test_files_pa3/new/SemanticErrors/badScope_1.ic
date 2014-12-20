@@ -1,0 +1,19 @@
+class A {
+
+     static void main(string[] args){}
+     
+     void badScope1() {
+           
+           string a;
+            
+           {
+                int a = a;
+           }
+           
+          
+
+     }
+     
+     int a;
+    
+}

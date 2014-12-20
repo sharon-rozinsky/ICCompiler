@@ -1,0 +1,34 @@
+class A
+{
+	
+	static void main(string[] args) { }
+
+	int foo(int x)
+	{
+		int y;
+		y = x+1;
+		return y;
+	}
+}
+
+class B
+{
+	string foo(int x, string s)
+	{
+		A a = new A();
+		
+		if(true){
+			a.foo(x);
+		}
+		
+		return s;
+	}
+	
+	void foo2(int x)
+	{
+		string s = "blabla";
+		if(true){
+			foo(x,s);
+		}
+	}
+}

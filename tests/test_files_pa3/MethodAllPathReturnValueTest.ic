@@ -35,6 +35,31 @@ class B extends A {
 
     void vfunc(A a, int max, int val) {
     }
+	
+	int foofoo(int x) {
+		int y = -1;
+		
+		if(x>1)
+		{
+			return x;
+		}
+		else
+		{
+			y = y*x;
+			if(y < -10)
+			{
+				return y; 
+			}
+			else
+			{
+				while(y > -10)
+				{ 
+				y = y - 1;
+				}
+				return y;
+			}
+		}
+	}
 }
 
 class C {

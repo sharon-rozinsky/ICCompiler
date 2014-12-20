@@ -13,19 +13,22 @@ class A
 
 class B
 {
-	void bar(int x)
+	string foo(int x, string s)
 	{
 		A a = new A();
 		
 		if(true){
 			a.foo(x);
 		}
+		
+		return s;
 	}
 	
-	void bar1(int x)
+	void foo2(int x)
 	{
+		string s = "blabla";
 		if(true){
-			bar(x);
+			foo(x,s);
 		}
 	}
 }

@@ -22,7 +22,7 @@ class A
 		B[][][] bArr = new B[][][y%x];
 		
 		strArr[x-1] = ("Hello" + s);
-		intArr[x/2][y/2] = y*x;
+		intArr[x/2][y/2] = ("Hello" + s);
 		boolArr[0] = (y<x && bTrue);
 		bArr[0][0][0] = b_1;
 		
