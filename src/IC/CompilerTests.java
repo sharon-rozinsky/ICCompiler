@@ -220,7 +220,7 @@ public class CompilerTests {
 			Compiler.Compile(args);
 			Assert.assertTrue(false); //Compile should fail
 		} catch (SemanticError e) {
-			Assert.assertTrue("semantic error at line 10".equals(e.getMessage().split(":")[0]));
+			Assert.assertTrue("semantic error at line 5".equals(e.getMessage().split(":")[0]));
 		}
 	}
 

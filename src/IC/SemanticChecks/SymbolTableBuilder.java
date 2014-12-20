@@ -35,6 +35,7 @@ import IC.AST.StatementsBlock;
 import IC.AST.StaticCall;
 import IC.AST.StaticMethod;
 import IC.AST.This;
+import IC.AST.Type;
 import IC.AST.UserType;
 import IC.AST.VariableLocation;
 import IC.AST.VirtualCall;
@@ -205,6 +206,14 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	@Override
 	public Boolean visit(Formal formal, SymbolTable scope) throws SemanticError {
 		String formalName = formal.getName();
+		Type formalType = formal.getType();
+		
+		if(formalType instanceof UserType){
+			if(!TypeTable.classTypeExists(formalType.getName())){
+				throw new SemanticError(formal.getLine(), "Using an undefined type: " + formalType.getName());
+			}
+		}
+		
 		if(scope.symbolContainedInCurrentScope(formal.getName())){
 			throw new SemanticError(formal.getLine(), "Parameter with the same name already defined");
 		} else {
@@ -310,6 +319,14 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 
 	@Override
 	public Boolean visit(LocalVariable localVariable, SymbolTable scope) throws SemanticError {
+		
+		Type localVariableType = localVariable.getType();
+		
+		if(localVariableType instanceof UserType){
+			if(!TypeTable.classTypeExists(localVariableType.getName())){
+				throw new SemanticError(localVariable.getLine(), "Using an undefined type: " + localVariableType.getName());
+			}
+		}
 		
 		localVariable.setEnclosingScopeSymTable(scope);
 		propagate(localVariable.getInitValue(), scope);
