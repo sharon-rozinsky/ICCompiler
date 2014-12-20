@@ -215,7 +215,7 @@ public class MaxIntegerChecker implements PropagatingVisitor<ASTNode, Boolean> {
     }
 
     public Boolean visit(ExpressionBlock expressionBlock, ASTNode context) throws SemanticError {
-        propagate(expressionBlock.getExpression(), expressionBlock);
+        propagate(expressionBlock.getExpression(), context);
         return true;
     }
 }
