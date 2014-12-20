@@ -269,7 +269,11 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 		if(ifStatement.getOperation() instanceof StatementsBlock){
 			propagate(ifStatement.getOperation(), scope);
 		} else{
-			propagate(ifStatement.getOperation(), new CodeBlockSymbolTable(scope));
+			if(ifStatement.getOperation() instanceof Break){
+				propagate(ifStatement.getOperation(), scope);
+			} else {
+				propagate(ifStatement.getOperation(), new CodeBlockSymbolTable(scope));
+			}
 		}
 		
 		if(ifStatement.hasElse()){
