@@ -29,6 +29,9 @@ public class Compiler {
 	private static boolean printtokens = true;
 	private static final String PRINT_AST_OPTION = "-print-ast";
 	protected static final String PRINT_SYMTAB_OPTION = "-dump-symtab";
+	private static boolean library = false;
+	private static boolean printAST = false;
+	private static boolean printSym = false;
 	
 	public static void main(String[] args) throws LexicalError {
 		try {
@@ -54,15 +57,14 @@ public class Compiler {
 			// read the program file and parse it
 			Utils.initSymbolToSignMap();
 			Program root = Utils.parseProgram(args[0]);
-			if(args.length >= 2){
-				if(args[1].startsWith("-L")){
+			updateFlags(args);
+			if(library){
 					ICClass libraryClass =Utils.parseLibrary(args[1], root);
 					//Check correctness of library class name.
 					if(libraryClass != null)
 					{
 						SpecialSemanticChecks.checkLibraryNameCorrectness(libraryClass);
 					}
-				}
 			}
 			
 			TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
@@ -91,16 +93,14 @@ public class Compiler {
 	        SpecialSemanticChecks.validateMainFunction((Program) root);
 	        SpecialSemanticChecks.allLocalVarsInit((Program) root);
 	        
-	        if(args.length >= 2)
-	        {
-	        	if(args[1].equals(PRINT_AST_OPTION)||args[2].equals(PRINT_AST_OPTION)){
-					Utils.printAST(args[0], root);
-				}
-				if(args[1].equals(PRINT_SYMTAB_OPTION)||args[2].equals(PRINT_SYMTAB_OPTION)||args[3].equals(PRINT_SYMTAB_OPTION)){
-					Utils.printSymbolTable(root);
-					Utils.printTypeTable();
-				}
-	        }
+
+        	if(printAST){
+				Utils.printAST(args[0], root);
+			}
+			if(printSym){
+				Utils.printSymbolTable(root);
+				Utils.printTypeTable();
+			}
 	        
 			System.out.println("good till here !!");
 		} else{
@@ -118,6 +118,36 @@ public class Compiler {
 	
 	public static void PrintTokenError(String errMsg) { 
 		System.out.println ("Error!\t"+errMsg);
+	}
+	
+	public static void updateFlags(String[] args){
+		if(args.length >= 2){
+			if(args[1].startsWith("-L")){
+				library = true;
+			}
+			if(args[1].equals(PRINT_AST_OPTION)){
+				printAST = true;
+			}
+			if(args[1].equals(PRINT_SYMTAB_OPTION)){
+				printSym = true;
+			}
+		}
+		if(args.length >= 3){
+			if(args[2].equals(PRINT_AST_OPTION)){
+				printAST = true;
+			}
+			if(args[2].equals(PRINT_SYMTAB_OPTION)){
+				printSym = true;
+			}
+		}
+		if(args.length == 4){
+			if(args[3].equals(PRINT_AST_OPTION)){
+				printAST = true;
+			}
+			if(args[3].equals(PRINT_SYMTAB_OPTION)){
+				printSym = true;
+			}
+		}
 	}
 
 }
