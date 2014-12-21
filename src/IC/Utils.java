@@ -13,7 +13,7 @@ import IC.AST.PrettyPrinter;
 import IC.AST.Program;
 import IC.Parser.Lexer;
 import IC.Parser.LibraryParser;
-import IC.Parser.Parser;
+import IC.Parser.parser;
 import IC.Parser.sym;
 import IC.SemanticChecks.SemanticError;
 import IC.Symbols.SymbolTablePrinter;
@@ -89,7 +89,7 @@ public class Utils {
 	public static Program parseProgram(String filePath) throws Exception{
 		Reader reader = new FileReader(new File(filePath));
 		Lexer lexer = new Lexer(reader);
-		Parser parser = new Parser(lexer);
+		parser parser = new parser(lexer);
 		Symbol parseSymbol = parser.parse();
 		ASTNode root = (ASTNode) parseSymbol.value;
 		System.out.println("The file: " + filePath + " was successfully parsed");

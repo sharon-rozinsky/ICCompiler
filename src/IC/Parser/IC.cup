@@ -12,7 +12,7 @@ parser code {:
 
 	private Lexer lexer;
 	
-	public Parser(Lexer lexer) {
+	public parser(Lexer lexer) {
 		super(lexer);
 		this.lexer = lexer;
 	}
