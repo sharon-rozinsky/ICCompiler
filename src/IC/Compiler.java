@@ -139,6 +139,9 @@ public class Compiler {
 			if(args[2].equals(PRINT_SYMTAB_OPTION)){
 				printSym = true;
 			}
+			if(args[2].startsWith("-L")){
+				library = true;
+			}
 		}
 		if(args.length == 4){
 			if(args[3].equals(PRINT_AST_OPTION)){
@@ -146,6 +149,9 @@ public class Compiler {
 			}
 			if(args[3].equals(PRINT_SYMTAB_OPTION)){
 				printSym = true;
+			}
+			if(args[3].startsWith("-L")){
+				library = true;
 			}
 		}
 	}
