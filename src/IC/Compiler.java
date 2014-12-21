@@ -102,7 +102,6 @@ public class Compiler {
 				Utils.printTypeTable();
 			}
 	        
-			System.out.println("good till here !!");
 		} else{
 			System.out.println("No file was given, please run again and insert which file do you want to parse!");
 		}

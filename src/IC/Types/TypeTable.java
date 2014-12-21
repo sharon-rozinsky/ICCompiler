@@ -28,6 +28,7 @@ public class TypeTable {
 	public static Map<SymbolType,ArrayType> uniqueArrayTypes;
 	public static Map<String,ClassType> uniqueClassTypes;
 	public static Map<MethodContent,MethodType> uniqueMethodTypes;
+	//public static Map<MethodContent,MethodType> types;
 
 	public static SymbolType boolType = new BoolType(BOOLEAN_TYPE_ID);
 	public static SymbolType intType = new IntType(INT_TYPE_ID);
