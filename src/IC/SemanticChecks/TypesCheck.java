@@ -97,6 +97,7 @@ public class TypesCheck implements Visitor{
 	public Object visit(ICClass icClass) throws SemanticError {
 		stepIn(icClass.getFields());
 		stepIn(icClass.getMethods());
+		icClass.setSymbolType(TypeTable.classType(icClass.getName(), null, null));
 		return null;
 	}
 
