@@ -1,6 +1,7 @@
 package IC.AST;
 
 import IC.SemanticChecks.SemanticError;
+import IC.Types.ClassType;
 
 /**
  * Pretty printing visitor - travels along the AST and prints info about each
@@ -36,11 +37,18 @@ public class PrettyPrinter implements Visitor {
 	private void appendTypeInfo(ASTNode node, boolean printType,
 			StringBuffer output) {
 		if (printType)
-			output.append(String.format(", Type: %s", node.getSymbolType()));// TODO : Check what needed here!!
-		if ((node instanceof IC.AST.Method)||(node instanceof IC.AST.ICClass)||(node instanceof IC.AST.StatementsBlock)){
+		{
+			if (node instanceof IC.AST.ICClass)
+				output.append(String.format(", Type: %s", ((ClassType) node.getSymbolType()).getClassName()));
+			else
+				output.append(String.format(", Type: %s", node.getSymbolType()));
+		}
+		if ((node instanceof IC.AST.Method)||(node instanceof IC.AST.ICClass)||(node instanceof IC.AST.StatementsBlock))
+		{
 			output.append(String.format(", Symbol table: %s", node.getEnclosingScopeSymTable().getParentSymbolTable().getId()));
 		}
-		else{
+		else
+		{
 			output.append(String.format(", Symbol table: %s", node.getEnclosingScopeSymTable().getId()));
 		}
 	}
