@@ -57,11 +57,11 @@ import IC.Types.TypeTable;
 
 public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boolean> {
 
-	private String fileName; 
+	private String tableName; 
 	private Set<VariableLocation> unresolvedReferences = new HashSet<VariableLocation>();
 	
-	public SymbolTableBuilder(String fileName) {
-		this.fileName = fileName;
+	public SymbolTableBuilder(String tableName) {
+		this.tableName = tableName;
 	}
 	
 	public Set<VariableLocation> getUnresolvedReferences(){
@@ -97,7 +97,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 	
 	@Override
 	public Boolean visit(Program program, SymbolTable scope) throws SemanticError {
-		GlobalSymbolTable globalSymbolTable = new GlobalSymbolTable(fileName);
+		GlobalSymbolTable globalSymbolTable = new GlobalSymbolTable(tableName);
 		program.setEnclosingScopeSymTable(globalSymbolTable);
 		propagate(program.getClasses(), globalSymbolTable);
 		return null;

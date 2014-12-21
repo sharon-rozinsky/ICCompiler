@@ -1,28 +1,20 @@
 package IC;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 
-import java_cup.runtime.Symbol;
-import IC.AST.ASTNode;
 import IC.AST.ICClass;
-import IC.AST.PrettyPrinter;
 import IC.AST.Program;
-import IC.Parser.*;
+import IC.Parser.LexicalError;
+import IC.Parser.SyntaxError;
 import IC.SemanticChecks.BreakContinueChecker;
 import IC.SemanticChecks.MaxIntegerChecker;
 import IC.SemanticChecks.SemanticError;
 import IC.SemanticChecks.SpecialSemanticChecks;
 import IC.SemanticChecks.SymbolTableBuilder;
 import IC.SemanticChecks.SymbolTableChecker;
-import IC.SemanticChecks.TypesCheck;
-import IC.Symbols.SymbolTable;
-import IC.Symbols.SymbolTablePrinter;
 import IC.SemanticChecks.TypeTableBuilder;
-import IC.Types.TypeTable;
+import IC.SemanticChecks.TypesCheck;
 
 public class Compiler {
 	
@@ -70,7 +62,7 @@ public class Compiler {
 			TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
 			ttb.visit((Program) root);
 			
-			SymbolTableBuilder symbolBuilder = new SymbolTableBuilder(args[0]);
+			SymbolTableBuilder symbolBuilder = new SymbolTableBuilder("Global");
 	        root.accept(symbolBuilder, null);  
 			 
 			//testing symbol scope
