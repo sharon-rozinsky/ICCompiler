@@ -19,7 +19,7 @@ import IC.SemanticChecks.TypesCheck;
 public class Compiler {
 	
 	private static boolean printtokens = true;
-	private static final String PRINT_AST_OPTION = "-print-ast";
+	protected static final String PRINT_AST_OPTION = "-print-ast";
 	protected static final String PRINT_SYMTAB_OPTION = "-dump-symtab";
 	private static boolean library = false;
 	private static boolean printAST = false;
