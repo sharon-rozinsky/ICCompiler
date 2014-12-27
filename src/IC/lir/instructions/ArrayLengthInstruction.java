@@ -1,18 +1,21 @@
 package IC.lir.instructions;
 
+import IC.lir.operands.Operand;
+import IC.lir.operands.*;
+
 public class ArrayLengthInstruction extends Instruction {
 	
     private static final String InstructionName = "Array_Length";
     private Operand array;
-    private Reg dest;
+    private Register dest;
     
-    public ArrayLengthInstruction(Memory memory, Reg dest) {
+    public ArrayLengthInstruction(Memory memory, Register dest) {
         super(InstructionName);
         this.array = memory;
         this.dest = dest;
     }
     
-    public ArrayLengthInstruction(Reg arrReg, Reg dest) {
+    public ArrayLengthInstruction(Register arrReg, Register dest) {
         super(InstructionName);
         this.array = arrReg;
         this.dest = dest;
@@ -22,7 +25,7 @@ public class ArrayLengthInstruction extends Instruction {
         return array;
     }
 
-    public Reg getDest() {
+    public Register getDest() {
         return dest;
     }
 
@@ -30,6 +33,4 @@ public class ArrayLengthInstruction extends Instruction {
     public String toString() {
         return getName() + " " + array + "," + dest;
     }
-    
-}
 }

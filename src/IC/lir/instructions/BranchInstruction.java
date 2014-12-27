@@ -1,6 +1,7 @@
 package IC.lir.instructions;
 
 import IC.lir.LirConstants;
+import IC.lir.operands.Label;
 
 public class BranchInstruction extends Instruction {
 	

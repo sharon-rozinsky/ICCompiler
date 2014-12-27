@@ -1,14 +1,16 @@
 package IC.lir.instructions;
 
 import IC.lir.LirConstants;
+import IC.lir.operands.Operand;
+import IC.lir.operands.*;
 
 public class BinaryInstruction extends Instruction {
 
 	private Operand op1;
-    private Reg op2;
+    private Register op2;
     private LirConstants operation;
     
-    public BinaryInstruction(LirConstants operation, Operand op1, Reg op2) {
+    public BinaryInstruction(LirConstants operation, Operand op1, Register op2) {
         super(operation.toString());
         this.op1 = op1;
         this.op2 = op2;
@@ -19,7 +21,7 @@ public class BinaryInstruction extends Instruction {
         return op1;
     }
 
-    public Reg getOp2() {
+    public Register getOp2() {
         return op2;
     }
 

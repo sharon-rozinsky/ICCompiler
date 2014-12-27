@@ -1,22 +1,24 @@
 package IC.lir.instructions;
 
 import IC.lir.LirConstants;
+import IC.lir.operands.ArrayOperand;
+import IC.lir.operands.Operand;
 
 public class MoveArrayInstruction extends Instruction {
 	
 	private static final String InstructionName = "MoveArray";
-    private ArrayPair pair;
+    private ArrayOperand pair;
     private Operand op;
     private LirConstants memOp;
 	
-	public MoveArrayInstruction(ArrayPair pair, Operand op, LirConstants memOp) {
+	public MoveArrayInstruction(ArrayOperand pair, Operand op, LirConstants memOp) {
         super(InstructionName);
         this.pair = pair;
         this.op = op;
         this.memOp = memOp;
     }
 
-    public ArrayPair getPair() {
+    public ArrayOperand getPair() {
         return pair;
     }
 
