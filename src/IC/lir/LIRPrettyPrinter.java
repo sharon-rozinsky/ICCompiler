@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import IC.lir.instructions.Instruction;
-import IC.lir.lirObject.ClassLayout;
 import IC.lir.lirObject.LIRClass;
 import IC.lir.lirObject.LIRMethod;
 import IC.lir.lirObject.LIRProgram;

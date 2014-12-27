@@ -34,9 +34,13 @@ public class LIRConstants {
 	public static String Label = "Label";
 	public static String Comment = "Comment";
 	
+
 	// 
 	public static String MAIN_LABEL_PREFIX = "ic";
 	public static String MAIN_LABEL_SUFFIX = "_main";
 	public static String STRING_LITERAL_PREFIX = "stringLiteral";
+
+	public static final String DV_LABEL = "DV";
+	public static final String LIBRARY = "Library";
 	
 }

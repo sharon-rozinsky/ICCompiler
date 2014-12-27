@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import IC.lir.ClassLayout;
+
 public class LIRProgram {
 	private List<LIRClass> classList = new ArrayList<LIRClass>();
 	private Map<String, ClassLayout> classesLayout;
