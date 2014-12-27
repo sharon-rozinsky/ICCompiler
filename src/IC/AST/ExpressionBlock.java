@@ -37,4 +37,9 @@ public class ExpressionBlock extends Expression {
 	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) throws SemanticError {
 		return v.visit(this, context);
 	}
+	
+	@Override
+	public <D, U> U accept(LIRPropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }

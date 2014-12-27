@@ -28,7 +28,7 @@ public abstract class ASTNode {
 	public abstract Object accept(LIRVisitor lirVisitor);
 
 	public abstract <D,U> U accept(PropagatingVisitor<D,U> v,D context) throws SemanticError;
-
+	public abstract <D,U> U accept(LIRPropagatingVisitor<D,U> v,D context);
 	/**
 	 * Constructs an AST node corresponding to a line number in the original
 	 * code. Used by subclasses.

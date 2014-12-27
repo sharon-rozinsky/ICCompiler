@@ -41,4 +41,9 @@ public class PrimitiveType extends Type {
 	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) {
 		return v.visit(this, context);
 	}
+	
+	@Override
+	public <D, U> U accept(LIRPropagatingVisitor<D, U> v, D context) {
+		return v.visit(this, context);
+	}
 }
