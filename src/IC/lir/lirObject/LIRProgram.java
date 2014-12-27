@@ -32,4 +32,11 @@ public class LIRProgram {
 	public void addClass(LIRClass lirClass){
 		classList.add(lirClass);
 	}
+	
+	public ClassLayout getClassLayoutByName(String className){
+		if(classesLayout.containsKey(className)){
+			return classesLayout.get(className);
+		}
+		return null;
+	}
 }

@@ -28,7 +28,9 @@ public class LIRConstants {
 	
 	// Memory Ops
 	public static String Store = "Store";
+	public static int STORE = 1;
 	public static String Load = "Load";
+	public static int LOAD = 2;
 	
 	// 
 	public static String Label = "Label";

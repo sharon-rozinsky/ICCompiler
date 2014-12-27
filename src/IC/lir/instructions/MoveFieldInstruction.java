@@ -10,9 +10,9 @@ public class MoveFieldInstruction extends Instruction {
     private static final String InstructionName = "MoveField";
     private FieldOperand fieldOp;
     private Operand op;
-    private LIRConstants memOp;
+    private String memOp;
     
-    public MoveFieldInstruction(FieldOperand fieldOp, Operand op, LIRConstants memOp) {
+    public MoveFieldInstruction(FieldOperand fieldOp, Operand op, String memOp) {
         super(InstructionName);
         this.fieldOp = fieldOp;
         this.op = op;
@@ -27,7 +27,7 @@ public class MoveFieldInstruction extends Instruction {
         return op;
     }
 
-    public LIRConstants getMemOp() {
+    public String getMemOp() {
         return memOp;
     }
     

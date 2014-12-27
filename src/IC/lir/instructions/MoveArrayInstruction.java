@@ -9,9 +9,9 @@ public class MoveArrayInstruction extends Instruction {
 	private static final String InstructionName = "MoveArray";
     private ArrayOperand arrParam;
     private Operand op;
-    private LIRConstants memOp;
+    private String memOp;
 	
-	public MoveArrayInstruction(ArrayOperand arrParam, Operand op, LIRConstants memOp) {
+	public MoveArrayInstruction(ArrayOperand arrParam, Operand op, String memOp) {
         super(InstructionName);
         this.arrParam = arrParam;
         this.op = op;
@@ -26,7 +26,7 @@ public class MoveArrayInstruction extends Instruction {
         return op;
     }
 
-    public LIRConstants getMemOp() {
+    public String getMemOp() {
         return memOp;
     }
     

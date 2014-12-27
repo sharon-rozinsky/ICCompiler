@@ -16,6 +16,7 @@ import IC.AST.Length;
 import IC.AST.LibraryMethod;
 import IC.AST.Literal;
 import IC.AST.LocalVariable;
+import IC.AST.Location;
 import IC.AST.LogicalBinaryOp;
 import IC.AST.LogicalUnaryOp;
 import IC.AST.MathBinaryOp;
@@ -37,19 +38,29 @@ import IC.AST.VirtualCall;
 import IC.AST.VirtualMethod;
 import IC.AST.While;
 import IC.SemanticChecks.SemanticError;
+import IC.Symbols.Symbol;
+import IC.Types.ClassType;
+import IC.Types.Kind;
 import IC.Types.TypeTable;
 import IC.lir.instructions.Instruction;
 import IC.lir.instructions.LibraryInstruction;
+import IC.lir.instructions.MoveArrayInstruction;
+import IC.lir.instructions.MoveFieldInstruction;
+import IC.lir.instructions.MoveInstruction;
 import IC.lir.instructions.ReturnInstruction;
 import IC.lir.lirObject.LIRClass;
 import IC.lir.lirObject.LIRMethod;
 import IC.lir.lirObject.LIRProgram;
 import IC.lir.operands.AddressLabel;
+import IC.lir.operands.ArrayOperand;
 import IC.lir.operands.DummyRegister;
+import IC.lir.operands.FieldOperand;
 import IC.lir.operands.Immediate;
 import IC.lir.operands.LibraryLabel;
+import IC.lir.operands.Memory;
 import IC.lir.operands.Operand;
 import IC.lir.operands.Register;
+import IC.lir.operands.ThisReference;
 
 public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
@@ -136,35 +147,138 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 	}
 
 	@Override
-	public Object visit(LibraryMethod method, Object scope)
-			 {
-		// TODO Auto-generated method stub
+	public Object visit(LibraryMethod method, Object scope) {
 		return null;
 	}
 
 	@Override
 	public Object visit(Formal formal, Object scope)  {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(PrimitiveType type, Object scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object visit(UserType type, Object scope) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Object visit(Assignment assignment, Object scope)
-			 {
-		// TODO Auto-generated method stub
+	public Object visit(Assignment assignment, Object scope) {
+		LIRMethod lirMethod = (LIRMethod) scope;
+		Location location = assignment.getVariable();
+		
+		propagate(assignment.getAssignment(), scope);
+		Register.incRegisterCounter(1);
+		
+		Object obj = null;
+		if(location instanceof VariableLocation) {
+			obj = visitVariableLocation((VariableLocation)location, scope, LIRConstants.STORE);
+		} else if(location instanceof ArrayLocation) {
+			obj = visitArrayLocation((ArrayLocation)location, scope, LIRConstants.STORE);
+		}
+		Register.decRegisterCounter(1);
+		
+		Instruction instruction = getInstruction(obj);
+		lirMethod.addInstruction(instruction);
 		return null;
+	}
+
+	public Instruction getInstruction(Object operand) {
+		Instruction instruction = null;
+		if(operand instanceof Memory){
+			Memory memory = (Memory) operand;
+			instruction = new MoveInstruction(new Register(), memory);
+		} else if(operand instanceof ArrayOperand) {
+			ArrayOperand arrayOperand = (ArrayOperand) operand;
+			instruction = new MoveArrayInstruction(arrayOperand, new Register(), LIRConstants.Store);
+		} else if(operand instanceof FieldOperand){
+			FieldOperand fieldOperand = (FieldOperand) operand;
+			instruction = new MoveFieldInstruction(fieldOperand, new Register(), LIRConstants.Store);
+		}
+		return instruction;
+	}
+
+	private Object visitArrayLocation(ArrayLocation location, Object scope,
+			int storeOrLoad) {
+		LIRMethod lirMethod = (LIRMethod) scope;
+
+		propagate(location.getArray(), scope);
+		Register.incRegisterCounter(1);
+		propagate(location.getIndex(), scope);
+		Register.decRegisterCounter(1);
+
+		ArrayOperand arrayOperand = new ArrayOperand(new Register(),
+				new Register(1));
+		if (storeOrLoad == LIRConstants.LOAD) {
+			MoveArrayInstruction moveArrayInstruction = new MoveArrayInstruction(
+					arrayOperand, new Register(), LIRConstants.Load);
+			lirMethod.addInstruction(moveArrayInstruction);
+		}
+		return arrayOperand;
+	}
+
+	private Object visitVariableLocation(VariableLocation location,
+			Object scope, int storeOrLoad) {
+		LIRMethod lirMethod = (LIRMethod) scope;
+		String locationName = location.getName();
+
+		if (location.isExternal()) {
+			propagate(location.getLocation(), scope);
+
+			ClassType type = (ClassType) location.getLocation().getSymbolType();
+			String className = type.getClassName();
+			int offset = getOffset(className, locationName);
+
+			Immediate immediate = new Immediate(offset);
+			FieldOperand fieldOperand = new FieldOperand(new Register(),
+					immediate);
+			if (storeOrLoad == LIRConstants.LOAD) {
+				MoveFieldInstruction moveFieldInstruction = new MoveFieldInstruction(
+						fieldOperand, new Register(), LIRConstants.Load);
+				lirMethod.addInstruction(moveFieldInstruction);
+			}
+
+			return fieldOperand;
+		} else {
+			Symbol symbol = location.getLocationScope().getSymbol(locationName);
+
+			if (symbol.getKind() != Kind.MemberVariable) {
+				Memory memory = new Memory(symbol);
+				if (storeOrLoad == LIRConstants.LOAD) {
+					MoveInstruction moveInstruction = new MoveInstruction(
+							memory, new Register());
+					lirMethod.addInstruction(moveInstruction);
+				}
+				return memory;
+			} else {
+				ThisReference thisReference = new ThisReference();
+				MoveInstruction instruction = new MoveInstruction(
+						thisReference, new Register());
+				lirMethod.addInstruction(instruction);
+
+				String className = location.getEnclosingScopeSymTable()
+						.getParentSymbolTable().getId();
+				int offset = getOffset(className, locationName);
+				Immediate immediate = new Immediate(offset);
+				FieldOperand fieldOperand = new FieldOperand(new Register(),
+						immediate);
+
+				if (storeOrLoad == LIRConstants.LOAD) {
+					MoveFieldInstruction moveFieldInstruction = new MoveFieldInstruction(
+							fieldOperand, new Register(), LIRConstants.Load);
+					lirMethod.addInstruction(moveFieldInstruction);
+				}
+				return fieldOperand;
+			}
+		}
+	}
+
+	public int getOffset(String className, String locationName) {
+		return program.getClassLayoutByName(className).getFieldsOffset(locationName);
 	}
 
 	@Override
