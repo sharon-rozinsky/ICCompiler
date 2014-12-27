@@ -1,6 +1,0 @@
-tom /*23*/ Tom guy
-Sharon return returni
-x = 0 + 353!
-"Tom is the king!"
-123frg
-123!
