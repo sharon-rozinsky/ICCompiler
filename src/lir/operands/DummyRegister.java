@@ -1,4 +1,4 @@
-package operands;
+package lir.operands;
 
 public class DummyRegister extends Register {
 	

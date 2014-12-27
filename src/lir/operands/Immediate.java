@@ -1,4 +1,4 @@
-package operands;
+package lir.operands;
 
 public class Immediate implements Operand {
 	private int value;

@@ -1,4 +1,4 @@
-package operands;
+package lir.operands;
 
 public class Register implements Operand{
 	protected int currentRegCount;
