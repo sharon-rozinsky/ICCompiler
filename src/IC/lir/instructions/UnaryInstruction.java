@@ -6,10 +6,10 @@ import IC.lir.operands.Register;
 public class UnaryInstruction extends Instruction {
 
 	private Register operand;
-	private LIRConstants operator;
+	private String operator;
 
-	public UnaryInstruction(LIRConstants operator, Register operand) {
-		super(operator.toString());
+	public UnaryInstruction(String operator, Register operand) {
+		super(operator);
 		this.operand = operand;
 		this.operator = operator;
 	}
@@ -18,7 +18,7 @@ public class UnaryInstruction extends Instruction {
 		return operand;
 	}
 
-	public IC.lir.LIRConstants getOperator() {
+	public String getOperator() {
 		return operator;
 	}
 

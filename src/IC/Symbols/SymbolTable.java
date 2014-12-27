@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class SymbolTable {
+	private static int unique_id = 1;
+	
 	protected String id;
 	protected SymbolTable parentSymbolTable;
 	protected Map<String, SymbolTable> childSymbolTables;
+	protected int scopeUniqueId;
+
 
 	public SymbolTable(String id, SymbolTable parentSymbolTable) {
 		childSymbolTables = new HashMap<String, SymbolTable>();
@@ -15,7 +19,12 @@ public abstract class SymbolTable {
 			this.parentSymbolTable = parentSymbolTable;
 			addChildTable(id, parentSymbolTable);
 		}
+		this.scopeUniqueId = unique_id++;
 	}
+	
+	public static void initScopesID() {
+		unique_id = 1;
+    }
 	
 	public String getId() {
 		return id;
@@ -53,5 +62,9 @@ public abstract class SymbolTable {
 		} else {
 			return null;
 		}
+	}
+	
+	public int getScopeUniqueId() {
+		return scopeUniqueId;
 	}
 }

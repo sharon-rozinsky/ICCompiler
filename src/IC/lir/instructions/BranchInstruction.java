@@ -7,10 +7,10 @@ public class BranchInstruction extends Instruction {
 	
 	private static final String InstructionName = "Branch";
     private Label label;
-    private LIRConstants condition;
+    private String condition;
     
-    public BranchInstruction(LIRConstants condition, Label label) {
-        super(InstructionName + condition.toString());
+    public BranchInstruction(String condition, Label label) {
+        super(InstructionName + condition);
         this.label = label;
         this.condition = condition;
     }
@@ -19,7 +19,7 @@ public class BranchInstruction extends Instruction {
         return label;
     }
 
-    public LIRConstants getCondition() {
+    public String getCondition() {
         return condition;
     }
     

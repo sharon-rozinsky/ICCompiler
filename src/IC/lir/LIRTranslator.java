@@ -1,5 +1,7 @@
 package IC.lir;
 
+import java.util.List;
+
 import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
@@ -41,12 +43,18 @@ import IC.SemanticChecks.SemanticError;
 import IC.Symbols.Symbol;
 import IC.Types.ClassType;
 import IC.Types.Kind;
+import IC.Symbols.MethodSymbolTable;
+import IC.Symbols.Symbol;
+import IC.Types.ClassType;
 import IC.Types.TypeTable;
+import IC.lir.instructions.BinaryInstruction;
+import IC.lir.instructions.BranchInstruction;
 import IC.lir.instructions.Instruction;
 import IC.lir.instructions.LibraryInstruction;
 import IC.lir.instructions.MoveArrayInstruction;
 import IC.lir.instructions.MoveFieldInstruction;
 import IC.lir.instructions.MoveInstruction;
+import IC.lir.instructions.PseudoInstruction;
 import IC.lir.instructions.ReturnInstruction;
 import IC.lir.lirObject.LIRClass;
 import IC.lir.lirObject.LIRMethod;
@@ -297,43 +305,133 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
 	@Override
 	public Object visit(If ifStatement, Object scope)  {
-		// TODO Auto-generated method stub
+		LIRMethod lirMethod = (LIRMethod) scope;
+		
+		AddressLabel falseLabel = null;
+        
+		int endScopeId = ifStatement.getOperation().getEnclosingScopeSymTable().getScopeUniqueId();		
+        AddressLabel ifEndLabel = new AddressLabel(LIRConstants.END_LABEL_PREFIX + endScopeId);
+        PseudoInstruction endIfLabelInstruction = new PseudoInstruction(ifEndLabel, LIRConstants.Label);
+		
+        if (ifStatement.hasElse()) 
+        {
+            int falseScopeId = ifStatement.getElseOperation().getEnclosingScopeSymTable().getScopeUniqueId();
+            falseLabel = new AddressLabel(LIRConstants.FALSE_LABEL_PREFIX + falseScopeId);
+        }
+
+        propagate(ifStatement.getCondition(), scope);
+        
+        BinaryInstruction compare = new BinaryInstruction(LIRConstants.Compare, new Immediate(0), new Register());
+        lirMethod.getInstructions().add(compare);
+		
+        BranchInstruction branch;
+        if (ifStatement.hasElse()) 
+        {
+        	branch = new BranchInstruction(LIRConstants.True, falseLabel);
+        } 
+        else 
+        {
+        	branch = new BranchInstruction(LIRConstants.True, ifEndLabel);
+        }
+        lirMethod.getInstructions().add(branch);
+		
+        propagate(ifStatement.getOperation(), scope);
+        
+        if (ifStatement.hasElse()) 
+        {
+        	BranchInstruction branchElse = new BranchInstruction(LIRConstants.Do, ifEndLabel);
+            lirMethod.getInstructions().add(branchElse);
+            
+            PseudoInstruction falseLabelInstruction = new PseudoInstruction(falseLabel, LIRConstants.Label);
+            lirMethod.getInstructions().add(falseLabelInstruction);
+            
+            propagate(ifStatement.getElseOperation(), scope);
+        }
+        
+        lirMethod.getInstructions().add(endIfLabelInstruction);
+		
 		return null;
 	}
 
 	@Override
-	public Object visit(While whileStatement, Object scope)
-			 {
-		// TODO Auto-generated method stub
+	public Object visit(While whileStatement, Object scope) {
+		LIRMethod lirMethod = (LIRMethod) scope;
+        
+        int scopeId = whileStatement.getOperation().getEnclosingScopeSymTable().getScopeUniqueId();
+        lirMethod.getWhileLoopsStack().push(scopeId);
+        
+        AddressLabel whileStartLabel = new AddressLabel(LIRConstants.TEST_COND_LABEL_PREFIX + scopeId);
+        AddressLabel whileEndLabel = new AddressLabel(LIRConstants.END_LABEL_PREFIX + scopeId);      
+        PseudoInstruction whileStartPInstruction = new PseudoInstruction(whileStartLabel, LIRConstants.Label);
+        PseudoInstruction whileEndPInstruction = new PseudoInstruction(whileEndLabel, LIRConstants.Label);
+        
+        lirMethod.getInstructions().add(whileStartPInstruction);
+        
+        propagate(whileStatement.getCondition(), scope);
+        
+        BinaryInstruction compare = new BinaryInstruction(LIRConstants.Compare, new Immediate(0), new Register());
+        lirMethod.getInstructions().add(compare);
+        
+        BranchInstruction whileEndBranchInstruction =  new BranchInstruction(LIRConstants.True, whileEndLabel);
+        lirMethod.getInstructions().add(whileEndBranchInstruction);
+        
+        propagate(whileStatement.getOperation(), scope);
+        // always jumps back to while start, then check..
+        BranchInstruction whileStartBranchInstruction = new BranchInstruction(LIRConstants.Do, whileStartLabel);
+        lirMethod.getInstructions().add(whileStartBranchInstruction);
+              
+        lirMethod.getInstructions().add(whileEndPInstruction);
+        
+        lirMethod.getWhileLoopsStack().pop();
+        
+        return null;
+	}
+
+	@Override
+	public Object visit(Break breakStatement, Object scope){ //TODO: break can be in If statement also, no?
+		LIRMethod lirMethod = (LIRMethod) scope;
+        
+        int scope_uniqueId = lirMethod.getWhileLoopsStack().peek();
+        
+        AddressLabel whileEndlabel = new AddressLabel(LIRConstants.END_LABEL_PREFIX + scope_uniqueId);       
+        BranchInstruction breakBranchIntruction = new BranchInstruction(LIRConstants.Do, whileEndlabel);
+        lirMethod.getInstructions().add(breakBranchIntruction);
+        
+        return null;
+	}
+
+	@Override
+	public Object visit(Continue continueStatement, Object scope) {
+		LIRMethod lirMethod = (LIRMethod) scope;
+        
+        int scope_uniqueId = lirMethod.getWhileLoopsStack().peek();
+        
+        AddressLabel whileEndlabel = new AddressLabel(LIRConstants.TEST_COND_LABEL_PREFIX + scope_uniqueId);
+        
+        BranchInstruction breakBranchIntruction = new BranchInstruction(LIRConstants.Do, whileEndlabel);
+        lirMethod.getInstructions().add(breakBranchIntruction);
+        return null;
+	}
+
+	@Override
+	public Object visit(StatementsBlock statementsBlock, Object scope) {
+		propagate(statementsBlock.getStatements(), scope);
 		return null;
 	}
 
 	@Override
-	public Object visit(Break breakStatement, Object scope)
-			 {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(Continue continueStatement, Object scope)
-			 {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(StatementsBlock statementsBlock, Object scope)
-			 {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object visit(LocalVariable localVariable, Object scope)
-			 {
-		// TODO Auto-generated method stub
-		return null;
+	public Object visit(LocalVariable localVariable, Object scope) {
+		LIRMethod lirMethod = (LIRMethod) scope;
+        
+        if (localVariable.hasInitValue()) {
+            propagate(localVariable.getInitValue(), scope);
+            Symbol symb = localVariable.getEnclosingScopeSymTable().getSymbol(localVariable.getName());
+            Memory mem = new Memory(symb);
+            MoveInstruction moveIntruction = new MoveInstruction(new Register(), mem);
+            lirMethod.getInstructions().add(moveIntruction);
+        }
+        
+        return null;
 	}
 
 	@Override
@@ -352,8 +450,61 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
 	@Override
 	public Object visit(StaticCall call, Object scope)  {
-		// TODO Auto-generated method stub
-		return null;
+/*		LIRMethod lirMethod = (LIRMethod) scope;
+        
+        if (call.getClassName().equals(LIRConstants.LIBRARY)) {
+            
+            String methodName = call.getName();
+            LibraryLabel libLabel = new LibraryLabel(methodName);
+            
+            Operand[] lirArgs = new Operand[call.getArguments().size()];
+            
+            for (int i=0; i<call.getArguments().size(); i++) {
+                Register.incRegisterCounter(1);
+                propagate(call.getArguments().get(i), scope);
+                lirArgs[i] = new Register();
+            }
+                
+            Register.decRegisterCounter(call.getArguments().size());
+            
+            LibraryInstruction libraryInstruction = new LibraryInstruction(libLabel, new Register(), lirArgs);
+            
+            lirMethod.getInstructions().add(libraryInstruction);
+        } 
+        else 
+        {        
+            String methodName = call.getName();
+            String className = call.getClassName();
+            
+            AddressLabel label;
+            if (methodName.equals(LIRConstants.MAIN_METHOD_NAME)) {
+                label = new AddressLabel(LIRConstants.MAIN_LABEL_PREFIX, methodName);
+            } else {
+                label = new AddressLabel(className, methodName);
+            }
+            
+            ClassType classType = TypeTable.classType(className, null, null);
+            ICClass icClass = classType.getClassNode();
+            MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().getChildSymbolTables().get(methodName);
+            
+            List<Symbol> parameters = table.getParameters()
+            CallPair[] pairs = new CallPair[parameters.size()];
+            
+            for (int i=0; i<parameters.size(); i++) {
+                Reg.incrementCounter();
+                Memory mem = new Memory(parameters.get(i));
+                into(call.getArguments().get(i), context);
+                pairs[i] = new CallPair(mem, Reg.get());
+            }
+            
+            Reg.decrementCounter(call.getArguments().size());
+            
+            StaticCallInstruction inst = new StaticCallInstruction(label, Reg.get(), pairs);
+            lirMethod.getInstructions().add(inst);
+            
+        }
+        */
+        return null;
 	}
 
 	@Override
