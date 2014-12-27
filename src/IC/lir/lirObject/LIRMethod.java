@@ -29,4 +29,8 @@ public class LIRMethod {
 	public List<Instruction> getInstructions() {
 		return instructions;
 	}
+	
+	public void addInstruction(Instruction instruction){
+		instructions.add(instruction);
+	}
 }

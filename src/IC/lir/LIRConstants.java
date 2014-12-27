@@ -43,4 +43,11 @@ public class LIRConstants {
 	public static final String DV_LABEL = "DV";
 	public static final String LIBRARY = "Library";
 	
+	public static final String END_BOOL_LABEL_PREFIX = "end_bool_";
+	public static final String TEST_COND_LABEL_PREFIX = "test_cond_label_";
+	public static final String END_LABEL_PREFIX = "end_label_";
+    public static final String FALSE_LABEL_PREFIX = "false_label_";
+    public static final String LIBRARY_EXIT = "exit";
+    public static final String MAIN_METHOD_NAME = "main";
+
 }

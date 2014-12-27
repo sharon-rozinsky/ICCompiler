@@ -20,4 +20,8 @@ public class LIRClass {
 	public List<LIRMethod> getMethods() {
 		return methods;
 	}
+	
+	public void addMethod(LIRMethod method){
+		methods.add(method);
+	}
 }

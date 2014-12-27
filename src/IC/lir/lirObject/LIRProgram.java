@@ -28,4 +28,8 @@ public class LIRProgram {
 	public Map<String, LIRStringLiteral> getStringLiterals() {
 		return stringLiterals;
 	}
+	
+	public void addClass(LIRClass lirClass){
+		classList.add(lirClass);
+	}
 }
