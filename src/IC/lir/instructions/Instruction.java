@@ -1,4 +1,4 @@
-package lir.instructions;
+package IC.lir.instructions;
 
 public class Instruction {
 	

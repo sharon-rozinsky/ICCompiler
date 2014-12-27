@@ -1,6 +1,6 @@
-package lir.instructions;
+package IC.lir.instructions;
 
-import lir.LirConstants;
+import IC.lir.LirConstants;
 
 public class MoveArrayInstruction extends Instruction {
 	

@@ -1,4 +1,4 @@
-package lir;
+package IC.lir;
 
 public class LirConstants {
 	// Binary Ops

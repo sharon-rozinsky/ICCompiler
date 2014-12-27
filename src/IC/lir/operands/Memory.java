@@ -1,4 +1,4 @@
-package lir.operands;
+package IC.lir.operands;
 
 import IC.Symbols.Symbol;
 
