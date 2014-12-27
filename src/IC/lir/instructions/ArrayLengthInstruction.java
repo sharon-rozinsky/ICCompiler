@@ -5,7 +5,7 @@ import IC.lir.operands.*;
 
 public class ArrayLengthInstruction extends Instruction {
 	
-    private static final String InstructionName = "Array_Length";
+    private static final String InstructionName = "ArrayLength";
     private Operand array;
     private Register dest;
     

@@ -7,19 +7,19 @@ import IC.lir.operands.Operand;
 public class MoveArrayInstruction extends Instruction {
 	
 	private static final String InstructionName = "MoveArray";
-    private ArrayOperand pair;
+    private ArrayOperand arrParam;
     private Operand op;
     private LirConstants memOp;
 	
-	public MoveArrayInstruction(ArrayOperand pair, Operand op, LirConstants memOp) {
+	public MoveArrayInstruction(ArrayOperand arrParam, Operand op, LirConstants memOp) {
         super(InstructionName);
-        this.pair = pair;
+        this.arrParam = arrParam;
         this.op = op;
         this.memOp = memOp;
     }
 
-    public ArrayOperand getPair() {
-        return pair;
+    public ArrayOperand getarrParam() {
+        return arrParam;
     }
 
     public Operand getOp() {
@@ -33,9 +33,9 @@ public class MoveArrayInstruction extends Instruction {
     @Override
     public String toString() {
         if (memOp.toString() == "Load") {
-            return getName() + " " + pair + "," + op; 
+            return getName() + " " + arrParam + "," + op; 
         } else {
-            return getName() + " " + op + "," + pair;
+            return getName() + " " + op + "," + arrParam;
         }
     }
 }
