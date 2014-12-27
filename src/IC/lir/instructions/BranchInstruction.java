@@ -1,15 +1,15 @@
 package IC.lir.instructions;
 
-import IC.lir.LirConstants;
+import IC.lir.LIRConstants;
 import IC.lir.operands.Label;
 
 public class BranchInstruction extends Instruction {
 	
 	private static final String InstructionName = "Branch";
     private Label label;
-    private LirConstants condition;
+    private LIRConstants condition;
     
-    public BranchInstruction(LirConstants condition, Label label) {
+    public BranchInstruction(LIRConstants condition, Label label) {
         super(InstructionName + condition.toString());
         this.label = label;
         this.condition = condition;
@@ -19,7 +19,7 @@ public class BranchInstruction extends Instruction {
         return label;
     }
 
-    public LirConstants getCondition() {
+    public LIRConstants getCondition() {
         return condition;
     }
     

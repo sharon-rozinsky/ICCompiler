@@ -1,6 +1,6 @@
 package IC.lir.instructions;
 
-import IC.lir.LirConstants;
+import IC.lir.LIRConstants;
 import IC.lir.operands.ArrayOperand;
 import IC.lir.operands.Operand;
 
@@ -9,9 +9,9 @@ public class MoveArrayInstruction extends Instruction {
 	private static final String InstructionName = "MoveArray";
     private ArrayOperand arrParam;
     private Operand op;
-    private LirConstants memOp;
+    private LIRConstants memOp;
 	
-	public MoveArrayInstruction(ArrayOperand arrParam, Operand op, LirConstants memOp) {
+	public MoveArrayInstruction(ArrayOperand arrParam, Operand op, LIRConstants memOp) {
         super(InstructionName);
         this.arrParam = arrParam;
         this.op = op;
@@ -26,7 +26,7 @@ public class MoveArrayInstruction extends Instruction {
         return op;
     }
 
-    public LirConstants getMemOp() {
+    public LIRConstants getMemOp() {
         return memOp;
     }
     

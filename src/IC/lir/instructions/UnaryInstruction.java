@@ -1,14 +1,14 @@
 package IC.lir.instructions;
 
-import IC.lir.LirConstants;
+import IC.lir.LIRConstants;
 import IC.lir.operands.Register;
 
 public class UnaryInstruction extends Instruction {
 
 	private Register operand;
-	private LirConstants operator;
+	private LIRConstants operator;
 
-	public UnaryInstruction(LirConstants operator, Register operand) {
+	public UnaryInstruction(LIRConstants operator, Register operand) {
 		super(operator.toString());
 		this.operand = operand;
 		this.operator = operator;
@@ -18,7 +18,7 @@ public class UnaryInstruction extends Instruction {
 		return operand;
 	}
 
-	public IC.lir.LirConstants getOperator() {
+	public IC.lir.LIRConstants getOperator() {
 		return operator;
 	}
 

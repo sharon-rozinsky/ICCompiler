@@ -1,6 +1,6 @@
 package IC.lir.instructions;
 
-import IC.lir.LirConstants;
+import IC.lir.LIRConstants;
 import IC.lir.operands.FieldOperand;
 import IC.lir.operands.Operand;
 
@@ -10,9 +10,9 @@ public class MoveFieldInstruction extends Instruction {
     private static final String InstructionName = "MoveField";
     private FieldOperand fieldOp;
     private Operand op;
-    private LirConstants memOp;
+    private LIRConstants memOp;
     
-    public MoveFieldInstruction(FieldOperand fieldOp, Operand op, LirConstants memOp) {
+    public MoveFieldInstruction(FieldOperand fieldOp, Operand op, LIRConstants memOp) {
         super(InstructionName);
         this.fieldOp = fieldOp;
         this.op = op;
@@ -27,7 +27,7 @@ public class MoveFieldInstruction extends Instruction {
         return op;
     }
 
-    public LirConstants getMemOp() {
+    public LIRConstants getMemOp() {
         return memOp;
     }
     

@@ -1,6 +1,6 @@
 package IC.lir.instructions;
 
-import IC.lir.LirConstants;
+import IC.lir.LIRConstants;
 import IC.lir.operands.AddressLabel;
 
 
@@ -8,9 +8,9 @@ public class PseudoInstruction extends Instruction {
 	// Not a real instruction- used to represent a label between instructions or comments
 	private static final String InstructionName = "PseudoInstruction";
     private AddressLabel label;
-    private LirConstants type;
+    private LIRConstants type;
     
-    public PseudoInstruction(AddressLabel label, LirConstants type) {
+    public PseudoInstruction(AddressLabel label, LIRConstants type) {
         super(InstructionName);
         this.label = label;
         this.type = type;

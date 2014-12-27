@@ -1,6 +1,6 @@
 package IC.lir;
 
-public class LirConstants {
+public class LIRConstants {
 	// Binary Ops
 	public static String Add = "Add";
 	public static String Sub = "Sub";
@@ -33,6 +33,10 @@ public class LirConstants {
 	// 
 	public static String Label = "Label";
 	public static String Comment = "Comment";
+	
+	// 
+	public static String MAIN_LABEL_PREFIX = "ic";
+	public static String MAIN_LABEL_SUFFIX = "_main";
 	
 	
 }
