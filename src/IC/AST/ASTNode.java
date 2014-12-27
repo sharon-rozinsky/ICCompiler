@@ -25,6 +25,7 @@ public abstract class ASTNode {
 	 * @throws SemanticError 
 	 */
 	public abstract Object accept(Visitor visitor) throws SemanticError;
+	public abstract Object accept(LIRVisitor lirVisitor);
 
 	public abstract <D,U> U accept(PropagatingVisitor<D,U> v,D context) throws SemanticError;
 

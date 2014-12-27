@@ -14,7 +14,10 @@ public class LogicalUnaryOp extends UnaryOp {
 	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
-
+	
+	public Object accept(LIRVisitor lirVisitor){
+		return lirVisitor.visit(this);
+	}
 	/**
 	 * Constructs a new logical unary operation node.
 	 * 

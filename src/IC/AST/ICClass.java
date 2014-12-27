@@ -22,7 +22,10 @@ public class ICClass extends ASTNode {
 	public Object accept(Visitor visitor) throws SemanticError {
 		return visitor.visit(this);
 	}
-
+	
+	public Object accept(LIRVisitor lirVisitor){
+		return lirVisitor.visit(this);
+	}
 	/**
 	 * Constructs a new class node.
 	 * 

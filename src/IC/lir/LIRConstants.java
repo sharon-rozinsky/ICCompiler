@@ -37,6 +37,6 @@ public class LIRConstants {
 	// 
 	public static String MAIN_LABEL_PREFIX = "ic";
 	public static String MAIN_LABEL_SUFFIX = "_main";
-	
+	public static String STRING_LITERAL_PREFIX = "stringLiteral";
 	
 }
