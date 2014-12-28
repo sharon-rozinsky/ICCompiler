@@ -1,7 +1,10 @@
 package IC.lir;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import IC.BinaryOps;
+import IC.LiteralTypes;
 import IC.AST.ASTNode;
 import IC.AST.ArrayLocation;
 import IC.AST.Assignment;
@@ -43,6 +46,7 @@ import IC.SemanticChecks.SemanticError;
 import IC.Symbols.Symbol;
 import IC.Types.ClassType;
 import IC.Types.Kind;
+import IC.Types.SymbolType;
 import IC.Symbols.MethodSymbolTable;
 import IC.Symbols.Symbol;
 import IC.Types.ClassType;
@@ -60,7 +64,9 @@ import IC.lir.instructions.NewObjectInstruction;
 import IC.lir.instructions.PseudoInstruction;
 import IC.lir.instructions.ReturnInstruction;
 import IC.lir.instructions.StaticCallInstruction;
+import IC.lir.instructions.StringCatInstruction;
 import IC.lir.instructions.UnaryInstruction;
+import IC.lir.instructions.VirtualCallInstruction;
 import IC.lir.lirObject.LIRClass;
 import IC.lir.lirObject.LIRMethod;
 import IC.lir.lirObject.LIRProgram;
@@ -69,6 +75,7 @@ import IC.lir.operands.ArrayOperand;
 import IC.lir.operands.DummyRegister;
 import IC.lir.operands.FieldOperand;
 import IC.lir.operands.Immediate;
+import IC.lir.operands.Label;
 import IC.lir.operands.LibraryLabel;
 import IC.lir.operands.Memory;
 import IC.lir.operands.Operand;
@@ -455,18 +462,16 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
 	@Override
 	public Object visit(VariableLocation location, Object scope) {
-		// TODO: Sharon check the Call - I think it should load?
-		return visitVariableLocation(location, scope, 2);
+		return visitVariableLocation(location, scope, LIRConstants.LOAD);
 	}
 
 	@Override
 	public Object visit(ArrayLocation location, Object scope){
-		// TODO: Sharon check the Call - I think it should load here?
-		return visitArrayLocation(location, scope, 2);
+		return visitArrayLocation(location, scope, LIRConstants.LOAD);
 	}
 
 	@Override
-	public Object visit(StaticCall call, Object scope)  { // TODO : TOM !!
+	public Object visit(StaticCall call, Object scope)  { 
 		LIRMethod lirMethod = (LIRMethod) scope;
         
         if (call.getClassName().equals(LIRConstants.LIBRARY)) {
@@ -504,19 +509,19 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             ICClass icClass = classType.getClassNode();
             MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().getChildSymbolTables().get(methodName);
             
-            List<Symbol> parameters = table.getParameters()
-            ParameterOperand[] pairs = new ParameterOperand[parameters.size()];
+            ArrayList<Symbol> parameters = (ArrayList<Symbol>) table.getParameters().values();
+            ParameterOperand[] paramOp = new ParameterOperand[parameters.size()];
             
             for (int i=0; i<parameters.size(); i++) {
                 Register.incRegisterCounter(1);
                 Memory mem = new Memory(parameters.get(i));
                 propagate(call.getArguments().get(i), scope);
-                pairs[i] = new ParameterOperand(mem, new Register());
+                paramOp[i] = new ParameterOperand(mem, new Register());
             }
             Register.decRegisterCounter(call.getArguments().size());
 
-            StaticCallInstruction inst = new StaticCallInstruction(label, new Register(), pairs);
-            lirMethod.getInstructions().add(inst);
+            StaticCallInstruction statCallinstruction = new StaticCallInstruction(label, new Register(), paramOp);
+            lirMethod.getInstructions().add(statCallinstruction);
             
         }
         return null;
@@ -524,8 +529,46 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
 	@Override
 	public Object visit(VirtualCall call, Object scope)  {
-		// TODO Auto-generated method stub
-		return null;
+		LIRMethod lirMethod = (LIRMethod) scope;
+        
+        String methodName = call.getName();
+        String className;
+        ClassType classType;
+        
+        if (call.isExternal()) {
+            propagate(call.getLocation(), scope);
+            classType = (ClassType) call.getLocation().getSymbolType();
+            className = classType.getClassName();
+        } else {
+        	Memory thisMemory = new ThisReference();
+            MoveInstruction moveInstruction = new MoveInstruction(thisMemory, new Register());
+            lirMethod.getInstructions().add(moveInstruction);
+            // TODO: get class scope - guy implemented somewhere- so I prefer not to add the function...
+            className = call.getEnclosingScopeSymTable().getClassScope().tableIdentifier();
+            classType = TypeTable.classType(className, null, null);
+        }
+        
+        ICClass icClass = classType.getClassNode();
+        MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().
+            getClassScope().getSymbolTableById(methodName).getChildrenTables().get(methodName);
+        
+        ArrayList<Symbol> parameters = (ArrayList<Symbol>) table.getParameters().values();
+        ParameterOperand[] paramOp = new ParameterOperand[parameters.size()];
+        
+        for (int i=0; i<parameters.size(); i++) {
+        	Register.incRegisterCounter(1);
+            Memory mem = new Memory(parameters.get(i));
+            propagate(call.getArguments().get(i), scope);
+            paramOp[i] = new ParameterOperand(mem, new Register());
+        }
+        Register.decRegisterCounter(call.getArguments().size());
+
+        int intOffset = program.getClassesLayout().get(className).getMethodsOffset(methodName);
+        Immediate offset = new Immediate(intOffset);
+        VirtualCallInstruction virtCallinstruction = new VirtualCallInstruction(new Register(), offset, new Register(), paramOp);
+        lirMethod.getInstructions().add(virtCallinstruction);
+        
+        return null;
 	}
 
 	@Override
@@ -587,15 +630,135 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
 	@Override
 	public Object visit(MathBinaryOp binaryOp, Object scope) {
-		// TODO Auto-generated method stub
+		LIRMethod lirMethod = (LIRMethod) scope;
+
+		propagate(binaryOp.getFirstOperand(), scope);
+		Register.incRegisterCounter(1);
+		propagate(binaryOp.getSecondOperand(), scope);
+		Register.decRegisterCounter(1);
+
+		// If binOp is of type str1 + str2 
+		if (binaryOp.getFirstOperand().getSymbolType().equals(TypeTable.strType)) {
+			StringCatInstruction strCatInstruction = new StringCatInstruction(new Register(), new Register(), new Register(1));
+			lirMethod.getInstructions().add(strCatInstruction);
+
+			return null;
+		}
+
+		String binOp = null;
+
+		switch(binaryOp.getOperator()) {
+			case PLUS: 
+				binOp = LIRConstants.Add;
+				break;
+			case MINUS:
+				binOp = LIRConstants.Sub;
+				break;
+			case MULTIPLY:
+				binOp = LIRConstants.Mul;
+				break;
+			case DIVIDE:
+				binOp = LIRConstants.Div;
+				break;
+			case MOD:
+				binOp = LIRConstants.Mod;
+				break;
+		}
+
+		BinaryInstruction binInstruction = new BinaryInstruction(binOp, new Register(1), new Register());
+		lirMethod.getInstructions().add(binInstruction);
+
 		return null;
 	}
 
 	@Override
 	public Object visit(LogicalBinaryOp binaryOp, Object scope) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		LIRMethod lirMethod = (LIRMethod) scope;
+		// Sharon - why didn't you implemented this? I don't see something else
+        AddressLabel endLabel = new AddressLabel(LIRConstants.END_BOOL_LABEL_PREFIX + AddressLabel.getAndIncrementBooleanLabelUID());
+        
+        propagate(binaryOp.getFirstOperand(), scope);
+
+        if (binaryOp.getOperator() == BinaryOps.LAND || 
+            binaryOp.getOperator() == BinaryOps.LOR) {
+            
+            Immediate imm;
+            String op;
+            
+            if (binaryOp.getOperator() == BinaryOps.LAND) {
+                imm = new Immediate(0);
+                op = LIRConstants.And;
+            } else {
+                imm = new Immediate(1);
+                op = LIRConstants.Or;
+            }
+            
+            BinaryInstruction compareInst = new BinaryInstruction(LIRConstants.Compare, imm,  new Register());
+            lirMethod.getInstructions().add(compareInst);
+            
+            BranchInstruction branch = new BranchInstruction(LIRConstants.True, endLabel);
+            lirMethod.getInstructions().add(branch);
+            
+            Register.incRegisterCounter(1);
+            propagate(binaryOp.getSecondOperand(), scope);
+            Register.decRegisterCounter(1);
+            
+            BinaryInstruction inst = new BinaryInstruction(op, new Register(1), new Register());
+            lirMethod.getInstructions().add(inst);
+            
+            PseudoInstruction endLabelInst = new PseudoInstruction(endLabel, LIRConstants.Label);
+            lirMethod.getInstructions().add(endLabelInst);
+         
+            return null;
+        }
+        
+        Register.incRegisterCounter(1);
+		propagate(binaryOp.getSecondOperand(), scope);
+        Register.decRegisterCounter(1);
+        
+        String branchCond = null;
+        
+        switch(binaryOp.getOperator()) {
+        case EQUAL:
+            branchCond = LIRConstants.True;
+            break;
+        case NEQUAL:
+            branchCond = LIRConstants.False;
+            break;
+        case GT:
+            branchCond = LIRConstants.GT;
+            break;
+        case GTE:
+            branchCond = LIRConstants.GET;
+            break;
+        case LT:
+            branchCond = LIRConstants.LT;
+            break;
+        case LTE:
+            branchCond = LIRConstants.LET;
+            break;
+        }
+        MoveInstruction moveInstruction;
+        moveInstruction = new MoveInstruction(new Immediate(1), new Register(2));
+        lirMethod.getInstructions().add(moveInstruction);
+        
+        BinaryInstruction compInst = new BinaryInstruction(LIRConstants.Compare, new Register(1), new Register());
+        lirMethod.getInstructions().add(compInst);
+        
+        BranchInstruction branch = new BranchInstruction(branchCond, endLabel);
+        lirMethod.getInstructions().add(branch);
+        
+        moveInstruction = new MoveInstruction(new Immediate(0), new Register(2));
+        lirMethod.getInstructions().add(moveInstruction);
+        
+        PseudoInstruction endLabelInst = new PseudoInstruction(endLabel, LIRConstants.Label);
+        lirMethod.getInstructions().add(endLabelInst);
+        
+        moveInstruction = new MoveInstruction(new Register(2), new Register());
+        lirMethod.getInstructions().add(moveInstruction);
+            
+        return null;
+    }
 
 	@Override
 	public Object visit(MathUnaryOp unaryOp, Object scope)  {
@@ -625,8 +788,40 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
 	@Override
 	public Object visit(Literal literal, Object scope)  {
-		// TODO Auto-generated method stub
-		return null;
+		LIRMethod lirMethod = (LIRMethod) scope;
+        SymbolType type = literal.getSymbolType();
+        
+        Operand value = null;
+        
+        if (type == TypeTable.boolType) 
+        {
+            if (literal.getType() == LiteralTypes.TRUE) {
+                value = new Immediate(1);
+            } 
+            else 
+            { 
+                value = new Immediate(0);
+            }
+        } 
+        else if (type == TypeTable.intType) 
+        {
+            int intVal = Integer.parseInt((String)literal.getValue());
+            value = new Immediate(intVal);
+        } 
+        else if (type == TypeTable.nullType) 
+        {
+            value = new Immediate(0);
+        } 
+        else if (type == TypeTable.strType) 
+        {
+            Label label =  program.getStringLiterals().get((String)literal.getValue()).getLabel();
+            value = label;
+        }
+        
+        MoveInstruction movInstruction = new MoveInstruction(value, new Register());
+        lirMethod.getInstructions().add(movInstruction);
+        
+        return null;
 	}
 
 	@Override
