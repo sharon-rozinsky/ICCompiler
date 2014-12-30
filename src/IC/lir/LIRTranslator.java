@@ -45,10 +45,13 @@ import IC.AST.While;
 import IC.SemanticChecks.SemanticError;
 import IC.Symbols.Symbol;
 import IC.Types.ClassType;
+import IC.Types.MethodType;
 import IC.Types.Kind;
 import IC.Types.SymbolType;
+import IC.Symbols.CodeBlockSymbolTable;
 import IC.Symbols.MethodSymbolTable;
 import IC.Symbols.Symbol;
+import IC.Symbols.SymbolTable;
 import IC.Types.ClassType;
 import IC.Types.TypeTable;
 import IC.lir.instructions.ArrayLengthInstruction;
@@ -138,16 +141,18 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		
 		propagate(method.getStatements(), lirMethod);
 		Instruction inst = null;
+		SymbolType methodReturnType = getMethodReturnType(method);
+		
 		if(method instanceof StaticMethod){
 			if(methodName.equals(LIRConstants.MAIN_METHOD_NAME)){
 				Operand[] params = new Operand[] { new Immediate(0) };
 				LibraryLabel exitLabel = new LibraryLabel(LIRConstants.LIBRARY_EXIT);
 				inst = new LibraryInstruction(exitLabel, new DummyRegister(), params);
-			} else if(method.getSymbolType() == TypeTable.voidType){
+			} else if(methodReturnType != null && methodReturnType.getClass().equals(TypeTable.voidType.getClass())){
 				inst = new ReturnInstruction(new DummyRegister());
 			}
 			lirMethod.addInstruction(inst);
-		} else if(method.getSymbolType() == TypeTable.voidType){
+		} else if(methodReturnType != null && methodReturnType.getClass().equals(TypeTable.voidType.getClass())){
 			inst = new ReturnInstruction(new DummyRegister());
 			lirMethod.addInstruction(inst);
 		}
@@ -155,6 +160,12 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		lirClass.addMethod(lirMethod);
 	}
 	
+	private SymbolType getMethodReturnType(Method method) {
+		SymbolType methodType = method.getSymbolType();
+		SymbolType returnType = ((MethodType)methodType).getReturnType();
+		return returnType;
+	}
+
 	@Override
 	public Object visit(VirtualMethod method, Object scope) {
 		visitMethod(method, scope);
@@ -281,8 +292,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 						thisReference, new Register());
 				lirMethod.addInstruction(instruction);
 
-				String className = location.getEnclosingScopeSymTable()
-						.getParentSymbolTable().getId();
+				String className = getClassSymbolTableByNode(location).getId();
 				int offset = getOffset(className, locationName);
 				Immediate immediate = new Immediate(offset);
 				FieldOperand fieldOperand = new FieldOperand(new Register(),
@@ -544,15 +554,16 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             MoveInstruction moveInstruction = new MoveInstruction(thisMemory, new Register());
             lirMethod.getInstructions().add(moveInstruction);
             // TODO: get class scope - guy implemented somewhere- so I prefer not to add the function...
-            className = call.getEnclosingScopeSymTable().getClassScope().tableIdentifier();
+            className = getClassSymbolTableByNode(call).getId();
             classType = TypeTable.classType(className, null, null);
         }
         
         ICClass icClass = classType.getClassNode();
-        MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().
-            getClassScope().getSymbolTableById(methodName).getChildrenTables().get(methodName);
+        MethodSymbolTable table = (MethodSymbolTable) getMethodSymbolTable(icClass, methodName);
+        if(table == null)
+        	return null;
         
-        ArrayList<Symbol> parameters = (ArrayList<Symbol>) table.getParameters().values();
+        List<Symbol> parameters = new ArrayList<Symbol>(table.getParameters().values());
         ParameterOperand[] paramOp = new ParameterOperand[parameters.size()];
         
         for (int i=0; i<parameters.size(); i++) {
@@ -645,26 +656,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 			return null;
 		}
 
-		String binOp = null;
-
-		switch(binaryOp.getOperator()) {
-			case PLUS: 
-				binOp = LIRConstants.Add;
-				break;
-			case MINUS:
-				binOp = LIRConstants.Sub;
-				break;
-			case MULTIPLY:
-				binOp = LIRConstants.Mul;
-				break;
-			case DIVIDE:
-				binOp = LIRConstants.Div;
-				break;
-			case MOD:
-				binOp = LIRConstants.Mod;
-				break;
-		}
-
+		String binOp = getBinaryOperationString(binaryOp);
 		BinaryInstruction binInstruction = new BinaryInstruction(binOp, new Register(1), new Register());
 		lirMethod.getInstructions().add(binInstruction);
 
@@ -675,7 +667,8 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 	public Object visit(LogicalBinaryOp binaryOp, Object scope) {
 		LIRMethod lirMethod = (LIRMethod) scope;
 		// Sharon - why didn't you implemented this? I don't see something else
-        AddressLabel endLabel = new AddressLabel(LIRConstants.END_BOOL_LABEL_PREFIX + AddressLabel.getAndIncrementBooleanLabelUID());
+        AddressLabel endLabel = new AddressLabel(LIRConstants.END_BOOL_LABEL_PREFIX + AddressLabel.getLabelId());
+        AddressLabel.incLabelId(1);
         
         propagate(binaryOp.getFirstOperand(), scope);
 
@@ -830,4 +823,47 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		return null;
 	}
 
+	private SymbolTable getClassSymbolTableByNode(ASTNode node){
+		SymbolTable symTable = node.getEnclosingScopeSymTable();
+		
+		if(symTable == null){
+			return null;
+		} else {
+			if(symTable instanceof MethodSymbolTable){
+				return symTable.getParentSymbolTable();
+			} else if(symTable instanceof CodeBlockSymbolTable){
+				return symTable.getParentSymbolTable().getParentSymbolTable();
+			}
+			return null;
+		}
+	}
+	
+	private SymbolTable getMethodSymbolTable(ICClass icClass, String methodName){
+		SymbolTable classSymbolTable = icClass.getEnclosingScopeSymTable();
+		SymbolTable methodSymbolTable = classSymbolTable.getChildSymbolTables().get(methodName);
+		return methodSymbolTable;
+	}
+	
+	public String getBinaryOperationString(MathBinaryOp binaryOp) {
+		String binOp = null;
+
+		switch(binaryOp.getOperator()) {
+			case PLUS: 
+				binOp = LIRConstants.Add;
+				break;
+			case MINUS:
+				binOp = LIRConstants.Sub;
+				break;
+			case MULTIPLY:
+				binOp = LIRConstants.Mul;
+				break;
+			case DIVIDE:
+				binOp = LIRConstants.Div;
+				break;
+			case MOD:
+				binOp = LIRConstants.Mod;
+				break;
+		}
+		return binOp;
+	}
 }

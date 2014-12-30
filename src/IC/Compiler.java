@@ -15,6 +15,8 @@ import IC.SemanticChecks.SymbolTableBuilder;
 import IC.SemanticChecks.SymbolTableChecker;
 import IC.SemanticChecks.TypeTableBuilder;
 import IC.SemanticChecks.TypesCheck;
+import IC.lir.LIRUtils;
+import IC.lir.lirObject.LIRProgram;
 
 public class Compiler {
 	
@@ -94,6 +96,9 @@ public class Compiler {
 				Utils.printTypeTable();
 			}
 	        
+			LIRProgram lirProgram = LIRUtils.getLIRProgram(root);
+			LIRUtils.printLIR(lirProgram, "lirfile");
+			
 		} else{
 			System.out.println("No file was given, please run again and insert which file do you want to parse!");
 		}

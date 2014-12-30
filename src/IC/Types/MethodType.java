@@ -43,6 +43,8 @@ public class MethodType extends SymbolType {
 		return methodStr.toString();
 	}
 	
-	
+	public SymbolType getReturnType(){
+		return method.getRetType();
+	}
 
 }

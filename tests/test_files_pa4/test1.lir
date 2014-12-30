@@ -1,0 +1,19 @@
+## Start of field offsets for A ##
+## Field: a	 # Offset:1##
+## End of field offsets for A ##
+_DV_A: [_A_foo]
+
+_ic_main:
+Library __allocateObject(8),R0
+MoveField _DV_A,R0.0
+VirtualCall R0.0(),R0
+Library __exit(0),Rdummy
+
+_A_foo:
+Move 3,R0
+Move this,R1
+MoveField R0,R1.1
+Move this,R1
+MoveField R1.1,R1
+Library __printi(R1),R0
+Return Rdummy

@@ -1,0 +1,81 @@
+class A {
+
+	int a;
+	int b;
+
+	static void main(string[] args) {
+		
+	//	A a = new A();
+	//	
+	//	a.foo();
+	//		
+	//	int[] cc = new int[102];
+	//	
+	//	Library.printi(cc.length);
+	//		
+	//	B b = new B();
+	//	
+	//	b.bar();
+	//	b.foo();
+		
+		int i=1;
+		while (i<=10) {
+			int j = 1;			
+			while (j<=10) {
+				Library.printi(i*j);
+				Library.print(" ");
+				j = j + 1;
+			}
+			Library.println("");
+			i = i + 1;
+		}
+		
+	}
+	
+	void foo() {
+		Library.println("Hello");
+		
+		a = 3;
+		
+		Library.printi(a);
+		
+		this.b = 5;
+		
+		Library.println("");
+		
+		Library.printi(this.b);
+		
+		bar();
+		
+		someMethod();
+		
+	}
+	
+	void bar() {
+		
+		Library.println("Bar");
+		
+	}
+	
+	
+	void someMethod() {
+	
+		a = 0;
+		
+		int i = 0;
+		while(i < 10) {
+			Library.printi(a);
+			Library.print("");
+			a = a + 1;
+			i = i + 1;
+		}
+	
+	}
+	
+}
+
+class B extends A {
+	void bar() {
+		Library.println("Bar_extended");
+	}
+}

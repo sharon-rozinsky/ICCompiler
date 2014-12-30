@@ -1,0 +1,13 @@
+class A
+{
+	int a;
+	
+	static void main(string[] args) {
+		(new A()).foo();
+	}
+	
+	void foo(){
+		this.a = 3;
+		Library.printi(this.a);
+	}
+}
