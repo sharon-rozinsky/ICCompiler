@@ -137,7 +137,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 	private void visitMethod(Method method, Object scope) {
 		String methodName = method.getName();
 		LIRClass lirClass = (LIRClass) scope;
-		LIRMethod lirMethod = new LIRMethod(lirClass.getClassName(), new AddressLabel(methodName));
+		LIRMethod lirMethod = new LIRMethod(new AddressLabel(methodName), lirClass.getClassName());
 		
 		propagate(method.getStatements(), lirMethod);
 		Instruction inst = null;
@@ -334,7 +334,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         }
 
         ReturnInstruction returnInstruction = new ReturnInstruction(returnReg);
-        lirMethod.getInstructions().add(returnInstruction);
+        lirMethod.addInstruction(returnInstruction);
         
         return null;
 	}
@@ -358,7 +358,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         propagate(ifStatement.getCondition(), scope);
         
         BinaryInstruction compare = new BinaryInstruction(LIRConstants.Compare, new Immediate(0), new Register());
-        lirMethod.getInstructions().add(compare);
+        lirMethod.addInstruction(compare);
 		
         BranchInstruction branch;
         if (ifStatement.hasElse()) 
@@ -368,23 +368,23 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         else 
         {
         	branch = new BranchInstruction(LIRConstants.True, ifEndLabel);
-        }
-        lirMethod.getInstructions().add(branch);
+        }       
+        lirMethod.addInstruction(branch);
 		
         propagate(ifStatement.getOperation(), scope);
         
         if (ifStatement.hasElse()) 
         {
         	BranchInstruction branchElse = new BranchInstruction(LIRConstants.Do, ifEndLabel);
-            lirMethod.getInstructions().add(branchElse);
+            lirMethod.addInstruction(branchElse);
             
             PseudoInstruction falseLabelInstruction = new PseudoInstruction(falseLabel, LIRConstants.Label);
-            lirMethod.getInstructions().add(falseLabelInstruction);
+            lirMethod.addInstruction(falseLabelInstruction);
             
             propagate(ifStatement.getElseOperation(), scope);
         }
         
-        lirMethod.getInstructions().add(endIfLabelInstruction);
+        lirMethod.addInstruction(endIfLabelInstruction);
 		
 		return null;
 	}
@@ -401,22 +401,22 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         PseudoInstruction whileStartPInstruction = new PseudoInstruction(whileStartLabel, LIRConstants.Label);
         PseudoInstruction whileEndPInstruction = new PseudoInstruction(whileEndLabel, LIRConstants.Label);
         
-        lirMethod.getInstructions().add(whileStartPInstruction);
+        lirMethod.addInstruction(whileStartPInstruction);
         
         propagate(whileStatement.getCondition(), scope);
         
         BinaryInstruction compare = new BinaryInstruction(LIRConstants.Compare, new Immediate(0), new Register());
-        lirMethod.getInstructions().add(compare);
+        lirMethod.addInstruction(compare);
         
         BranchInstruction whileEndBranchInstruction =  new BranchInstruction(LIRConstants.True, whileEndLabel);
-        lirMethod.getInstructions().add(whileEndBranchInstruction);
+        lirMethod.addInstruction(whileEndBranchInstruction);
         
         propagate(whileStatement.getOperation(), scope);
         // always jumps back to while start, then check..
         BranchInstruction whileStartBranchInstruction = new BranchInstruction(LIRConstants.Do, whileStartLabel);
-        lirMethod.getInstructions().add(whileStartBranchInstruction);
+        lirMethod.addInstruction(whileStartBranchInstruction);
               
-        lirMethod.getInstructions().add(whileEndPInstruction);
+        lirMethod.addInstruction(whileEndPInstruction);
         
         lirMethod.getWhileLoopsStack().pop();
         
@@ -431,7 +431,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         
         AddressLabel whileEndlabel = new AddressLabel(LIRConstants.END_LABEL_PREFIX + scope_uniqueId);       
         BranchInstruction breakBranchIntruction = new BranchInstruction(LIRConstants.Do, whileEndlabel);
-        lirMethod.getInstructions().add(breakBranchIntruction);
+        lirMethod.addInstruction(breakBranchIntruction);
         
         return null;
 	}
@@ -445,7 +445,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         AddressLabel whileEndlabel = new AddressLabel(LIRConstants.TEST_COND_LABEL_PREFIX + scope_uniqueId);
         
         BranchInstruction breakBranchIntruction = new BranchInstruction(LIRConstants.Do, whileEndlabel);
-        lirMethod.getInstructions().add(breakBranchIntruction);
+        lirMethod.addInstruction(breakBranchIntruction);
         return null;
 	}
 
@@ -464,7 +464,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             Symbol symb = localVariable.getEnclosingScopeSymTable().getSymbol(localVariable.getName());
             Memory mem = new Memory(symb);
             MoveInstruction moveIntruction = new MoveInstruction(new Register(), mem);
-            lirMethod.getInstructions().add(moveIntruction);
+            lirMethod.addInstruction(moveIntruction);
         }
         
         return null;
@@ -501,7 +501,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             
             LibraryInstruction libraryInstruction = new LibraryInstruction(libLabel, new Register(), lirArgs);
             
-            lirMethod.getInstructions().add(libraryInstruction);
+            lirMethod.addInstruction(libraryInstruction);
         } 
         else 
         {        
@@ -531,7 +531,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             Register.decRegisterCounter(call.getArguments().size());
 
             StaticCallInstruction statCallinstruction = new StaticCallInstruction(label, new Register(), paramOp);
-            lirMethod.getInstructions().add(statCallinstruction);
+            lirMethod.addInstruction(statCallinstruction);
             
         }
         return null;
@@ -552,7 +552,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         } else {
         	Memory thisMemory = new ThisReference();
             MoveInstruction moveInstruction = new MoveInstruction(thisMemory, new Register());
-            lirMethod.getInstructions().add(moveInstruction);
+            lirMethod.addInstruction(moveInstruction);
             // TODO: get class scope - guy implemented somewhere- so I prefer not to add the function...
             className = getClassSymbolTableByNode(call).getId();
             classType = TypeTable.classType(className, null, null);
@@ -577,7 +577,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         int intOffset = program.getClassesLayout().get(className).getMethodsOffset(methodName);
         Immediate offset = new Immediate(intOffset);
         VirtualCallInstruction virtCallinstruction = new VirtualCallInstruction(new Register(), offset, new Register(), paramOp);
-        lirMethod.getInstructions().add(virtCallinstruction);
+        lirMethod.addInstruction(virtCallinstruction);
         
         return null;
 	}
@@ -586,7 +586,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 	public Object visit(This thisExpression, Object scope) {		
 		Memory thisMemory = new ThisReference();
         MoveInstruction moveInstruction = new MoveInstruction(thisMemory, new Register());
-        ((LIRMethod)scope).getInstructions().add(moveInstruction);
+        ((LIRMethod)scope).addInstruction(moveInstruction);
 
 		return null;
 	}
@@ -600,13 +600,13 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         Immediate imm = new Immediate(size);
         
         NewObjectInstruction newObjInstruction = new NewObjectInstruction(new Register(), imm);
-        lirMethod.getInstructions().add(newObjInstruction);
+        lirMethod.addInstruction(newObjInstruction);
         AddressLabel dispatchVec = program.getClassesLayout().get(className).getDispatchTableLabel();
         
         FieldOperand feildOp = new FieldOperand(new Register(), new Immediate(0));
         
         MoveFieldInstruction moveDVInstruction = new MoveFieldInstruction(feildOp, dispatchVec, LIRConstants.Store);
-        lirMethod.getInstructions().add(moveDVInstruction);
+        lirMethod.addInstruction(moveDVInstruction);
         
         return null;
 	}
@@ -619,10 +619,10 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         Immediate byteSize = new Immediate(4);
         
         BinaryInstruction updateSizeInstruction = new BinaryInstruction(LIRConstants.Mul, byteSize, new Register());
-        lirMethod.getInstructions().add(updateSizeInstruction);
+        lirMethod.addInstruction(updateSizeInstruction);
         
         NewArrayInstruction newArrInstruction = new NewArrayInstruction(new Register(), new Register());
-        lirMethod.getInstructions().add(newArrInstruction);
+        lirMethod.addInstruction(newArrInstruction);
         
         return null;
 	}
@@ -634,7 +634,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		propagate(length.getArray(), scope);
         
         ArrayLengthInstruction arrLenInstruction = new ArrayLengthInstruction(new Register(), new Register());
-        lirMethod.getInstructions().add(arrLenInstruction);
+        lirMethod.addInstruction(arrLenInstruction);
         
         return null;
 	}
@@ -651,14 +651,14 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		// If binOp is of type str1 + str2 
 		if (binaryOp.getFirstOperand().getSymbolType().equals(TypeTable.strType)) {
 			StringCatInstruction strCatInstruction = new StringCatInstruction(new Register(), new Register(), new Register(1));
-			lirMethod.getInstructions().add(strCatInstruction);
+			lirMethod.addInstruction(strCatInstruction);
 
 			return null;
 		}
 
 		String binOp = getBinaryOperationString(binaryOp);
 		BinaryInstruction binInstruction = new BinaryInstruction(binOp, new Register(1), new Register());
-		lirMethod.getInstructions().add(binInstruction);
+		lirMethod.addInstruction(binInstruction);
 
 		return null;
 	}
@@ -687,20 +687,20 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             }
             
             BinaryInstruction compareInst = new BinaryInstruction(LIRConstants.Compare, imm,  new Register());
-            lirMethod.getInstructions().add(compareInst);
+            lirMethod.addInstruction(compareInst);
             
             BranchInstruction branch = new BranchInstruction(LIRConstants.True, endLabel);
-            lirMethod.getInstructions().add(branch);
+            lirMethod.addInstruction(branch);
             
             Register.incRegisterCounter(1);
             propagate(binaryOp.getSecondOperand(), scope);
             Register.decRegisterCounter(1);
             
             BinaryInstruction inst = new BinaryInstruction(op, new Register(1), new Register());
-            lirMethod.getInstructions().add(inst);
+            lirMethod.addInstruction(inst);
             
             PseudoInstruction endLabelInst = new PseudoInstruction(endLabel, LIRConstants.Label);
-            lirMethod.getInstructions().add(endLabelInst);
+            lirMethod.addInstruction(endLabelInst);
          
             return null;
         }
@@ -733,22 +733,22 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         }
         MoveInstruction moveInstruction;
         moveInstruction = new MoveInstruction(new Immediate(1), new Register(2));
-        lirMethod.getInstructions().add(moveInstruction);
+        lirMethod.addInstruction(moveInstruction);
         
         BinaryInstruction compInst = new BinaryInstruction(LIRConstants.Compare, new Register(1), new Register());
-        lirMethod.getInstructions().add(compInst);
+        lirMethod.addInstruction(compInst);
         
         BranchInstruction branch = new BranchInstruction(branchCond, endLabel);
-        lirMethod.getInstructions().add(branch);
+        lirMethod.addInstruction(branch);
         
         moveInstruction = new MoveInstruction(new Immediate(0), new Register(2));
-        lirMethod.getInstructions().add(moveInstruction);
+        lirMethod.addInstruction(moveInstruction);
         
         PseudoInstruction endLabelInst = new PseudoInstruction(endLabel, LIRConstants.Label);
-        lirMethod.getInstructions().add(endLabelInst);
+        lirMethod.addInstruction(endLabelInst);
         
         moveInstruction = new MoveInstruction(new Register(2), new Register());
-        lirMethod.getInstructions().add(moveInstruction);
+        lirMethod.addInstruction(moveInstruction);
             
         return null;
     }
@@ -761,7 +761,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         {            
             propagate(unaryOp.getOperand(), scope);
             UnaryInstruction unaryInstruction = new UnaryInstruction(LIRConstants.Neg, new Register());
-            lirMethod.getInstructions().add(unaryInstruction);            
+            lirMethod.addInstruction(unaryInstruction);            
         }
         return null;
 	}
@@ -774,7 +774,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		{            
 			propagate(unaryOp.getOperand(), scope);
 			BinaryInstruction binaryLnegInstruction = new BinaryInstruction(LIRConstants.Xor, new Immediate(1), new Register());
-			lirMethod.getInstructions().add(binaryLnegInstruction);            
+			lirMethod.addInstruction(binaryLnegInstruction);            
 		}
 		return null;
 	}
@@ -786,33 +786,29 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         
         Operand value = null;
         
-        if (type == TypeTable.boolType) 
-        {
-            if (literal.getType() == LiteralTypes.TRUE) {
-                value = new Immediate(1);
-            } 
-            else 
-            { 
-                value = new Immediate(0);
-            }
-        } 
-        else if (type == TypeTable.intType) 
-        {
-            int intVal = Integer.parseInt((String)literal.getValue());
-            value = new Immediate(intVal);
-        } 
-        else if (type == TypeTable.nullType) 
-        {
-            value = new Immediate(0);
-        } 
-        else if (type == TypeTable.strType) 
-        {
-            Label label =  program.getStringLiterals().get((String)literal.getValue()).getLabel();
-            value = label;
-        }
+		if (type == TypeTable.boolType) {
+			if (literal.getType() == LiteralTypes.TRUE) {
+				value = new Immediate(1);
+			} else {
+				value = new Immediate(0);
+			}
+		} else if (type == TypeTable.intType) {
+			int intVal = Integer.parseInt((String) literal.getValue());
+			value = new Immediate(intVal);
+		} else if (type == TypeTable.nullType) {
+			value = new Immediate(0);
+		} else if (type == TypeTable.strType) {
+			Label label = program.getStringLiteralLabel((String)literal.getValue());
+			if(label != null){
+				value = label;	
+			} else {
+				//TODO: should this be an exception?
+				return null;
+			}
+		}
         
         MoveInstruction movInstruction = new MoveInstruction(value, new Register());
-        lirMethod.getInstructions().add(movInstruction);
+        lirMethod.addInstruction(movInstruction);
         
         return null;
 	}

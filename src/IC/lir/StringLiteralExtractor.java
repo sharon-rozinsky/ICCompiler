@@ -58,7 +58,6 @@ public class StringLiteralExtractor implements LIRVisitor{
         }
     }
     
-    @SuppressWarnings("rawtypes")
     protected void stepIn(Iterable iterable){
         if (iterable != null) {
             for (Object node : iterable) {
@@ -69,11 +68,12 @@ public class StringLiteralExtractor implements LIRVisitor{
 
     @Override
 	public Object visit(Literal literal)  {
+ 
 		if (literal.getType() == LiteralTypes.STRING) {
-            if (!stringLiterals.containsKey((String)literal.getValue())) {
+			String literalValue = "\"" + (String)literal.getValue() + "\"";
+            if (!stringLiterals.containsKey(literalValue)) {
                 String labelName = LIRConstants.STRING_LITERAL_PREFIX + uniqueliteralId;
                 Label label = new Label(labelName);
-                String literalValue = (String)literal.getValue();
                 LIRStringLiteral stringLiteral = new LIRStringLiteral(label, literalValue);
                 uniqueliteralId++;
                 stringLiterals.put(literalValue, stringLiteral);

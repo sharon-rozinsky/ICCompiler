@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import IC.lir.ClassLayout;
+import IC.lir.operands.Label;
 
 public class LIRProgram {
 	private List<LIRClass> classList = new ArrayList<LIRClass>();
@@ -36,6 +37,14 @@ public class LIRProgram {
 	public ClassLayout getClassLayoutByName(String className){
 		if(classesLayout.containsKey(className)){
 			return classesLayout.get(className);
+		}
+		return null;
+	}
+	
+	public Label getStringLiteralLabel(String str){
+		String normalizedString = "\"" + str + "\"";
+		if(stringLiterals.containsKey(normalizedString)){
+			return stringLiterals.get(normalizedString).getLabel();
 		}
 		return null;
 	}
