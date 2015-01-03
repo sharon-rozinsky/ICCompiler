@@ -1,6 +1,7 @@
 package IC.lir;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import IC.BinaryOps;
@@ -520,15 +521,19 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             ICClass icClass = classType.getClassNode();
             MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().getChildSymbolTables().get(methodName);
             
-            ArrayList<Symbol> parameters = (ArrayList<Symbol>) table.getParameters().values();
+            Collection<Symbol> parameters = (Collection<Symbol>) table.getParameters().values();
             ParameterOperand[] paramOp = new ParameterOperand[parameters.size()];
             
-            for (int i=0; i<parameters.size(); i++) {
-                Register.incRegisterCounter(1);
-                Memory mem = new Memory(parameters.get(i));
-                propagate(call.getArguments().get(i), scope);
+            int i = 0;
+            
+            for(Symbol symb: parameters){
+            	Register.incRegisterCounter(1);
+            	Memory mem = new Memory(symb);
+            	propagate(call.getArguments().get(i), scope);
                 paramOp[i] = new ParameterOperand(mem, new Register());
+                i++;
             }
+
             Register.decRegisterCounter(call.getArguments().size());
 
             StaticCallInstruction statCallinstruction = new StaticCallInstruction(label, new Register(), paramOp);
@@ -819,7 +824,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		propagate (expressionBlock.getExpression(),scope);
 		return null;
 	}
-		  
+
 	private SymbolTable getClassSymbolTableByNode(ASTNode node) {
 		SymbolTable currentSymbolTable = node.getEnclosingScopeSymTable();
 		while (!(currentSymbolTable instanceof ClassSymbolTable)) {
