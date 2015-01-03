@@ -38,10 +38,11 @@ public abstract class SymbolType implements Comparable<SymbolType>{
 	}
 	
 	public boolean isSubClass(SymbolType type) {
-        if ((this == type)||(this==TypeTable.nullType)) {
+        if ((this == type)||((this==TypeTable.nullType) && (type!=TypeTable.intType) && (type!=TypeTable.boolType))) {
             return true;
         }
         return false;
+        
     }
 	
 	@Override

@@ -62,7 +62,7 @@ public class SpecialSemanticChecks {
 				{
 					
 					throw new SemanticError(getMethodFromClass(icClass, "main").getLine(), 
-							String.format("invalid main method signeture"));
+							String.format("invalid main method signature"));
 				}
 				else if(mainSymbol.getKind() == Kind.StaticMethod)
 				{
