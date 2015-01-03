@@ -193,9 +193,9 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	@Override
 	public Boolean visit(VariableLocation location, ASTNode scope) throws SemanticError {
 		String name = location.getName();
-		SymbolTable locationScope = location.getLocationScope();
+		SymbolTable locationScope = location.getEnclosingScopeSymTable();
 		
-		if((location.getLocation() != null) && (locationScope != null)){
+		if(location.getLocation() != null){
 			Symbol symbol = locationScope.getSymbol(name);
 			if(symbol == null){
 				propagate(location.getLocation(), scope);
@@ -205,9 +205,6 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 			
 			if(symbolKind != Kind.Parameter && symbolKind != Kind.MemberVariable && symbolKind != Kind.MethodVariable){
 				throw new SemanticError(location.getLine(), "referencing a non variable");
-			}
-			if(scope instanceof StaticMethod && symbolKind == Kind.MethodVariable){
-				throw new SemanticError(location.getLine(), "referencing a member variable from static method");
 			}
 			if(!locationScope.symbolContained(name)){
 				throw new SemanticError(location.getLine(), "referencing an undefined variable");
@@ -236,11 +233,7 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
             }
 			if((scope instanceof StaticMethod) && nameSymbol.getKind() == Kind.MemberVariable){
 				throw new SemanticError(location.getLine(), "referencing a non static member variable from static method");
-			}
-			/*if((scope instanceof StaticMethod) && !scope.getEnclosingScopeSymTable().symbolContainedInCurrentScope(name)){
-				throw new SemanticError(location.getLine(), "referencing a non static member variable from static method");
-			}*/
-			
+			}			
 		}
 		
 		propagate(location.getLocation(), scope);
