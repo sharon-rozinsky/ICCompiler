@@ -153,7 +153,9 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 			} else if(methodReturnType != null && methodReturnType.getClass().equals(TypeTable.voidType.getClass())){
 				inst = new ReturnInstruction(new DummyRegister());
 			}
-			lirMethod.addInstruction(inst);
+			if(inst != null){
+				lirMethod.addInstruction(inst);
+			}
 		} else if(methodReturnType != null && methodReturnType.getClass().equals(TypeTable.voidType.getClass())){
 			inst = new ReturnInstruction(new DummyRegister());
 			lirMethod.addInstruction(inst);
@@ -736,6 +738,9 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         case LTE:
             branchCond = LIRConstants.LET;
             break;
+		default:
+			int x =5 ;
+			break;
         }
         MoveInstruction moveInstruction;
         moveInstruction = new MoveInstruction(new Immediate(1), new Register(2));
