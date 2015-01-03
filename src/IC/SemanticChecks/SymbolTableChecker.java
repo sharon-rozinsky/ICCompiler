@@ -193,9 +193,9 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 	@Override
 	public Boolean visit(VariableLocation location, ASTNode scope) throws SemanticError {
 		String name = location.getName();
-		SymbolTable locationScope = location.getEnclosingScopeSymTable();
+		SymbolTable locationScope = location.getLocationScope();
 		
-		if(location.getLocation() != null){
+		if((location.getLocation() != null) && (locationScope != null)){
 			Symbol symbol = locationScope.getSymbol(name);
 			if(symbol == null){
 				propagate(location.getLocation(), scope);
