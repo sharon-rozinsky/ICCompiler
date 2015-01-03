@@ -48,6 +48,7 @@ import IC.Types.ClassType;
 import IC.Types.MethodType;
 import IC.Types.Kind;
 import IC.Types.SymbolType;
+import IC.Symbols.ClassSymbolTable;
 import IC.Symbols.CodeBlockSymbolTable;
 import IC.Symbols.MethodSymbolTable;
 import IC.Symbols.Symbol;
@@ -818,21 +819,15 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		propagate (expressionBlock.getExpression(),scope);
 		return null;
 	}
-
-	private SymbolTable getClassSymbolTableByNode(ASTNode node){
-		SymbolTable symTable = node.getEnclosingScopeSymTable();
-		
-		if(symTable == null){
-			return null;
-		} else {
-			if(symTable instanceof MethodSymbolTable){
-				return symTable.getParentSymbolTable();
-			} else if(symTable instanceof CodeBlockSymbolTable){
-				return symTable.getParentSymbolTable().getParentSymbolTable();
-			}
-			return null;
+		  
+	private SymbolTable getClassSymbolTableByNode(ASTNode node) {
+		SymbolTable currentSymbolTable = node.getEnclosingScopeSymTable();
+		while (!(currentSymbolTable instanceof ClassSymbolTable)) {
+			currentSymbolTable = currentSymbolTable.getParentSymbolTable();
 		}
+		return (ClassSymbolTable) currentSymbolTable;
 	}
+
 	
 	private SymbolTable getMethodSymbolTable(ICClass icClass, String methodName){
 		SymbolTable classSymbolTable = icClass.getEnclosingScopeSymTable();
