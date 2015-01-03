@@ -769,10 +769,10 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		LIRMethod lirMethod = (LIRMethod) scope;
         
         if (unaryOp.getOperator() == IC.UnaryOps.UMINUS) 
-        {            
+        {   
             propagate(unaryOp.getOperand(), scope);
             UnaryInstruction unaryInstruction = new UnaryInstruction(LIRConstants.Neg, new Register());
-            lirMethod.addInstruction(unaryInstruction);            
+            lirMethod.addInstruction(unaryInstruction);               
         }
         return null;
 	}
@@ -782,7 +782,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		LIRMethod lirMethod = (LIRMethod) scope;
 
 		if (unaryOp.getOperator() == IC.UnaryOps.LNEG) 
-		{            
+		{
 			propagate(unaryOp.getOperand(), scope);
 			BinaryInstruction binaryLnegInstruction = new BinaryInstruction(LIRConstants.Xor, new Immediate(1), new Register());
 			lirMethod.addInstruction(binaryLnegInstruction);            
@@ -804,6 +804,9 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 				value = new Immediate(0);
 			}
 		} else if (type == TypeTable.intType) {
+			if (literal.getValue().equals("2147483648")){
+				literal.setValue("-"+literal.getValue());//TODO : make sure it's doesn't hurt			
+			}
 			int intVal = Integer.parseInt((String) literal.getValue());
 			value = new Immediate(intVal);
 		} else if (type == TypeTable.nullType) {

@@ -58,6 +58,10 @@ public class Literal extends Expression {
 	public Object getValue() {
 		return value;
 	}
+	
+	public void setValue(Object val) {
+		value = val;
+	}
 
 	@Override
 	public <D, U> U accept(PropagatingVisitor<D, U> v, D context) throws SemanticError {
