@@ -229,12 +229,18 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 				throw new SemanticError(location.getLine(), "Member variable referencing a non member variable");
 			}
 		} else if(location.getLocation() == null){
-			if((scope instanceof StaticMethod) && !scope.getEnclosingScopeSymTable().symbolContained(name)){
-				throw new SemanticError(location.getLine(), "referencing a non static member variable from static method");
-			}
-			else if (unresolvedRefrences.contains(location)) {
+			Symbol nameSymbol = locationScope.getSymbol(name);
+			
+			if (unresolvedRefrences.contains(location)) {
             	throw new SemanticError(location.getLine(), "referencing an undefined variable");
             }
+			if((scope instanceof StaticMethod) && nameSymbol.getKind() == Kind.MemberVariable){
+				throw new SemanticError(location.getLine(), "referencing a non static member variable from static method");
+			}
+			/*if((scope instanceof StaticMethod) && !scope.getEnclosingScopeSymTable().symbolContainedInCurrentScope(name)){
+				throw new SemanticError(location.getLine(), "referencing a non static member variable from static method");
+			}*/
+			
 		}
 		
 		propagate(location.getLocation(), scope);
