@@ -254,7 +254,10 @@ public class SymbolTableChecker implements PropagatingVisitor<ASTNode, Boolean>{
 		}
 		SymbolTable classScope = icClass.getEnclosingScopeSymTable();
 		Symbol symbol = classScope.getSymbol(call.getName());
-		
+		if(symbol == null)
+		{
+			throw new SemanticError(call.getLine(), "calling an undefined method");
+		}
 		if(symbol.getKind() != Kind.StaticMethod){
 			throw new SemanticError(call.getLine(), "calling an undefined static method");
 		}

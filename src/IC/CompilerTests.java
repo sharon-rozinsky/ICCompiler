@@ -1627,5 +1627,21 @@ public class CompilerTests {
 			Assert.assertTrue("semantic error at line 33".equals(e.getMessage().split(":")[0]));
 		}
 	}
+	
+	@Test
+	/**
+	 * Test number 103.
+	 * @throws Exception
+	 */
+	public void general() throws Exception {
+//		try 
+//		{
+			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"fieldInstaticMethod.ic";
+			Compiler.Compile(args);
+//			Assert.assertTrue(false); //Compile should fail
+//		} catch (SemanticError e) {
+//			Assert.assertTrue("semantic error at line 33".equals(e.getMessage().split(":")[0]));
+//		}
+	}
 
 }

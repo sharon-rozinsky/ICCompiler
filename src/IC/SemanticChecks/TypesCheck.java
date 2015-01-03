@@ -171,7 +171,11 @@ public class TypesCheck implements Visitor{
 
 		SymbolType t1 = assignment.getAssignment().getSymbolType();
 		SymbolType t2 = assignment.getVariable().getSymbolType();
-
+		if(t1 == null)
+		{
+			throw new SemanticError(assignment.getLine(),
+					String.format("Undifiend assignment expression"));
+		}
 		if(!t1.isSubClass(t2))
 		{
 			throw new SemanticError(assignment.getLine(),String.format("Can't assign variable from type %s a value of type %s", t2.toString(),t1.toString()));
@@ -278,6 +282,11 @@ public class TypesCheck implements Visitor{
 		if(localVariable.hasInitValue())
 		{
 			initType = localVariable.getInitValue().getSymbolType();
+			if(initType == null)
+			{
+				throw new SemanticError(localVariable.getLine(), 
+						String.format("Undefiend initialization type."));
+			}
 			if(!initType.isSubClass(varType))
 			{
 				throw new SemanticError(localVariable.getLine(), 
@@ -310,6 +319,11 @@ public class TypesCheck implements Visitor{
 				ClassType cType = (ClassType) eType;
 				ClassSymbolTable classSymTbl = (ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable();
 				Symbol locationSym = classSymTbl.getSymbol(locationId);
+				if(locationSym == null)
+				{
+					throw new SemanticError(location.getLine(), 
+							String.format("field is undeclared at location %s.",classSymTbl.getId()));
+				}
 				if(locationSym.getKind() == Kind.MemberVariable)
 				{
 					location.setSymbolType(locationSym.getType());
@@ -428,6 +442,11 @@ public class TypesCheck implements Visitor{
 				ClassType cType = (ClassType) eType;
 				ClassSymbolTable classSymTbl = (ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable();
 				Symbol callSym = classSymTbl.getSymbol(call.getName());
+				if(callSym == null)
+				{
+					throw new SemanticError(call.getLine(), 
+							String.format("Reference to undefind method %s.",call.getName()));
+				}
 				if(callSym.getKind() == Kind.Method)
 				{
 					visitCallWraper(call,(MethodType) callSym.getType());
@@ -437,6 +456,11 @@ public class TypesCheck implements Visitor{
 					throw new SemanticError(call.getLine(), 
 							String.format("Reference to undefind method %s.",call.getName()));
 				}
+			}
+			else
+			{
+				throw new SemanticError(call.getLine(), 
+						String.format("Undefind location for method %s",call.getName()));
 			}
 		}
 		return null;
