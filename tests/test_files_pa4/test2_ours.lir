@@ -1,0 +1,135 @@
+stringLiteral0: " "
+stringLiteral1: ""
+stringLiteral2: "Hello"
+stringLiteral3: "Bar"
+stringLiteral4: "Bar_extended"
+
+# A: fields offsets:
+# field: a  offset: 1
+# field: b  offset: 2
+
+_DV_A: [_A_bar,_A_foo,_A_someMethod]
+# B: fields offsets:
+# field: a  offset: 1
+# field: b  offset: 2
+
+_DV_B: [_B_bar,_A_foo,_A_someMethod]
+
+_ic_main:
+Move 1,R0
+Move R0,i
+_test_cond_label_19:
+Move i,R0
+Move 10,R1
+Move 1,R2
+Compare R1,R0
+JumpLE _end_bool_0
+Move 0,R2
+_end_bool_0:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_19
+Move 1,R0
+Move R0,j
+_test_cond_label_20:
+Move j,R0
+Move 10,R1
+Move 1,R2
+Compare R1,R0
+JumpLE _end_bool_1
+Move 0,R2
+_end_bool_1:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_20
+Move i,R1
+Move j,R2
+Mul R2,R1
+Library __printi(R1),R0
+Move stringLiteral0,R1
+Library __print(R1),R0
+Move j,R0
+Move 1,R1
+Add R1,R0
+Move R0,j
+Jump _test_cond_label_20
+_end_label_20:
+Move stringLiteral1,R1
+Library __println(R1),R0
+Move i,R0
+Move 1,R1
+Add R1,R0
+Move R0,i
+Jump _test_cond_label_19
+_end_label_19:
+Library __exit(0),Rdummy
+
+_A_foo:
+Move stringLiteral2,R1
+Library __println(R1),R0
+Move 3,R0
+Move this,R1
+MoveField R0,R1.1
+Move this,R1
+MoveField R1.1,R1
+Library __printi(R1),R0
+Move 5,R0
+Move this,R1
+MoveField R0,R1.2
+Move stringLiteral1,R1
+Library __println(R1),R0
+Move this,R1
+MoveField R1.2,R1
+Library __printi(R1),R0
+Move this,R0
+VirtualCall R0.1(),R0
+Move this,R0
+VirtualCall R0.2(),R0
+Return Rdummy
+
+_A_bar:
+Move stringLiteral3,R1
+Library __println(R1),R0
+Return Rdummy
+
+_A_someMethod:
+Move 0,R0
+Move this,R1
+MoveField R0,R1.1
+Move 0,R0
+Move R0,i
+_test_cond_label_24:
+Move i,R0
+Move 10,R1
+Move 1,R2
+Compare R1,R0
+JumpL _end_bool_2
+Move 0,R2
+_end_bool_2:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_24
+Move this,R1
+MoveField R1.1,R1
+Library __printi(R1),R0
+Move stringLiteral1,R1
+Library __print(R1),R0
+Move this,R0
+MoveField R0.1,R0
+Move 1,R1
+Add R1,R0
+Move this,R1
+MoveField R0,R1.1
+Move i,R0
+Move 1,R1
+Add R1,R0
+Move R0,i
+Jump _test_cond_label_24
+_end_label_24:
+Return Rdummy
+
+_B_bar:
+Move stringLiteral4,R1
+Library __println(R1),R0
+Return Rdummy
+

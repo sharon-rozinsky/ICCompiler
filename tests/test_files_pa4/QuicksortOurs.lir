@@ -1,0 +1,267 @@
+stringLiteral0: "Array elements: "
+stringLiteral1: " "
+stringLiteral2: "
+"
+stringLiteral3: "Unspecified array length"
+stringLiteral4: "Invalid array length"
+
+# Quicksort: fields offsets:
+# field: a  offset: 1
+
+_DV_Quicksort: [_Quicksort_partition,_Quicksort_printArray,_Quicksort_initArray,_Quicksort_quicksort]
+
+_Quicksort_partition:
+Move this,R0
+MoveField R0.1,R0
+Move low,R1
+MoveArray R0[R0],R0
+Move R0,pivot
+Move low,R0
+Move R0,i
+Move high,R0
+Move R0,j
+_test_cond_label_19:
+Move 1,R0
+Compare 0,R0
+JumpTrue _end_label_19
+_test_cond_label_20:
+Move this,R0
+MoveField R0.1,R0
+Move i,R1
+MoveArray R0[R0],R0
+Move pivot,R1
+Move 1,R2
+Compare R1,R0
+JumpL _end_bool_0
+Move 0,R2
+_end_bool_0:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_20
+Move i,R0
+Move 1,R1
+Add R1,R0
+Move R0,i
+Jump _test_cond_label_20
+_end_label_20:
+_test_cond_label_21:
+Move this,R0
+MoveField R0.1,R0
+Move j,R1
+MoveArray R0[R0],R0
+Move pivot,R1
+Move 1,R2
+Compare R1,R0
+JumpG _end_bool_1
+Move 0,R2
+_end_bool_1:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_21
+Move j,R0
+Move 1,R1
+Sub R1,R0
+Move R0,j
+Jump _test_cond_label_21
+_end_label_21:
+Move i,R0
+Move j,R1
+Move 1,R2
+Compare R1,R0
+JumpGE _end_bool_2
+Move 0,R2
+_end_bool_2:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_19
+Jump _end_label_19
+_end_label_19:
+Move this,R0
+MoveField R0.1,R0
+Move i,R1
+MoveArray R0[R0],R0
+Move R0,tmp
+Move this,R0
+MoveField R0.1,R0
+Move j,R1
+MoveArray R0[R0],R0
+Move this,R1
+MoveField R1.1,R1
+Move i,R2
+MoveArray R0,R1[R1]
+Move tmp,R0
+Move this,R1
+MoveField R1.1,R1
+Move j,R2
+MoveArray R0,R1[R1]
+Move i,R0
+Move 1,R1
+Add R1,R0
+Move R0,i
+Move j,R0
+Move 1,R1
+Sub R1,R0
+Move R0,j
+Jump _test_cond_label_19
+_end_label_19:
+Move j,R0
+Return R0
+
+_Quicksort_quicksort:
+Move low,R0
+Move high,R1
+Move 1,R2
+Compare R1,R0
+JumpL _end_bool_3
+Move 0,R2
+_end_bool_3:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_23
+Move this,R0
+Move low,R1
+Move high,R2
+VirtualCall R0.0(high=R1,low=R2),R0
+Move R0,mid
+Move this,R0
+Move low,R1
+Move mid,R2
+VirtualCall R0.1(high=R1,low=R2),R0
+Move this,R0
+Move mid,R1
+Move 1,R2
+Add R2,R1
+Move high,R2
+VirtualCall R0.1(high=R1,low=R2),R0
+_end_label_23:
+Return Rdummy
+
+_Quicksort_initArray:
+Move 0,R0
+Move R0,i
+_test_cond_label_25:
+Move i,R0
+Move this,R1
+MoveField R1.1,R1
+ArrayLength R1,R1
+Move 1,R2
+Compare R1,R0
+JumpL _end_bool_4
+Move 0,R2
+_end_bool_4:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_25
+Move this,R1
+MoveField R1.1,R1
+ArrayLength R1,R1
+Move 2,R2
+Mul R2,R1
+Library __random(R1),R0
+Move this,R1
+MoveField R1.1,R1
+Move i,R2
+MoveArray R0,R1[R1]
+Move i,R0
+Move 1,R1
+Add R1,R0
+Move R0,i
+Jump _test_cond_label_25
+_end_label_25:
+Return Rdummy
+
+_Quicksort_printArray:
+Move 0,R0
+Move R0,i
+Move stringLiteral0,R1
+Library __print(R1),R0
+_test_cond_label_27:
+Move i,R0
+Move this,R1
+MoveField R1.1,R1
+ArrayLength R1,R1
+Move 1,R2
+Compare R1,R0
+JumpL _end_bool_5
+Move 0,R2
+_end_bool_5:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_27
+Move this,R1
+MoveField R1.1,R1
+Move i,R2
+MoveArray R1[R1],R1
+Library __printi(R1),R0
+Move stringLiteral1,R1
+Library __print(R1),R0
+Move i,R0
+Move 1,R1
+Add R1,R0
+Move R0,i
+Jump _test_cond_label_27
+_end_label_27:
+Move stringLiteral2,R1
+Library __print(R1),R0
+Return Rdummy
+
+_ic_main:
+Move args,R0
+ArrayLength R0,R0
+Move 1,R1
+Move 1,R2
+Compare R1,R0
+JumpFalse _end_bool_6
+Move 0,R2
+_end_bool_6:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_29
+Move stringLiteral3,R1
+Library __println(R1),R0
+Move 1,R1
+Library __exit(R1),R0
+_end_label_29:
+Move args,R1
+Move 0,R2
+MoveArray R1[R1],R1
+Move 0,R2
+Library __stoi(R1,R2),R0
+Move R0,n
+Move n,R0
+Move 0,R1
+Move 1,R2
+Compare R1,R0
+JumpLE _end_bool_7
+Move 0,R2
+_end_bool_7:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_30
+Move stringLiteral4,R1
+Library __println(R1),R0
+Move 1,R1
+Library __exit(R1),R0
+_end_label_30:
+Library __allocateObject(8),R0
+MoveField _DV_Quicksort,R0.0
+Move R0,s
+Move n,R0
+Mul 4,R0
+Library __allocateArray(R0),R0
+Move s,R1
+MoveField R0,R1.1
+Move s,R0
+VirtualCall R0.2(),R0
+Move s,R0
+VirtualCall R0.3(),R0
+Move s,R0
+Move 0,R1
+Move n,R2
+Move 1,R3
+Sub R3,R2
+VirtualCall R0.1(high=R1,low=R2),R0
+Move s,R0
+VirtualCall R0.3(),R0
+Library __exit(0),Rdummy
+
