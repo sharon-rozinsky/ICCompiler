@@ -70,7 +70,7 @@ public class StringLiteralExtractor implements LIRVisitor{
 	public Object visit(Literal literal)  {
  
 		if (literal.getType() == LiteralTypes.STRING) {
-			String literalValue = "\"" + (String)literal.getValue() + "\"";
+			String literalValue = checkNFix((String) literal.getValue());
             if (!stringLiterals.containsKey(literalValue)) {
                 String labelName = LIRConstants.STRING_LITERAL_PREFIX + uniqueliteralId;
                 Label label = new Label(labelName);
@@ -81,6 +81,17 @@ public class StringLiteralExtractor implements LIRVisitor{
         }
 		return null;
 	}
+    
+    public static String checkNFix(String str){
+    	String literalValue;
+    	if(str.equals("\n"))
+			literalValue = "\"\\n\"";
+    	else if(str.equals("\t"))
+			literalValue = "\"\\t\"";
+		else
+			literalValue = "\"" + str + "\"";
+    	return literalValue;
+    }
     
 	@Override
 	public Object visit(Program program)  {
