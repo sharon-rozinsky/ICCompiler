@@ -1,6 +1,7 @@
 package IC.lir;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,8 +12,8 @@ public class ClassLayout {
 	private static final int BYTE_MULTIPLIER = 4;
 	private String className;
 	private AddressLabel dispatchTableLabel;
-	private Map<String, Integer> fieldsOffset = new HashMap<String, Integer>();
-	private Map<String, Offset> methodsOffset = new HashMap<String, Offset>();
+	private Map<String, Integer> fieldsOffset = new LinkedHashMap<String, Integer>();
+	private Map<String, Offset> methodsOffset = new LinkedHashMap<String, Offset>();
 	
 	public ClassLayout(String className){
 		this.className = className;
