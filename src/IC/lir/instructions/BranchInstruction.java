@@ -5,7 +5,7 @@ import IC.lir.operands.Label;
 
 public class BranchInstruction extends Instruction {
 	
-	private static final String InstructionName = "Branch";
+	private static final String InstructionName = "Jump";
     private Label label;
     private String condition;
     

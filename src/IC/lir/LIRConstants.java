@@ -15,10 +15,10 @@ public class LIRConstants {
 	public static String Do = ""; 		// Always do
 	public static String True = "True";
 	public static String False = "False";
-	public static String GT = "GT"; 	// greater than
-	public static String GET = "GET"; 	// greater/Equal
-	public static String LT = "LT";		// lesser than
-	public static String LET = "LET";	// lesser/Equal
+	public static String GT = "G"; 	// greater than
+	public static String GET = "GE"; 	// greater/Equal
+	public static String LT = "L";		// lesser than
+	public static String LET = "LE";	// lesser/Equal
 	
 	// Unary Ops
 	public static String Inc = "Inc";	// increment
