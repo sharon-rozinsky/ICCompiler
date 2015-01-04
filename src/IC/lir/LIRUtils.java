@@ -82,6 +82,16 @@ public class LIRUtils {
 		return classLayoutMap;
 	}
 	
+	public static String addBackSlash(String str){
+    	String literalValue = str;
+    	if(str.equals("\"\n\""))
+			literalValue = "\"\\n\"";
+    	else if(str.equals("\"\t\""))
+			literalValue = "\"\\t\"";
+
+    	return literalValue;
+    }
+	
 	public static void printLIR(LIRProgram lirProgram, String fileName) {
 		FileWriter fileWriter;
 		PrintWriter printer = null;
@@ -95,7 +105,7 @@ public class LIRUtils {
 			List<LIRClass> lirClasses = lirProgram.getClassList();
 	
 			for (LIRStringLiteral stringLiteral : stringLiterals.values()) {
-				printer.println(stringLiteral.getLabel() + ": " + stringLiteral.getLiteral());
+				printer.println(stringLiteral.getLabel() + ": " + addBackSlash(stringLiteral.getLiteral()));
 			}
 	
 			printer.println();

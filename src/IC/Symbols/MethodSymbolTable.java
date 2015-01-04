@@ -1,6 +1,7 @@
 package IC.Symbols;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import IC.SemanticChecks.SemanticUtils;
@@ -12,8 +13,8 @@ public class MethodSymbolTable extends SymbolTable {
 	
 	public MethodSymbolTable(String id, SymbolTable parentSymbolTable) {
 		super(id, parentSymbolTable);
-		parameters = new HashMap<String, Symbol>();
-		variables = new HashMap<String, Symbol>();
+		parameters = new LinkedHashMap<String, Symbol>();
+		variables = new LinkedHashMap<String, Symbol>();
 	}
 
 	@Override

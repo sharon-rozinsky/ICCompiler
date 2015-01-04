@@ -674,7 +674,6 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 	@Override
 	public Object visit(LogicalBinaryOp binaryOp, Object scope) {
 		LIRMethod lirMethod = (LIRMethod) scope;
-		// Sharon - why didn't you implemented this? I don't see something else
         AddressLabel endLabel = new AddressLabel(LIRConstants.END_BOOL_LABEL_PREFIX + AddressLabel.getLabelId());
         AddressLabel.incLabelId(1);
         
@@ -805,7 +804,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 			}
 		} else if (type == TypeTable.intType) {
 			if (literal.getValue().equals("2147483648")){
-				literal.setValue("-"+literal.getValue());//TODO : make sure it's doesn't hurt			
+				literal.setValue("-"+literal.getValue());		
 			}
 			int intVal = Integer.parseInt((String) literal.getValue());
 			value = new Immediate(intVal);
