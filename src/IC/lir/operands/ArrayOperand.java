@@ -16,6 +16,6 @@ public class ArrayOperand extends SpecialOperand{
 
 	@Override
 	public String toString() {
-		return getOperand1().toString() + "[" + getOperand1().toString() + "]";
+		return getOperand1().toString() + "[" + getOperand2().toString() + "]";
 	}
 }
