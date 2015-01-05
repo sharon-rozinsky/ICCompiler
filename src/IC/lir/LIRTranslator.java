@@ -348,8 +348,20 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		LIRMethod lirMethod = (LIRMethod) scope;
 		
 		AddressLabel falseLabel = null;
-        
-		int endScopeId = ifStatement.getOperation().getEnclosingScopeSymTable().getScopeUniqueId();		
+		int endScopeId;
+		
+		ASTNode br = ifStatement.getOperation();
+		if (br instanceof Break)
+		{
+			Break brk = (Break) br;
+			endScopeId = brk.getUniqueId();
+		}
+		else
+		{
+			endScopeId = ifStatement.getOperation().getEnclosingScopeSymTable().getScopeUniqueId();	
+		}
+
+        	
         AddressLabel ifEndLabel = new AddressLabel(LIRConstants.END_LABEL_PREFIX + endScopeId);
         PseudoInstruction endIfLabelInstruction = new PseudoInstruction(ifEndLabel, LIRConstants.Label);
 		
