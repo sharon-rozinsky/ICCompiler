@@ -10,6 +10,10 @@ public abstract class SymbolTable {
 	protected SymbolTable parentSymbolTable;
 	protected Map<String, SymbolTable> childSymbolTables;
 	protected int scopeUniqueId;
+	
+	public static int getAndIncrementId(){
+		return unique_id++;				
+	}
 
 
 	public SymbolTable(String id, SymbolTable parentSymbolTable) {
