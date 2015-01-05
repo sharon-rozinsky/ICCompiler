@@ -39,7 +39,6 @@ class Quicksort {
 
     void quicksort(int low, int high) {
     if (low < high) {
-        this.printArray();
         int mid = partition(low, high);
         quicksort(low, mid);
         quicksort(mid+1, high);
@@ -49,7 +48,7 @@ class Quicksort {
     void initArray() {
     int i = 0;
     while(i < a.length) {
-        a[i] =  Library.random() % (a.length*2);
+        a[i] =  Library.random(37) % (a.length*2);
         i = i+1;
     }
     }
