@@ -1,9 +1,9 @@
 package IC.lir.instructions;
 
-public class ArrIdxCheckInstruction extends Instruction {
+public class ArrSizeCheckInstruction extends Instruction {
 	String sizeReg;
 	
-	public ArrIdxCheckInstruction(String sizeRegister) {
+	public ArrSizeCheckInstruction(String sizeRegister) {
 		super("StaticCall");
 		this.sizeReg = sizeRegister;
 	}
