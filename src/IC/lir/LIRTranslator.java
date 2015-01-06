@@ -72,6 +72,7 @@ import IC.lir.instructions.StaticCallInstruction;
 import IC.lir.instructions.StringCatInstruction;
 import IC.lir.instructions.UnaryInstruction;
 import IC.lir.instructions.VirtualCallInstruction;
+import IC.lir.instructions.ZeroDivCheckInstruction;
 import IC.lir.lirObject.LIRClass;
 import IC.lir.lirObject.LIRMethod;
 import IC.lir.lirObject.LIRProgram;
@@ -682,8 +683,14 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 			return null;
 		}
 
+		Register R0 = new Register();
+		Register R1 = new Register(1);
 		String binOp = getBinaryOperationString(binaryOp);
-		BinaryInstruction binInstruction = new BinaryInstruction(binOp, new Register(1), new Register());
+		if(binOp == LIRConstants.Div || binOp == LIRConstants.Mod){
+			ZeroDivCheckInstruction zeroDivCheckInstruction = new ZeroDivCheckInstruction(R1.toString());
+			lirMethod.addInstruction(zeroDivCheckInstruction);
+		}
+		BinaryInstruction binInstruction = new BinaryInstruction(binOp, R1, R0);
 		lirMethod.addInstruction(binInstruction);
 
 		return null;

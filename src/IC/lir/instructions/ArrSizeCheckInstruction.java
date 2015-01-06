@@ -9,6 +9,6 @@ public class ArrSizeCheckInstruction extends Instruction {
 	}
 	
 	public String toString(){
-		return getName() + " __checkSize(n=" + sizeReg + "),Rdummy\n";
+		return getName() + " __checkSize(n=" + sizeReg + "),Rdummy";
 	}
 }
