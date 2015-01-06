@@ -675,7 +675,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		Register R0 = new Register();
 		Register R1 = new Register(1);
 		String binOp = getBinaryOperationString(binaryOp);
-		if(binOp == LIRConstants.Div){
+		if(binOp == LIRConstants.Div || binOp == LIRConstants.Mod){
 			ZeroDivCheckInstruction zeroDivCheckInstruction = new ZeroDivCheckInstruction(R1.toString());
 			lirMethod.addInstruction(zeroDivCheckInstruction);
 		}
