@@ -657,10 +657,14 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 	@Override
 	public Object visit(Length length, Object scope)  {
 		LIRMethod lirMethod = (LIRMethod) scope;
-        
 		propagate(length.getArray(), scope);
+		
+		Register arrReg = new Register();
+        ArrayLengthInstruction arrLenInstruction = new ArrayLengthInstruction(arrReg, new Register());
         
-        ArrayLengthInstruction arrLenInstruction = new ArrayLengthInstruction(new Register(), new Register());
+        NullReferenceCheckInstruction nullRefCheckInst = new NullReferenceCheckInstruction(arrReg.toString());
+        lirMethod.addInstruction(nullRefCheckInst);
+
         lirMethod.addInstruction(arrLenInstruction);
         
         return null;
