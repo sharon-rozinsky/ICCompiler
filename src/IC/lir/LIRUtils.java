@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,8 +80,8 @@ public class LIRUtils {
 			}
 			
 			classLayoutMap.put(className, layout);
-		}
-		
+		}	
+		  
 		return classLayoutMap;
 	}
 	
@@ -104,6 +107,7 @@ public class LIRUtils {
 			Map<String, ClassLayout> classesLayouts = lirProgram.getClassesLayout();
 			List<LIRClass> lirClasses = lirProgram.getClassList();
 	
+			printer.println(LIRConstants.RUN_TIME_STRING_LITERALS);
 			for (LIRStringLiteral stringLiteral : stringLiterals.values()) {
 				printer.println(stringLiteral.getLabel() + ": " + addBackSlash(stringLiteral.getLiteral()));
 			}
@@ -134,11 +138,18 @@ public class LIRUtils {
 					for (Instruction instruction : lirMethod.getInstructions()) {
 						printer.println(instruction.toString());
 					}
-	
 					printer.println();
-	
 				}
 			}
+			
+			try {
+				byte[] encoded = Files.readAllBytes(Paths.get("RunTimeChecks.lir"));
+				String runtimeCheckFunctions = new String(encoded, StandardCharsets.UTF_8);
+				printer.println(runtimeCheckFunctions);
+			} catch (IOException e) {
+				System.out.println("Couldn't find RunTimeChecks.lir - cant add run time check functions");
+				e.printStackTrace();
+			}			
 		} catch (IOException e){
 			System.out.println("Error while printing .lir file");
 		} finally {

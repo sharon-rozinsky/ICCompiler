@@ -43,9 +43,8 @@ import IC.lir.operands.Label;
 
 public class StringLiteralExtractor implements LIRVisitor{
 	
-    private int uniqueliteralId = 0;
+    private int uniqueliteralId = 4;
     
-    // (string literal) -> (string label)
     private Map<String, LIRStringLiteral> stringLiterals = new LinkedHashMap<String,LIRStringLiteral>();
     
     public Map<String, LIRStringLiteral> getStringLiterals() {
