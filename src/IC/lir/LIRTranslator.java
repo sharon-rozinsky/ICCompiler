@@ -567,8 +567,14 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		LIRMethod lirMethod = (LIRMethod) scope;
         
         String methodName = call.getName();
-        String className;
+        String className = getClassSymbolTableByNode(call).getId();
         ClassType classType;
+        int intOffset = program.getClassesLayout().get(className).getMethodsOffset(methodName);
+        
+        if(intOffset == -1){ //the call is static
+        	getClassSymbolTableByNode(call);
+        	return visit(new StaticCall(call.getLine(), className, methodName, call.getArguments()), scope);
+        }
         
         if (call.isExternal()) {
             propagate(call.getLocation(), scope);
@@ -599,7 +605,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         }
         Register.decRegisterCounter(call.getArguments().size());
 
-        int intOffset = program.getClassesLayout().get(className).getMethodsOffset(methodName);
+        intOffset = program.getClassesLayout().get(className).getMethodsOffset(methodName);
         Immediate offset = new Immediate(intOffset);
         VirtualCallInstruction virtCallinstruction = new VirtualCallInstruction(new Register(), offset, new Register(), paramOp);
         lirMethod.addInstruction(virtCallinstruction);
