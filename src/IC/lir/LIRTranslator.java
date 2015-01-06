@@ -293,9 +293,11 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 			if (symbol.getKind() != Kind.MemberVariable) {
 				Memory memory = new Memory(symbol);
 				if (storeOrLoad == LIRConstants.LOAD) {
-					MoveInstruction moveInstruction = new MoveInstruction(
-							memory, new Register());
+					Register reg = new Register();
+					MoveInstruction moveInstruction = new MoveInstruction(memory, reg);
 					lirMethod.addInstruction(moveInstruction);
+					NullReferenceCheckInstruction nullCheckInstruction = new NullReferenceCheckInstruction(reg.toString());
+					lirMethod.addInstruction(nullCheckInstruction);
 				}
 				return memory;
 			} else {
