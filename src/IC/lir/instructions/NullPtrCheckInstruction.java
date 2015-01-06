@@ -9,7 +9,7 @@ public class NullPtrCheckInstruction extends Instruction{
 	}
 	
 	public String toString(){
-		return getName() + " __checkNullRef(a=" + this.reg + "),Rdummy\n";
+		return getName() + " __checkNullRef(a=" + this.reg + "),Rdummy";
 	}
 
 }

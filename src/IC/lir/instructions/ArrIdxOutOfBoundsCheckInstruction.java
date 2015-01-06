@@ -11,7 +11,7 @@ public class ArrIdxOutOfBoundsCheckInstruction extends Instruction {
 	}
 	
 	public String toString(){
-		return getName() + " __checkArrayAccess(a=" + arrReg + ", i=" + idxReg + "),Rdummy\n";
+		return getName() + " __checkArrayAccess(a=" + arrReg + ", i=" + idxReg + "),Rdummy";
 	}
 
 }

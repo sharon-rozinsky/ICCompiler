@@ -9,6 +9,6 @@ public class ZeroDivCheckInstruction extends Instruction {
 	}
 	
 	public String toString(){
-		return getName() + " __checkZero(b=" + intReg + "),Rdummy\n";
+		return getName() + " __checkZero(b=" + intReg + "),Rdummy";
 	}
 }
