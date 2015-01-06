@@ -4,7 +4,7 @@ public class ArrIdxOutOfBoundsCheckInstruction extends Instruction {
 	String arrReg;
 	String idxReg;
 	
-	public ArrIdxOutOfBoundsCheckInstruction(String instructionName, String arrRegister, String idxRegister) {
+	public ArrIdxOutOfBoundsCheckInstruction(String arrRegister, String idxRegister) {
 		super("StaticCall");
 		this.arrReg = arrRegister;
 		this.idxReg = idxRegister;

@@ -3,7 +3,7 @@ package IC.lir.instructions;
 public class ZeroDivCheckInstruction extends Instruction {
 	String intReg;
 	
-	public ZeroDivCheckInstruction(String instructionName, String intRegister) {
+	public ZeroDivCheckInstruction(String intRegister) {
 		super("StaticCall");
 		this.intReg = intRegister;
 	}

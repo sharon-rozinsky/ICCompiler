@@ -3,7 +3,7 @@ package IC.lir.instructions;
 public class ArrIdxCheckInstruction extends Instruction {
 	String sizeReg;
 	
-	public ArrIdxCheckInstruction(String instructionName, String sizeRegister) {
+	public ArrIdxCheckInstruction(String sizeRegister) {
 		super("StaticCall");
 		this.sizeReg = sizeRegister;
 	}
