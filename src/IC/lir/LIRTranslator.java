@@ -548,7 +548,6 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 
             StaticCallInstruction statCallinstruction = new StaticCallInstruction(label, new Register(), paramOp);
             lirMethod.addInstruction(statCallinstruction);
-            
         }
         return null;
 	}
