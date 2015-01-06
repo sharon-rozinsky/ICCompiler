@@ -12,10 +12,10 @@
 #			}
 #		}
 #
-#		// Name: chackArrayAccess.
+#		// Name: checkArrayAccess.
 #		// Arguments: array type a, array index int i.
 #		// Functionality: validates that the given index i is in the bounds of the given a. 
-#		static void chackArrayAccess(arrayType[] a, int i)
+#		static void checkArrayAccess(arrayType[] a, int i)
 #		{
 #			if((a.length <= i) || (i < 0))
 #			{
@@ -68,7 +68,7 @@ Library __exit(R1),R0
 _run_time_check_pass_20:
 Return Rdummy
 
-__chackArrayAccess:
+__checkArrayAccess:
 Move a,R0
 ArrayLength R0,R0
 Move i,R1

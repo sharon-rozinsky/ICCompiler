@@ -1,0 +1,19 @@
+class A {
+  int x;
+  int[] arr2;
+  string s;
+  
+  int foo(int y) {
+	this.arr2 = new int[5];
+    int len2 = this.arr2.length;
+	int a = arr2[5];
+    return len2;
+  }
+  static void main(string[] args) {
+    A p = new A();
+	int[] arr = new int[5];
+	int len = arr.length;
+	
+    p.foo(5);
+  }
+}

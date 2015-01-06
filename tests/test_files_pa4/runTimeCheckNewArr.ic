@@ -1,0 +1,16 @@
+class A {
+  int x;
+  string s;
+  int foo(int y) {
+    int z=y+1;
+    return z;
+  }
+  static void main(string[] args) {
+    A p = new A();
+	
+	int[] arr = new int[5];
+	int[] arr2 = new int[-1];
+	
+    p.foo(5);
+  }
+}
