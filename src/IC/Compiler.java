@@ -20,12 +20,15 @@ import IC.lir.lirObject.LIRProgram;
 
 public class Compiler {
 	
+	private static String file;
 	private static boolean printtokens = true;
 	protected static final String PRINT_AST_OPTION = "-print-ast";
 	protected static final String PRINT_SYMTAB_OPTION = "-dump-symtab";
+	protected static final String PRINT_LIR_OPTION = "-print-lir";
 	private static boolean library = false;
 	private static boolean printAST = false;
 	private static boolean printSym = false;
+	private static boolean printLir = false;
 	
 	public static void main(String[] args) throws LexicalError {
 		try {
@@ -47,60 +50,59 @@ public class Compiler {
 	}
 	
 	public static void Compile(String [] args) throws Exception { 
-		if(args.length != 0) {
-			// read the program file and parse it
-			Utils.initSymbolToSignMap();
-			Program root = Utils.parseProgram(args[0]);
-			updateFlags(args);
-			if(library){
-					ICClass libraryClass =Utils.parseLibrary(args[1], root);
-					//Check correctness of library class name.
-					if(libraryClass != null)
-					{
-						SpecialSemanticChecks.checkLibraryNameCorrectness(libraryClass);
-					}
+	
+		updateFlags(args);
+		// read the program file and parse it
+		Utils.initSymbolToSignMap();
+		Program root = Utils.parseProgram(file);
+		if(library){
+			ICClass libraryClass =Utils.parseLibrary(args[1], root);
+			//Check correctness of library class name.
+			if(libraryClass != null)
+			{
+				SpecialSemanticChecks.checkLibraryNameCorrectness(libraryClass);
 			}
-			
-			TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
-			ttb.visit((Program) root);
-			
-			SymbolTableBuilder symbolBuilder = new SymbolTableBuilder("Global");
-	        root.accept(symbolBuilder, null);  
-			 
-			//testing symbol scope
-	        SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
-	        scopeCheck.visit((Program) root, null);
-	        
-	        //testing type check
-	        TypesCheck typeCheck = new TypesCheck();
-	        typeCheck.visit((Program) root);
-	        
-	        //testing breakCont
-	        BreakContinueChecker breakCont = new BreakContinueChecker();
-	        breakCont.visit((Program) root, null);
-	        
-	        //testing maxInteger
-	        MaxIntegerChecker maxInt = new MaxIntegerChecker();
-	        maxInt.visit((Program) root, null);
-	        
-	        SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
-	        SpecialSemanticChecks.validateMainFunction((Program) root);
-	        SpecialSemanticChecks.allLocalVarsInit((Program) root);
-	        
+		}
 
-        	if(printAST){
-				Utils.printAST(args[0], root);
-			}
-			if(printSym){
-				Utils.printSymbolTable(root);
-				Utils.printTypeTable();
-			}
-	        
+		TypeTableBuilder ttb = new TypeTableBuilder(args[0]);				
+		ttb.visit((Program) root);
+
+		SymbolTableBuilder symbolBuilder = new SymbolTableBuilder("Global");
+		root.accept(symbolBuilder, null);  
+
+		//testing symbol scope
+		SymbolTableChecker scopeCheck = new SymbolTableChecker(symbolBuilder.getUnresolvedReferences());
+		scopeCheck.visit((Program) root, null);
+
+		//testing type check
+		TypesCheck typeCheck = new TypesCheck();
+		typeCheck.visit((Program) root);
+
+		//testing breakCont
+		BreakContinueChecker breakCont = new BreakContinueChecker();
+		breakCont.visit((Program) root, null);
+
+		//testing maxInteger
+		MaxIntegerChecker maxInt = new MaxIntegerChecker();
+		maxInt.visit((Program) root, null);
+
+		SpecialSemanticChecks.allNoneVoidMethodReturnsNoneVoidType((Program) root);
+		SpecialSemanticChecks.validateMainFunction((Program) root);
+		SpecialSemanticChecks.allLocalVarsInit((Program) root);
+
+
+		if(printAST){
+			Utils.printAST(args[0], root);
+		}
+		if(printSym){
+			Utils.printSymbolTable(root);
+			Utils.printTypeTable();
+		}
+
+		if(printLir)
+		{
 			LIRProgram lirProgram = LIRUtils.getLIRProgram(root);
-			LIRUtils.printLIR(lirProgram, "lirfile");
-			
-		} else{
-			System.out.println("No file was given, please run again and insert which file do you want to parse!");
+			LIRUtils.printLIR(lirProgram, "file");
 		}
 	}
 	
@@ -117,37 +119,34 @@ public class Compiler {
 	}
 	
 	public static void updateFlags(String[] args){
-		if(args.length >= 2){
-			if(args[1].startsWith("-L")){
-				library = true;
-			}
-			if(args[1].equals(PRINT_AST_OPTION)){
-				printAST = true;
-			}
-			if(args[1].equals(PRINT_SYMTAB_OPTION)){
-				printSym = true;
-			}
+		if (args.length == 0) {
+			System.out.println("Error: Missing input file argument!");
+			System.exit(-1);
 		}
-		if(args.length >= 3){
-			if(args[2].equals(PRINT_AST_OPTION)){
-				printAST = true;
-			}
-			if(args[2].equals(PRINT_SYMTAB_OPTION)){
-				printSym = true;
-			}
-			if(args[2].startsWith("-L")){
-				library = true;
-			}
+		else {
+			file = args[0];
 		}
-		if(args.length == 4){
-			if(args[3].equals(PRINT_AST_OPTION)){
+		
+		for (int i = 1; i < args.length; ++i) {
+			if(args[i].equals(PRINT_AST_OPTION))
+			{
 				printAST = true;
 			}
-			if(args[3].equals(PRINT_SYMTAB_OPTION)){
+			else if(args[i].equals(PRINT_SYMTAB_OPTION))
+			{
 				printSym = true;
 			}
-			if(args[3].startsWith("-L")){
+			else if(args[i].startsWith("-L"))
+			{
 				library = true;
+			}
+			else if(args[i].equals(PRINT_LIR_OPTION))
+			{
+				printLir = true;
+			}
+			else {
+				System.out.println("Encountered unknown option: " + args[i]);
+				System.exit(-1);
 			}
 		}
 	}

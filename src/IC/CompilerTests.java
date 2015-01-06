@@ -22,7 +22,7 @@ public class CompilerTests {
 	}
 	private static String libraryPath = "-Ltests"+DIR_SEPARATOR+"libic.sig.txt";
 	private static String testsPath = "tests"+DIR_SEPARATOR+"test_files_pa3";
-	private static String[] args = {"",libraryPath,Compiler.PRINT_AST_OPTION ,Compiler.PRINT_SYMTAB_OPTION}; // + Library
+	private static String[] args = {"",libraryPath,Compiler.PRINT_AST_OPTION ,Compiler.PRINT_SYMTAB_OPTION,Compiler.PRINT_LIR_OPTION}; // + Library
 
 	/**
 	 * Thsi function create Junit tests code for all IC files under the specified path.
@@ -1628,20 +1628,20 @@ public class CompilerTests {
 		}
 	}
 	
-	@Test
-	/**
-	 * Test number 103.
-	 * @throws Exception
-	 */
-	public void general() throws Exception {
+//	@Test
+//	/**
+//	 * Test number 103.
+//	 * @throws Exception
+//	 */
+//	public void general() throws Exception {
 //		try 
 //		{
-			args[0] = "tests"+DIR_SEPARATOR+"test_files_pa3"+DIR_SEPARATOR+"fieldInstaticMethod.ic";
-			Compiler.Compile(args);
+//			args[0] = "tests" + DIR_SEPARATOR + "test_files_pa4" + DIR_SEPARATOR + "Quicksort_guy.ic";
+//			Compiler.Compile(args);
 //			Assert.assertTrue(false); //Compile should fail
 //		} catch (SemanticError e) {
 //			Assert.assertTrue("semantic error at line 33".equals(e.getMessage().split(":")[0]));
 //		}
-	}
+//	}
 
 }
