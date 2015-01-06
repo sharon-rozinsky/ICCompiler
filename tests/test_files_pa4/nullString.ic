@@ -1,0 +1,20 @@
+class C {
+
+	static void main(string[] args){
+		(new A()).foo();
+	}
+
+}
+
+class A {
+
+	string str;
+
+	void foo(){
+
+	Library.println(str);
+
+	}
+
+}
+
