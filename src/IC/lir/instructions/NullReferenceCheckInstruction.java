@@ -1,9 +1,9 @@
 package IC.lir.instructions;
 
-public class NullPtrCheckInstruction extends Instruction{
+public class NullReferenceCheckInstruction extends Instruction{
 	String reg;
 
-	public NullPtrCheckInstruction(String register) {
+	public NullReferenceCheckInstruction(String register) {
 		super("StaticCall");
 		this.reg = register;
 	}

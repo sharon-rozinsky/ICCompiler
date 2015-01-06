@@ -50,12 +50,11 @@ import IC.Types.MethodType;
 import IC.Types.Kind;
 import IC.Types.SymbolType;
 import IC.Symbols.ClassSymbolTable;
-import IC.Symbols.CodeBlockSymbolTable;
 import IC.Symbols.MethodSymbolTable;
-import IC.Symbols.Symbol;
 import IC.Symbols.SymbolTable;
-import IC.Types.ClassType;
 import IC.Types.TypeTable;
+import IC.lir.instructions.ArrIdxOutOfBoundsCheckInstruction;
+import IC.lir.instructions.ArrSizeCheckInstruction;
 import IC.lir.instructions.ArrayLengthInstruction;
 import IC.lir.instructions.BinaryInstruction;
 import IC.lir.instructions.BranchInstruction;
@@ -66,6 +65,7 @@ import IC.lir.instructions.MoveFieldInstruction;
 import IC.lir.instructions.MoveInstruction;
 import IC.lir.instructions.NewArrayInstruction;
 import IC.lir.instructions.NewObjectInstruction;
+import IC.lir.instructions.NullReferenceCheckInstruction;
 import IC.lir.instructions.PseudoInstruction;
 import IC.lir.instructions.ReturnInstruction;
 import IC.lir.instructions.StaticCallInstruction;
@@ -246,9 +246,16 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		Register.incRegisterCounter(1);
 		propagate(location.getIndex(), scope);
 		Register.decRegisterCounter(1);
-
-		ArrayOperand arrayOperand = new ArrayOperand(new Register(),
-				new Register(1));
+		
+		Register arrReg = new Register();
+		Register indxReg = new Register(1);
+		ArrayOperand arrayOperand = new ArrayOperand(arrReg,indxReg);
+		
+		NullReferenceCheckInstruction refCheckInst = new NullReferenceCheckInstruction(arrReg.toString());
+		lirMethod.addInstruction(refCheckInst);
+		ArrIdxOutOfBoundsCheckInstruction indxCheckInst = new ArrIdxOutOfBoundsCheckInstruction(arrReg.toString() ,indxReg.toString());
+		lirMethod.addInstruction(indxCheckInst);
+		
 		if (storeOrLoad == LIRConstants.LOAD) {
 			MoveArrayInstruction moveArrayInstruction = new MoveArrayInstruction(
 					arrayOperand, new Register(), LIRConstants.Load);
@@ -633,8 +640,12 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         propagate(newArray.getSize(), scope);
         Immediate byteSize = new Immediate(4);
         
-        BinaryInstruction updateSizeInstruction = new BinaryInstruction(LIRConstants.Mul, byteSize, new Register());
+        Register sizeReg= new Register();
+        BinaryInstruction updateSizeInstruction = new BinaryInstruction(LIRConstants.Mul, byteSize, sizeReg);
         lirMethod.addInstruction(updateSizeInstruction);
+        
+        ArrSizeCheckInstruction arraySizeRunTimeCheckInst = new ArrSizeCheckInstruction(sizeReg.toString()); 
+        lirMethod.addInstruction(arraySizeRunTimeCheckInst);
         
         NewArrayInstruction newArrInstruction = new NewArrayInstruction(new Register(), new Register());
         lirMethod.addInstruction(newArrInstruction);
