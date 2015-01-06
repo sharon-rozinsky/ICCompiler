@@ -291,7 +291,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 				}
 				return memory;
 			} else {
-				ThisReference thisReference = new ThisReference();
+				Memory thisReference = new ThisReference();
 				MoveInstruction instruction = new MoveInstruction(
 						thisReference, new Register());
 				lirMethod.addInstruction(instruction);
@@ -365,8 +365,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         AddressLabel ifEndLabel = new AddressLabel(LIRConstants.END_LABEL_PREFIX + endScopeId);
         PseudoInstruction endIfLabelInstruction = new PseudoInstruction(ifEndLabel, LIRConstants.Label);
 		
-        if (ifStatement.hasElse()) 
-        {
+        if (ifStatement.hasElse()) {
             int falseScopeId = ifStatement.getElseOperation().getEnclosingScopeSymTable().getScopeUniqueId();
             falseLabel = new AddressLabel(LIRConstants.FALSE_LABEL_PREFIX + falseScopeId);
         }
@@ -377,20 +376,17 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         lirMethod.addInstruction(compare);
 		
         BranchInstruction branch;
-        if (ifStatement.hasElse()) 
-        {
+        if (ifStatement.hasElse()) {
         	branch = new BranchInstruction(LIRConstants.True, falseLabel);
         } 
-        else 
-        {
+        else {
         	branch = new BranchInstruction(LIRConstants.True, ifEndLabel);
         }       
         lirMethod.addInstruction(branch);
 		
         propagate(ifStatement.getOperation(), scope);
         
-        if (ifStatement.hasElse()) 
-        {
+        if (ifStatement.hasElse()) {
         	BranchInstruction branchElse = new BranchInstruction(LIRConstants.Do, ifEndLabel);
             lirMethod.addInstruction(branchElse);
             

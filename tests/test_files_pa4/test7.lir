@@ -1,0 +1,29 @@
+
+# A: fields offsets:
+
+_DV_A: []
+
+_ic_main:
+Move 42,R0
+Move R0,x_18
+_test_cond_label_19:
+Move x_18,R0
+Move 0,R1
+Move 1,R2
+Compare R1,R0
+JumpG _end_bool_0
+Move 0,R2
+_end_bool_0:
+Move R2,R0
+Compare 0,R0
+JumpTrue _end_label_19
+Move x_18,R0
+Move 1,R1
+Sub R1,R0
+Move R0,x_18
+Move x_18,R1
+Library __printi(R1),R0
+Jump _test_cond_label_19
+_end_label_19:
+Library __exit(0),Rdummy
+

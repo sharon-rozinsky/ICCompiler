@@ -1,0 +1,11 @@
+class A {
+  static void main(string[] args) {
+    int x = 9;
+	int y = 6;
+	int z = 8;
+	if (x < y || x > z)
+		Library.println("x < y || x > z is true");
+	else
+	   	Library.println("x < y || x > z is false");
+	  }
+}
