@@ -51,5 +51,10 @@ public class LIRConstants {
     public static final String FALSE_LABEL_PREFIX = "false_label_";
     public static final String LIBRARY_EXIT = "exit";
     public static final String MAIN_METHOD_NAME = "main";
+    
+	public static final String RUN_TIME_STRING_LITERALS = "stringLiteral0: \"Runtime Error: Null pointer dereference!\""
+			+ "stringLiteral1: \"Runtime Error: Array index out of bounds!\""
+			+ "stringLiteral2: \"Runtime Error: Array allocation with negative array size!\""
+			+ "stringLiteral3: \"Runtime Error: Division by zero!\"";
 
 }
