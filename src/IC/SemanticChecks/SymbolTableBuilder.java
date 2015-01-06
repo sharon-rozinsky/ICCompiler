@@ -172,7 +172,7 @@ public class SymbolTableBuilder implements PropagatingVisitor<SymbolTable, Boole
 			Kind methodInstanceKind = methodInstanceSymbol.getKind();
 			SymbolType methodInstanceType = methodInstanceSymbol.getType();
 			
-			if(methodType != methodInstanceType && methodKind != methodInstanceKind){
+			if(methodType != methodInstanceType || methodKind != methodInstanceKind){
 				throw new SemanticError(method.getLine(), "Method or variable with the same name already defined");
 			}
 		}
