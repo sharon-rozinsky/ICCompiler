@@ -24,7 +24,7 @@ public class RunTimeChecks {
 
 	public static String addCheckZeroInstruction(String reg) {
 		addCheckZeroFunction = true;
-		return "StaticCall __checkZero(a=" + reg + "),Rdummy\n";
+		return "StaticCall __checkZero(b=" + reg + "),Rdummy\n";
 	}
 	
 	public static void addRunTimeCheckFunctions(){
