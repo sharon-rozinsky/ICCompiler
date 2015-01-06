@@ -50,11 +50,6 @@
 #	}
 ################### RunTimeChecks.lir Start ###################################################################
 
-stringLiteral0: "Runtime Error: Null pointer dereference!"
-stringLiteral1: "Runtime Error: Array index out of bounds!"
-stringLiteral2: "Runtime Error: Array allocation with negative array size!"
-stringLiteral3: "Runtime Error: Division by zero!"
-
 __checkNullRef:
 Move a,R0
 Move 0,R1
