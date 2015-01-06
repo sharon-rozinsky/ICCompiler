@@ -1,0 +1,143 @@
+#################### RunTimeChecks.ic #####################################################################
+#	class RunTimeChecks {
+#		// Name: checkNullRef.
+#		// Arguments: reference type a. 
+#		// Functionality: validates that the given reference a is not null.
+#		static void checkNullRef(referenceType a)
+#		{
+#			if(a == null)
+#			{
+#				Library.println("Runtime Error: Null pointer dereference!");
+#				Library.exit(1);
+#			}
+#		}
+#
+#		// Name: chackArrayAccess.
+#		// Arguments: array type a, array index int i.
+#		// Functionality: validates that the given index i is in the bounds of the given a. 
+#		static void chackArrayAccess(arrayType[] a, int i)
+#		{
+#			if((a.length <= i) || (i < 0))
+#			{
+#				Library.println("Runtime Error: Array index out of bounds!");
+#				Library.exit(1);
+#			}
+#		}
+#		
+#		// Name: checkSize.
+#		// Arguments: the new array length n.
+#		// Functionality: validates that n is not minus. 
+#		static void checkSize(int n)
+#		{
+#			if(n < 0)
+#			{
+#				Library.println("Runtime Error: Array allocation with negative array size!");
+#				Library.exit(1);
+#			}
+#		}
+#		
+#		// Name: checkZero.
+#		// Arguments: int b, the deviser.
+#		// Functionality: validates that b is not equal to zero. 
+#		static void checkZero(int b)
+#		{
+#			if(b == 0)
+#			{
+#				Library.println("Runtime Error: Division by zero!");
+#				Library.exit(1);
+#			}
+#		}
+#	}
+################### RunTimeChecks.lir Start ###################################################################
+
+stringLiteral0: "Runtime Error: Null pointer dereference!"
+stringLiteral1: "Runtime Error: Array index out of bounds!"
+stringLiteral2: "Runtime Error: Array allocation with negative array size!"
+stringLiteral3: "Runtime Error: Division by zero!"
+
+__checkNullRef:
+Move a,R0
+Move 0,R1
+Move 1,R2
+Compare R1,R0
+JumpTrue _Error_0
+Move 0,R2
+_Error_0:
+Move R2,R0
+Compare 0,R0
+JumpTrue _run_time_check_pass_20
+Move stringLiteral0,R1
+Library __println(R1),R0
+Move 1,R1
+Library __exit(R1),R0
+_run_time_check_pass_20:
+Return Rdummy
+
+__chackArrayAccess:
+Move a,R0
+ArrayLength R0,R0
+Move i,R1
+Move 1,R2
+Compare R1,R0
+JumpLE _Error_2
+Move 0,R2
+_Error_2:
+Move R2,R0
+Compare 1,R0
+JumpTrue _Error_1
+Move i,R1
+Move 0,R2
+Move 1,R3
+Compare R2,R1
+JumpL _Error_3
+Move 0,R3
+_Error_3:
+Move R3,R1
+Or R1,R0
+_Error_1:
+Compare 0,R0
+JumpTrue _run_time_check_pass_22
+Move stringLiteral1,R1
+Library __println(R1),R0
+Move 1,R1
+Library __exit(R1),R0
+_run_time_check_pass_22:
+Return Rdummy
+
+__checkSize:
+Move n,R0
+Move 0,R1
+Move 1,R2
+Compare R1,R0
+JumpL _Error_4
+Move 0,R2
+_Error_4:
+Move R2,R0
+Compare 0,R0
+JumpTrue _run_time_check_pass_24
+Move stringLiteral2,R1
+Library __println(R1),R0
+Move 1,R1
+Library __exit(R1),R0
+_run_time_check_pass_24:
+Return Rdummy
+
+__checkZero:
+Move b,R0
+Move 0,R1
+Move 1,R2
+Compare R1,R0
+JumpTrue _Error_5
+Move 0,R2
+_Error_5:
+Move R2,R0
+Compare 0,R0
+JumpTrue _run_time_check_pass_26
+Move stringLiteral3,R1
+Library __println(R1),R0
+Move 1,R1
+Library __exit(R1),R0
+_run_time_check_pass_26:
+Return Rdummy
+
+################### RunTimeChecks.lir End ###################################################################

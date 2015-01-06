@@ -1,0 +1,39 @@
+
+class RunTimeChecks {
+		
+	static void checkNullRef(referenceType a)
+	{
+		if(a == null)
+		{
+			Library.println("Runtime Error: Null pointer dereference!");
+			Library.exit(1);
+		}
+	}
+	
+	static void chackArrayAccess(arrayType[] a,int i)
+	{
+		if((a.length <= i) || (i < 0))
+		{
+			Library.println("Runtime Error: Array index out of bounds!");
+			Library.exit(1);
+		}
+	}
+	
+	static void checkSize(int n)
+	{
+		if(n < 0)
+		{
+			Library.println("Runtime Error: Array allocation with negative array size!");
+			Library.exit(1);
+		}
+	}
+	
+	static void checkZero(int n)
+	{
+		if(n == 0)
+		{
+			Library.println("Runtime Error: Division by zero!");
+			Library.exit(1);
+		}
+	}
+}
