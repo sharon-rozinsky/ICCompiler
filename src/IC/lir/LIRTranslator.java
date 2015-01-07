@@ -528,7 +528,8 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         else 
         {        
             String methodName = call.getName();
-            String className = getClassSymbolTableByNode(call).getId();
+            //String className = getClassSymbolTableByNode(call).getId();
+            String className = call.getClassName();
 
             ClassType classType = TypeTable.classType(className, null, null);
             ICClass icClass = classType.getClassNode();
