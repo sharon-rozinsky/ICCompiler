@@ -265,15 +265,19 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		return arrayOperand;
 	}
 
-	private Object visitVariableLocation(VariableLocation location,
+	private Object visitVariableLocation(VariableLocation variableLocation,
 			Object scope, int storeOrLoad) {
 		LIRMethod lirMethod = (LIRMethod) scope;
-		String locationName = location.getName();
+		String locationName = variableLocation.getName();
 
-		if (location.isExternal()) {
-			propagate(location.getLocation(), scope);
+		if (variableLocation.isExternal()) {
+			propagate(variableLocation.getLocation(), scope);
 
-			ClassType type = (ClassType) location.getLocation().getSymbolType();
+			Register reg = new Register();
+			NullReferenceCheckInstruction nullCheckInstruction = new NullReferenceCheckInstruction(reg.toString());
+			lirMethod.addInstruction(nullCheckInstruction);
+			
+			ClassType type = (ClassType) variableLocation.getLocation().getSymbolType();
 			String className = type.getClassName();
 			int offset = getOffset(className, locationName);
 
@@ -285,19 +289,15 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 						fieldOperand, new Register(), LIRConstants.Load);
 				lirMethod.addInstruction(moveFieldInstruction);
 			}
-
 			return fieldOperand;
 		} else {
-			Symbol symbol = location.getLocationScope().getSymbol(locationName);
+			Symbol symbol = variableLocation.getLocationScope().getSymbol(locationName);
 
 			if (symbol.getKind() != Kind.MemberVariable) {
 				Memory memory = new Memory(symbol);
 				if (storeOrLoad == LIRConstants.LOAD) {
-					Register reg = new Register();
-					MoveInstruction moveInstruction = new MoveInstruction(memory, reg);
+					MoveInstruction moveInstruction = new MoveInstruction(memory, new Register());
 					lirMethod.addInstruction(moveInstruction);
-					NullReferenceCheckInstruction nullCheckInstruction = new NullReferenceCheckInstruction(reg.toString());
-					lirMethod.addInstruction(nullCheckInstruction);
 				}
 				return memory;
 			} else {
@@ -306,7 +306,7 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 						thisReference, new Register());
 				lirMethod.addInstruction(instruction);
 
-				String className = getClassSymbolTableByNode(location).getId();
+				String className = getClassSymbolTableByNode(variableLocation).getId();
 				int offset = getOffset(className, locationName);
 				Immediate immediate = new Immediate(offset);
 				FieldOperand fieldOperand = new FieldOperand(new Register(),
