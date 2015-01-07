@@ -528,20 +528,12 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         else 
         {        
             String methodName = call.getName();
-            String className = call.getClassName();
-            
-            AddressLabel label;
-            if (methodName.equals(LIRConstants.MAIN_METHOD_NAME)) {
-                label = new AddressLabel(LIRConstants.MAIN_LABEL_PREFIX, methodName);
-            } else {
-                label = new AddressLabel(className, methodName);
-            }
-            
+            String className = getClassSymbolTableByNode(call).getId();
+
             ClassType classType = TypeTable.classType(className, null, null);
             ICClass icClass = classType.getClassNode();
-            //MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().getChildSymbolTables().get(methodName);
             MethodSymbolTable table = (MethodSymbolTable) getMethodSymbolTable(icClass, methodName);
-
+            className = getMethodClass(icClass, methodName);
             Collection<Symbol> parameters = (Collection<Symbol>) table.getParameters().values();
             ParameterOperand[] paramOp = new ParameterOperand[parameters.size()];
             
@@ -556,7 +548,14 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             }
 
             Register.decRegisterCounter(call.getArguments().size());
-
+            
+            AddressLabel label;
+            if (methodName.equals(LIRConstants.MAIN_METHOD_NAME)) {
+                label = new AddressLabel(LIRConstants.MAIN_LABEL_PREFIX, methodName);
+            } else {
+                label = new AddressLabel(className, methodName);
+            }
+            
             StaticCallInstruction statCallinstruction = new StaticCallInstruction(label, new Register(), paramOp);
             lirMethod.addInstruction(statCallinstruction);
         }
@@ -891,6 +890,15 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 		
 		methodSymbolTable = classSymbolTable.getChildSymbolTables().get(methodName);
 		return methodSymbolTable;
+	}
+	
+	private String getMethodClass(ICClass icClass, String methodName){
+		SymbolTable classSymbolTable = icClass.getEnclosingScopeSymTable();
+		while (classSymbolTable.getChildSymbolTables().get(methodName) == null && icClass.getSuperClassName() != null)
+		{
+			classSymbolTable = classSymbolTable.getParentSymbolTable();
+		}	
+		return classSymbolTable.getId();
 	}
 	
 	public String getBinaryOperationString(MathBinaryOp binaryOp) {
