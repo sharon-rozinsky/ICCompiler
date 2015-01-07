@@ -539,8 +539,9 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
             
             ClassType classType = TypeTable.classType(className, null, null);
             ICClass icClass = classType.getClassNode();
-            MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().getChildSymbolTables().get(methodName);
-            
+            //MethodSymbolTable table = (MethodSymbolTable)icClass.getEnclosingScopeSymTable().getChildSymbolTables().get(methodName);
+            MethodSymbolTable table = (MethodSymbolTable) getMethodSymbolTable(icClass, methodName);
+
             Collection<Symbol> parameters = (Collection<Symbol>) table.getParameters().values();
             ParameterOperand[] paramOp = new ParameterOperand[parameters.size()];
             

@@ -417,8 +417,19 @@ public class TypesCheck implements Visitor{
 		stepIn(call.getArguments());
 		
 		ClassType cType = TypeTable.uniqueClassTypes.get(call.getClassName());
+		ClassSymbolTable classSymbTab = (ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable();
+		Symbol sym = classSymbTab.getSymbol(call.getName());
+		MethodType methodType;
+		if (sym != null)
+		{
+			methodType = (MethodType) sym.getType();
+		}
+		else
+		{
+			throw new SemanticError(call.getLine(),"Undefined method");
+		}
 		
-		visitCallWraper(call,(MethodType) ((ClassSymbolTable) cType.getClassNode().getEnclosingScopeSymTable()).getMethods().get(call.getName()).getType());
+		visitCallWraper(call,methodType);
 		return null;
 	}
 
