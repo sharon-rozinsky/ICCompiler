@@ -882,7 +882,13 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
 	
 	private SymbolTable getMethodSymbolTable(ICClass icClass, String methodName){
 		SymbolTable classSymbolTable = icClass.getEnclosingScopeSymTable();
-		SymbolTable methodSymbolTable = classSymbolTable.getChildSymbolTables().get(methodName);
+		SymbolTable methodSymbolTable;
+		while (classSymbolTable.getChildSymbolTables().get(methodName) == null && icClass.getSuperClassName() != null)
+		{
+			classSymbolTable = classSymbolTable.getParentSymbolTable();
+		}
+		
+		methodSymbolTable = classSymbolTable.getChildSymbolTables().get(methodName);
 		return methodSymbolTable;
 	}
 	
