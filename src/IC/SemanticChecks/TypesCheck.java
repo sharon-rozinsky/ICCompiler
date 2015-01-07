@@ -308,6 +308,23 @@ public class TypesCheck implements Visitor{
 		{
 			//SymbolType locationType = location.getEnclosingScopeSymTable().getSymbol(locationId).getType();
 			SymbolType locationType = location.getLocationScope().getSymbol(locationId).getType();
+			MethodSymbolTable methodSymTbl = getMethodSymbolTable(location);
+			if(methodSymTbl != null)
+			{
+				if(!symbolContainedInCurrentScopeOrChildrens(methodSymTbl,locationId))
+				{
+					Symbol methodSymbol = methodSymTbl.getParentSymbolTable().getSymbol(methodSymTbl.getId());
+					if(methodSymbol != null)
+					{
+						Kind methodKind = methodSymbol.getKind();
+						if((methodKind == Kind.StaticMethod) && (locationType instanceof ClassType))
+						{
+							throw new SemanticError(location.getLine(), 
+									String.format("Reference to none static field/method from static method."));
+						}
+					}
+				}
+			}
 			location.setSymbolType(locationType);
 		}
 		else //need to check that the types match.
@@ -349,6 +366,25 @@ public class TypesCheck implements Visitor{
 			}
 		}
 		return null;
+	}
+
+	private boolean symbolContainedInCurrentScopeOrChildrens(
+			SymbolTable SymTbl, String symID) {
+		if(SymTbl.symbolContainedInCurrentScope(symID))
+		{
+			return true;
+		}
+		else if(SymTbl.getChildSymbolTables() != null)
+		{
+			for(SymbolTable symTable : SymTbl.getChildSymbolTables().values())
+			{
+				if(symbolContainedInCurrentScopeOrChildrens(symTable,symID))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
