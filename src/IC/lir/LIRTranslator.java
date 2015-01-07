@@ -577,6 +577,9 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         
         if (call.isExternal()) {
             propagate(call.getLocation(), scope);
+            Register reg = new Register();
+			NullReferenceCheckInstruction nullCheckInstruction = new NullReferenceCheckInstruction(reg.toString());
+			lirMethod.addInstruction(nullCheckInstruction);
             classType = (ClassType) call.getLocation().getSymbolType();
             className = classType.getClassName();
         } else {
