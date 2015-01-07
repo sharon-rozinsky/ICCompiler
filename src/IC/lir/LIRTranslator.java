@@ -572,7 +572,9 @@ public class LIRTranslator implements LIRPropagatingVisitor<Object, Object>{
         int intOffset = program.getClassesLayout().get(className).getMethodsOffset(methodName);
         
         if(intOffset == -1 && !call.isExternal()){ //the call is static
-        	return visit(new StaticCall(call.getLine(), className, methodName, call.getArguments()), scope);
+        	StaticCall staticCall = new StaticCall(call.getLine(), className, methodName, call.getArguments());
+        	staticCall.setEnclosingScopeSymTable(call.getEnclosingScopeSymTable());
+        	return visit(staticCall, scope);
         }
         
         if (call.isExternal()) {
