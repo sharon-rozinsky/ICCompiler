@@ -429,7 +429,17 @@ public class TypesCheck implements Visitor{
 		
 		if(call.getLocation() == null)  //assign symbol type to VariableLocation. 
 		{
-			MethodType methodType = (MethodType) getClassSymbolTable(call).getMethods().get(call.getName()).getType();
+			ClassSymbolTable symTab = getClassSymbolTable(call);
+			Symbol sym = symTab.getSymbol(call.getName());
+			MethodType methodType;
+			if (sym != null)
+			{
+				methodType = (MethodType) sym.getType();
+			}
+			else
+			{
+				return null;
+			}
 			
 			visitCallWraper(call, methodType);
 		}
