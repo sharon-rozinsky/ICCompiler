@@ -438,7 +438,7 @@ public class TypesCheck implements Visitor{
 			}
 			else
 			{
-				return null;
+				throw new SemanticError(call.getLine(),"Undefined method");
 			}
 			
 			visitCallWraper(call, methodType);
