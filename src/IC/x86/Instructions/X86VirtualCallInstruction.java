@@ -16,12 +16,14 @@ public class X86VirtualCallInstruction extends X86Instruction {
     private Register location;
     private Immediate offset;
     private Register dest;
+    private frame frame;
     
-    public X86VirtualCallInstruction(Register location, Immediate offset, Register dest, ParameterOperand ... params) {
+    public X86VirtualCallInstruction(frame frame, Register location, Immediate offset, Register dest, ParameterOperand ... params) {
         super(InstructionName);
         this.location = location;
         this.offset = offset;
         this.dest = dest;
+        this.frame = frame;
         for (ParameterOperand param : params) {
         	this.params.add(param);
         }
@@ -58,19 +60,19 @@ public class X86VirtualCallInstruction extends X86Instruction {
 		Collections.reverse(this.params);
 		for (ParameterOperand reg : params){
 			if (reg.toString().charAt(0)=='R' || reg.toString().charAt(0)=='v')
-				sb.append("\t movl " + frame.getVariableStackOffset(reg) + "(%ebp), %eax \n");
+				sb.append("\t movl " + frame.getVariableStackOffset(reg.toString()) + "(%ebp), %eax \n");
 			else 
 				sb.append("\t movl $" + reg + ", %eax \n");
 			sb.append("\t push %eax \n");
 		}
 				
-		sb.append("\t movl " + frame.getVariableStackOffset(location) + "(%ebp), %eax \n");
+		sb.append("\t movl " + frame.getVariableStackOffset(location.toString()) + "(%ebp), %eax \n");
 		sb.append("\t push %eax \n");
 		sb.append("\t movl 0(%eax), %eax \n");
 		sb.append("\t call *" + (offset*4)+ "(%eax) \n");
 		
 		if (!dest.equals("Rdummy")){
-			sb.append("\t mov %eax, " + frame.getVariableStackOffset(dest) + "(%ebp) \n");
+			sb.append("\t mov %eax, " + frame.getVariableStackOffset(dest.toString()) + "(%ebp) \n");
 		}
 		
 		sb.append("\t # pop parameters \n");
