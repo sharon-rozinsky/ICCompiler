@@ -1,10 +1,10 @@
 package IC.x86.Instructions;
 
-public class ZeroDivCheckInstruction extends X86Instruction {
+public class X86ZeroDivCheckInstruction extends X86Instruction {
 	String intReg;
 	private IC.x86.frame frame;
 	
-	public ZeroDivCheckInstruction(IC.x86.frame frame, String intRegister) {
+	public X86ZeroDivCheckInstruction(IC.x86.frame frame, String intRegister) {
 		super("StaticCall");
 		this.intReg = intRegister;
 		this.frame = frame;

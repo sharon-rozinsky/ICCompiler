@@ -1,10 +1,10 @@
 package IC.x86.Instructions;
 
-public class NullReferenceCheckInstruction extends X86Instruction{
+public class X86NullReferenceCheckInstruction extends X86Instruction{
 	String reg;
 	IC.x86.frame frame;
 
-	public NullReferenceCheckInstruction(IC.x86.frame frame, String register) {
+	public X86NullReferenceCheckInstruction(IC.x86.frame frame, String register) {
 		super("StaticCall");
 		this.reg = register;
 		this.frame = frame;

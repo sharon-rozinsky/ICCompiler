@@ -9,7 +9,7 @@ import IC.lir.operands.ParameterOperand;
 import IC.lir.operands.Register;
 import IC.x86.frame;
 
-public class VirtualCallInstruction extends X86Instruction {
+public class X86VirtualCallInstruction extends X86Instruction {
 
 	private static final String InstructionName = "VirtualCall";
     private List<ParameterOperand> params = new ArrayList<ParameterOperand>();
@@ -17,7 +17,7 @@ public class VirtualCallInstruction extends X86Instruction {
     private Immediate offset;
     private Register dest;
     
-    public VirtualCallInstruction(Register location, Immediate offset, Register dest, ParameterOperand ... params) {
+    public X86VirtualCallInstruction(Register location, Immediate offset, Register dest, ParameterOperand ... params) {
         super(InstructionName);
         this.location = location;
         this.offset = offset;
