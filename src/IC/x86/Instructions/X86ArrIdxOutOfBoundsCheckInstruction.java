@@ -1,11 +1,11 @@
 package IC.x86.Instructions;
 
-public class ArrIdxOutOfBoundsCheckInstruction extends X86Instruction {
+public class X86ArrIdxOutOfBoundsCheckInstruction extends X86Instruction {
 	String arrReg;
 	String idxReg;
 	IC.x86.frame frame;
 	
-	public ArrIdxOutOfBoundsCheckInstruction(IC.x86.frame frame, String arrRegister, String idxRegister) {
+	public X86ArrIdxOutOfBoundsCheckInstruction(IC.x86.frame frame, String arrRegister, String idxRegister) {
 		super("StaticCall");
 		this.arrReg = arrRegister;
 		this.idxReg = idxRegister;

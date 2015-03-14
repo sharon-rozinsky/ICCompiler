@@ -2,13 +2,13 @@ package IC.x86.Instructions;
 
 import IC.lir.operands.Label;
 
-public class BranchInstruction extends X86Instruction {
+public class X86BranchInstruction extends X86Instruction {
 	
 	private static final String InstructionName = "Jump";
     private Label label;
     private String condition;
     
-    public BranchInstruction(String condition, Label label) {
+    public X86BranchInstruction(String condition, Label label) {
         super(InstructionName + condition);
         this.label = label;
         this.condition = condition;
